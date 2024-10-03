@@ -6,10 +6,11 @@ IN = "input/in.txt"
 OUT = "output/out.txt"
 
 in_file = File.new(IN, "r")
+out_file = File.new(OUT, "w")
 
 while (line = in_file.gets)
-    puts line
+    out_file.puts(line)
 end
 
 in_file.close
-
+out_file.close
