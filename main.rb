@@ -6,14 +6,59 @@
 IN = "input/in.txt"
 OUT = "output/out.txt"
 
+COMMENT_CHARACTER = "#"
+
+Instruction = Struct.new(
+    :type,
+    :opcode,
+    :rs,
+    :rt,
+    :rd,
+    :shamt,
+    :funct,
+    :immediate,
+    :address
+)
+
 puts "Starting"
 
 in_file = File.new(IN, "r")
 out_file = File.new(OUT, "w")
 
+inst_queue = []
+
 while (line = in_file.gets)
-    out_file.puts(line)
+    array = line.split("\s"||",")
+    next if (array[0].nil?)
+    next if (array[0].chars.first == COMMENT_CHARACTER) 
+
+    working_inst = Instruction.new
+
+    case(array[0])
+        when "lw"
+            working_inst.type = "I"
+            working_inst.opcode = "10_0011" 
+        end
+
+    case(working_inst.type)
+    when "I"
+        inst_out = working_inst.opcode #FIXME: 
+
+    else
+        puts "Instruction Type not found"
+        inst_out = line 
+    end
+    inst_queue.push(inst_out)
+
+    out_file.puts(inst_out)
 end
+
+
+
+puts "Finishing"
+
+in_file.close
+out_file.close
 
 #ALU
 #ADD    rd, rs, rt          : Addition (with overflow)
@@ -102,10 +147,4 @@ end
                     
 #MTHI   rd                  : Move To hi
 #MTLO   rd                  : Move To low
-
-puts "Finishing"
-
-in_file.close
-out_file.close
-
 
