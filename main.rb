@@ -25,43 +25,28 @@ puts "Starting"
 in_file = File.new(IN, "r")
 out_file = File.new(OUT, "w")
 
-inst_queue = []
+inst_q  = []
+label_q = []
+
+line_num = 0
 
 while (line = in_file.gets)
     array = line.split("\s"||",")
     next if (array[0].nil?)
+
+    line_num += 1
     next if (array[0].chars.first == COMMENT_CHARACTER) 
 
     working_inst = Instruction.new
 
-    case(array[0])
-        when "lw"
-            working_inst.type = "I"
-            working_inst.opcode = "10_0011" 
-        end
+    case(array[0].upcase)
 
-    case(working_inst.type)
-    when "I"
-        inst_out = working_inst.opcode #FIXME: 
-
-    else
-        puts "Instruction Type not found"
-        inst_out = line 
-    end
-    inst_queue.push(inst_out)
-
-    out_file.puts(inst_out)
-end
+        when "ADD"
+        #ADD    rd, rs, rt          : Addition (with overflow)
+            working_inst.type   = "R"
+            working_inst.opcode = "10_0000" 
 
 
-
-puts "Finishing"
-
-in_file.close
-out_file.close
-
-#ALU
-#ADD    rd, rs, rt          : Addition (with overflow)
 #ADDI   rd, rs, Imm         : Addition immediate (with overflow)
 #ADDU   rd, rs, rt          : Addition (without overflow)
 #ADDIU  rd, rs, Imm         : Addition immediate (without overflow)
@@ -127,7 +112,11 @@ out_file.close
 #LH     rd, imm(rs)         : Load Halfword
 #LHU    rd, imm(rs)         : Load Unsigned Halfword
 
-#LW     rd, imm(rs)         : Load Word
+        when "LW"
+            #LW     rd, imm(rs)         : Load Word
+            working_inst.type   = "I"
+            working_inst.opcode = "10_0011" 
+
 #LWCZ   rd, imm(rs)         : Load Word
 
 #LWL    rd, imm(rs)         : Load Word Left
@@ -136,7 +125,11 @@ out_file.close
 #SB     rs, imm(rt)         : Store Byte
 #SH     rs, imm(rt)         : Store Halfword
 
-#SW     rs, imm(rt)         : Store Word
+        when "SW"
+            #SW     rs, imm(rt)         : Store Word
+            working_inst.type   = "I"
+            working_inst.opcode = "10_1011" 
+
 #SWCZ   rs, imm(rt)         : Store Word
 
 #SWL    rs, imm(rt)         : Store Word Left
@@ -147,4 +140,33 @@ out_file.close
                     
 #MTHI   rd                  : Move To hi
 #MTLO   rd                  : Move To low
+
+        else
+            label_q[array[0]] = line_num
+        
+        end
+
+    case(working_inst.type)
+        when "R"
+            inst_out = working_inst.opcode #FIXME: 
+        when "I"
+            inst_out = working_inst.opcode #FIXME:
+        when "J"
+            inst_out = working_inst.opcode #FIXME:
+        else
+            puts "Instruction Type not found"
+            inst_out = line 
+    end
+    
+    inst_q.push(inst_out)
+
+    out_file.puts(inst_out)
+end
+
+
+
+puts "Finishing"
+
+in_file.close
+out_file.close
 
