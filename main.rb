@@ -9,15 +9,15 @@ OUT = "output/out.txt"
 COMMENT_CHARACTER = "#"
 
 Instruction = Struct.new(
-    :type,
-    :opcode,
-    :rs,
-    :rt,
-    :rd,
-    :shamt,
-    :funct,
-    :immediate,
-    :address
+    :type       ,
+    :opcode     ,
+    :rs         ,
+    :rt         ,
+    :rd         ,
+    :shamt      ,
+    :funct      ,
+    :immediate  ,
+    :address    ,
 )
 
 puts "Starting"
@@ -37,109 +37,324 @@ while (line = in_file.gets)
     line_num += 1
     next if (array[0].chars.first == COMMENT_CHARACTER) 
 
-    working_inst = Instruction.new
+    working_inst = Instruction.new(
+        nil,
+        "000000",
+        "00000",
+        "00000",
+        "00000",
+        "00000",
+        "000000",
+        "0000000000000000",
+        "00000000000000000000000000" 
+    )
 
     case(array[0].upcase)
 
         when "ADD"
         #ADD    rd, rs, rt          : Addition (with overflow)
             working_inst.type   = "R"
-            working_inst.opcode = "10_0000" 
+            working_inst.opcode = "100000" 
 
+        when "ADDI"
+        #ADDI   rd, rs, Imm         : Addition immediate (with overflow)
+            working_inst.type   = "0"
+            working_inst.opcode = "000000" 
 
-#ADDI   rd, rs, Imm         : Addition immediate (with overflow)
-#ADDU   rd, rs, rt          : Addition (without overflow)
-#ADDIU  rd, rs, Imm         : Addition immediate (without overflow)
+        when "ADDU"
+        #ADDU   rd, rs, rt          : Addition (without overflow)
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "ADDIU"
+        #ADDIU  rd, rs, Imm         : Addition immediate (without overflow)
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#AND    rd, rs, rt          : AND
-#ANDI   rd, rs, Imm         : AND Immediate
+        when "AND"
+        #AND    rd, rs, rt          : AND
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "ANDI"
+        #ANDI   rd, rs, Imm         : AND Immediate
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#DIV    rs, rt              : Divide(with overflow)
-#DIVU   rs, rt              : Divide(without overflow)
+        when "DIV"
+        #DIV    rs, rt              : Divide(with overflow)
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "DIVU"
+        #DIVU   rs, rt              : Divide(without overflow)
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#MULT   rs, rt              : Multiply
-#MULTU  rs, rt              : Unsigned Multiply
+        when "MULT"
+        #MULT   rs, rt              : Multiply
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "MULTU"
+        #MULTU  rs, rt              : Unsigned Multiply
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#NOR    rd, rs, rt          : NOR
+        when "NOR"
+        #NOR    rd, rs, rt          : NOR
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#OR     rd, rs, rt          : OR
-#ORI    rd, rs, tr          : OR Immediate
+        when "OR"
+        #OR     rd, rs, rt          : OR
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "ORI"
+        #ORI    rd, rs, tr          : OR Immediate
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#SLL    rd, rs, rt          : Shift Left Logical
-#SLLV   rd, rs, rt          : Shift Left Logical Variable
-#SRA    rd, rs, rt          : Shift Right Arithmetic
-#SRAV   rd, rs, rt          : Shift Right Arithmetic Variable
-#SR1    rd, rs, rt          : Shift Right Logical
-#SR1V   rd, rs, rt          : Shift Right Logical Variable
+        when "SLL"
+        #SLL    rd, rs, rt          : Shift Left Logical
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "SLLV"
+        #SLLV   rd, rs, rt          : Shift Left Logical Variable
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "SRA"
+        #SRA    rd, rs, rt          : Shift Right Arithmetic
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "SRAV"
+        #SRAV   rd, rs, rt          : Shift Right Arithmetic Variable
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "SRL"
+        #SRL    rd, rs, rt          : Shift Right Logical
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "SRLV"
+        #SRLV   rd, rs, rt          : Shift Right Logical Variable
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#SUB    rd, rs, rt          : Subtract (with overflow)
-#SUBU   rd, rs, rt          : Subtract (without overflow)
+        when "SUB"
+        #SUB    rd, rs, rt          : Subtract (with overflow)
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "SUBU"
+        #SUBU   rd, rs, rt          : Subtract (without overflow)
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#XOR    rd, rs, rt          : XOR
-#XORI   rd, rs, Imm         : XOR Immediate
+        when "XOR"
+        #XOR    rd, rs, rt          : XOR
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "XORI"
+        #XORI   rd, rs, Imm         : XOR Immediate
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#LUI    rd, Imm             : Load Upper Immediate
+        when "LUI"
+        #LUI    rd, Imm             : Load Upper Immediate
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#SLT    rd, rs, rt          : Set Less Than
-#SLTI   rd, rt, Imm         : Set Less Than Immediate
-#SLTU   rd, rs, rt          : Set Less Than Unsigned
-#SLTIU  rd, rs, Imm         : Set Less Than Unsigned Immediate
+        when "SLT"
+        #SLT    rd, rs, rt          : Set Less Than
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "SLTI"
+        #SLTI   rd, rt, Imm         : Set Less Than Immediate
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "SLTU"
+        #SLTU   rd, rs, rt          : Set Less Than Unsigned
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "SLTIU"
+        #SLTIU  rd, rs, Imm         : Set Less Than Unsigned Immediate
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#BCZT   label               : Branch Coprocessor z True
-#BCZF   label               : Branch Coprocessor z False
+        when "BCZT"
+        #BCZT   label               : Branch Coprocessor z True
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "BCZF"
+        #BCZF   label               : Branch Coprocessor z False
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#BEQ    rs, rt, offset      : Branch on Equal
-#BGEZ   rs, offset          : Branch on Greater Than Equal Zero
-#BGEZAL rs, offset          : Branch on Greater Than Equal Zero And Link
-#BGTZ   rs, offset          : Branch on Greater Than Zero
-#BLEZ   rs, offset          : Branch on Less Than Equal Zero
+        when "BEQ"
+        #BEQ    rs, rt, offset      : Branch on Equal
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "BGEZ"
+        #BGEZ   rs, offset          : Branch on Greater Than Equal Zero
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "BGEZAL"
+        #BGEZAL rs, offset          : Branch on Greater Than Equal Zero And Link
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "BGTZ"
+        #BGTZ   rs, offset          : Branch on Greater Than Zero
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "BLEZ"
+        #BLEZ   rs, offset          : Branch on Less Than Equal Zero
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#BGEZAL rs, offset          : Branch on Greater Than Equal Zero And Link
-#BLTZAL rs, offset          : Branch on Less Than And Link
+        when "BGEZAL"
+        #BGEZAL rs, offset          : Branch on Greater Than Equal Zero And Link
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "BLTZAL"
+        #BLTZAL rs, offset          : Branch on Less Than And Link
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#BLTZ   rs, offset          : Branch on Less Than Zero
-#BNE    rs, rt, offset      : Branch on Not Equal
+        when "BLTZ"
+        #BLTZ   rs, offset          : Branch on Less Than Zero
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "BNE"
+        #BNE    rs, rt, offset      : Branch on Not Equal
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#J      label               : Jump
-#JAL    label               : Jump and Link
-#JALR   rs                  : Jump and Link Register
+        when "J"
+        #J      label               : Jump
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "JAL"
+        #JAL    label               : Jump and Link
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "JALR"
+        #JALR   rs                  : Jump and Link Register
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#JR     rs                  : Jump Register
+        when "JR"
+        #JR     rs                  : Jump Register
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#LB     rd, imm(rs)         : Load Byte
-#LBU    rd, imm(rs)         : Load Unsigned Byte
+        when "LB"
+        #LB     rd, imm(rs)         : Load Byte
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "LBU"
+        #LBU    rd, imm(rs)         : Load Unsigned Byte
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#LH     rd, imm(rs)         : Load Halfword
-#LHU    rd, imm(rs)         : Load Unsigned Halfword
+        when "LH"
+        #LH     rd, imm(rs)         : Load Halfword
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "LHU"
+        #LHU    rd, imm(rs)         : Load Unsigned Halfword
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
         when "LW"
-            #LW     rd, imm(rs)         : Load Word
+        #LW     rd, imm(rs)         : Load Word
             working_inst.type   = "I"
-            working_inst.opcode = "10_0011" 
+            working_inst.opcode = "100011" 
 
-#LWCZ   rd, imm(rs)         : Load Word
+        when "LWCZ"
+        #LWCZ   rd, imm(rs)         : Load Word
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#LWL    rd, imm(rs)         : Load Word Left
-#LWR    rd, imm(rs)         : Load Word Right
+        when "LWL"
+        #LWL    rd, imm(rs)         : Load Word Left
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "LWR"
+        #LWR    rd, imm(rs)         : Load Word Right
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#SB     rs, imm(rt)         : Store Byte
-#SH     rs, imm(rt)         : Store Halfword
+        when "SB"
+        #SB     rs, imm(rt)         : Store Byte
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "SH"
+        #SH     rs, imm(rt)         : Store Halfword
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
         when "SW"
-            #SW     rs, imm(rt)         : Store Word
+        #SW     rs, imm(rt)         : Store Word
             working_inst.type   = "I"
-            working_inst.opcode = "10_1011" 
+            working_inst.opcode = "101011" 
 
-#SWCZ   rs, imm(rt)         : Store Word
+        when "SWCZ"
+        #SWCZ   rs, imm(rt)         : Store Word
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#SWL    rs, imm(rt)         : Store Word Left
-#SWR    rs, imm(rt)         : Store Word Right
+        when "SWL"
+        #SWL    rs, imm(rt)         : Store Word Left
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "SWR"
+        #SWR    rs, imm(rt)         : Store Word Right
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
-#MFHI   rd                  : Move From hi
-#MFLO   rd                  : Move From lo
-                    
-#MTHI   rd                  : Move To hi
-#MTLO   rd                  : Move To low
+        when "MFHI"
+        #MFHI   rd                  : Move From hi
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "MFLO"
+        #MFLO   rd                  : Move From lo
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+
+        when "MTHI"
+        #MTHI   rd                  : Move To hi
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
+        
+        when "MTLO"
+        #MTLO   rd                  : Move To low
+            working_inst.type   = "0"
+            working_inst.opcode = "000000"
 
         else
             label_q[array[0]] = line_num
@@ -148,11 +363,23 @@ while (line = in_file.gets)
 
     case(working_inst.type)
         when "R"
-            inst_out = working_inst.opcode #FIXME: 
+            inst_out = working_inst.opcode + 
+                       working_inst.rs + 
+                       working_inst.rt + 
+                       working_inst.rd + 
+                       working_inst.shamt + 
+                       working_inst.funct
+
         when "I"
-            inst_out = working_inst.opcode #FIXME:
+            inst_out = working_inst.opcode + 
+                       working_inst.rs + 
+                       working_inst.rt + 
+                       working_inst.immediate
+
         when "J"
-            inst_out = working_inst.opcode #FIXME:
+            inst_out = working_inst.opcode + 
+                       working_inst.address
+
         else
             puts "Instruction Type not found"
             inst_out = line 
