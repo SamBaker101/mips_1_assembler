@@ -25,16 +25,23 @@ puts "Starting"
 in_file = File.new(IN, "r")
 out_file = File.new(OUT, "w")
 
+read_q  = []
 inst_q  = []
 label_q = []
 
+total_lines = 0
 line_num = 0
 
 while (line = in_file.gets)
-    array = line.split("\s"||",")
-    next if (array[0].nil?)
-
+    total_lines += 1
+    read_q.push(line)
+end
+    
+while (line_num < total_lines) 
+    array = read_q[line_num].split("\s"||",")
     line_num += 1
+
+    next if (array[0].nil?)
     next if (array[0].chars.first == COMMENT_CHARACTER) 
 
     working_inst = Instruction.new(
@@ -361,6 +368,7 @@ while (line = in_file.gets)
         
         end
 
+    #Pack the bits
     case(working_inst.type)
         when "R"
             inst_out = working_inst.opcode + 
