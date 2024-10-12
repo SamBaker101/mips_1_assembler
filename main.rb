@@ -27,8 +27,8 @@ def decode_reg(string)
 end
 
 def binary_encode(input)
-    output = "00000"
-    (0..4).each do |n|
+    output = "0000000000000000"
+    (0..15).each do |n|
         if (input != 0)
             if (input % 2 == 0)
                 output[n] = "0"
