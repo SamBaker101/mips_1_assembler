@@ -20,6 +20,28 @@ Instruction = Struct.new(
     :address    ,
 )
 
+
+def decode_reg(string)
+    #puts string
+    "00000"
+end
+
+def binary_encode(input)
+    output = "00000"
+    (0..4).each do |n|
+        if (input != 0)
+            if (input % 2 == 0)
+                output[n] = "0"
+            else    
+                output[n] = "1"
+            end
+            input = input/2
+        end
+    end
+    output
+end
+
+
 puts "Starting"
 
 in_file = File.new(IN, "r")
@@ -37,12 +59,16 @@ while (line = in_file.gets)
     read_q.push(line)
 end
     
+puts "Total lines = " << total_lines.to_s
+
 while (line_num < total_lines) 
     array = read_q[line_num].split("\s"||",")
     line_num += 1
 
     next if (array[0].nil?)
     next if (array[0].chars.first == COMMENT_CHARACTER) 
+
+    puts "Handling instruction " << array[0]
 
     working_inst = Instruction.new(
         nil,
@@ -57,7 +83,6 @@ while (line_num < total_lines)
     )
 
     case(array[0].upcase)
-
         when "ADD"
         #ADD    rd, rs, rt          : Addition (with overflow)
             working_inst.type   = "R"
@@ -218,12 +243,12 @@ while (line_num < total_lines)
             working_inst.type   = "I"
             working_inst.opcode = "001001"
 
-        when "BCZT" FIXME: ?
+        when "BCZT" #FIXME: ?
         #BCZT   label               : Branch Coprocessor z True
             working_inst.type   = "I"
             working_inst.opcode = "000000"
         
-        when "BCZF" FIXME: ?
+        when "BCZF" #FIXME: ?
         #BCZF   label               : Branch Coprocessor z False
             working_inst.type   = "I"
             working_inst.opcode = "000000"
@@ -315,17 +340,17 @@ while (line_num < total_lines)
             working_inst.type   = "I"
             working_inst.opcode = "100011" 
 
-        when "LWCZ" FIXME: ?
+        when "LWCZ" #FIXME: ?
         #LWCZ   rd, imm(rs)         : Load Word
             working_inst.type   = "I"
             working_inst.opcode = "000000"
 
-        when "LWL" FIXME: ?
+        when "LWL" #FIXME: ?
         #LWL    rd, imm(rs)         : Load Word Left
             working_inst.type   = "I"
             working_inst.opcode = "000000"
         
-        when "LWR" FIXME: ?
+        when "LWR" #FIXME: ?
         #LWR    rd, imm(rs)         : Load Word Right
             working_inst.type   = "I"
             working_inst.opcode = "000000"
@@ -345,17 +370,17 @@ while (line_num < total_lines)
             working_inst.type   = "I"
             working_inst.opcode = "101011" 
 
-        when "SWCZ" FIXME: ?
+        when "SWCZ" #FIXME: ?
         #SWCZ   rs, imm(rt)         : Store Word
             working_inst.type   = "I"
             working_inst.opcode = "000000"
 
-        when "SWL" FIXME: ?
+        when "SWL" #FIXME: ?
         #SWL    rs, imm(rt)         : Store Word Left
             working_inst.type   = "I"
             working_inst.opcode = "000000"
         
-        when "SWR" FIXME: ?
+        when "SWR" #FIXME: ?
         #SWR    rs, imm(rt)         : Store Word Right
             working_inst.type   = "I"
             working_inst.opcode = "000000"
@@ -387,11 +412,17 @@ while (line_num < total_lines)
         else
             label_q[array[0]] = line_num
         
-        end
+    end
+    
+    #puts working_inst.type << " : " << working_inst.opcode
 
-    #Pack the bits
+        #Pack the bits
     case(working_inst.type)
         when "R"
+            working_inst.rs = decode_reg(array[1])
+            working_inst.rt = decode_reg(array[2])
+            working_inst.rd = decode_reg(array[3])
+
             inst_out = working_inst.opcode + 
                        working_inst.rs + 
                        working_inst.rt + 
@@ -400,6 +431,13 @@ while (line_num < total_lines)
                        working_inst.funct
 
         when "I"
+            working_inst.rs = decode_reg(array[1])
+            if (array.size == 4) 
+                working_inst.rt = decode_reg(array[2])
+            end
+
+            working_inst.immediate = binary_encode(array[-1].to_i)
+
             inst_out = working_inst.opcode + 
                        working_inst.rs + 
                        working_inst.rt + 
@@ -410,12 +448,13 @@ while (line_num < total_lines)
                        working_inst.address
 
         else
-            puts "Instruction Type not found"
+            puts "Instruction Type not found : #{working_inst.type}"
             inst_out = line 
     end
     
-    inst_q.push(inst_out)
 
+    #puts "Adding inst to out " << inst_out
+    inst_q.push(inst_out)
     out_file.puts(inst_out)
 end
 
@@ -425,4 +464,6 @@ puts "Finishing"
 
 in_file.close
 out_file.close
+
+
 

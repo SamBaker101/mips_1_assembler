@@ -106,5 +106,7 @@ Instruction List:
 
 Resources Used:
 		https://user.eng.umd.edu/~manoj/759M/MIPSALM.html
-
+		https://shawnzhong.github.io/JsSpim/
+		https://uweb.engr.arizona.edu/~ece369/Resources/spim/MIPSReference.pdf
+		https://bh-cookbook.github.io/mips-asm/mips-instruction-set-part-5.html
 		
