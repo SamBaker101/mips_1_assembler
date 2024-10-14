@@ -27,7 +27,7 @@ def decode_reg(string)
         abort("Incorrect register token: #{string} does not start with $")
     end
     if (string.chars[1].match(/(0-9)/))
-        return binary_encode(string[1..-1].to_i)
+        return binary_encode(string[1..-1].to_i, 5)
     end 
     case (string[1].downcase)
         when ("z")
@@ -36,20 +36,20 @@ def decode_reg(string)
             if (string[2] == "t")
                 return  "00001"
             else
-                return binary_encode(string[2..-1].to_i + 4) 
+                return binary_encode(string[2..-1].to_i + 4, 5) 
             end
         when "v"
-            return binary_encode(string[2..-1].to_i + 2) 
+            return binary_encode(string[2..-1].to_i + 2, 5) 
         when "t"
             if (string[2..-1].to_i < 8)
-                return binary_encode(string[2..-1].to_i + 8) 
+                return binary_encode(string[2..-1].to_i + 8, 5) 
             else
-                return binary_encode(string[2..-1].to_i + 24) 
+                return binary_encode(string[2..-1].to_i + 24, 5) 
             end    
         when "s"
-            return binary_encode(string[2..-1].to_i + 16)
+            return binary_encode(string[2..-1].to_i + 16, 5)
         when "k"
-            return binary_encode(string[2..-1].to_i + 26)
+            return binary_encode(string[2..-1].to_i + 26, 5)
         when ("g")
             return "11100"
         when ("s")
@@ -67,16 +67,20 @@ def decode_reg(string)
         end
 end
 
-def binary_encode(dec)
-    binary = "0000000000000000"
-    (0..15).each do |n|
+def binary_encode(dec, bits)
+    binary = "0"
+    (0..(bits-2)).each do
+        binary += "0"
+    end
+    (0..(bits-1)).each do |n|
         if (dec != 0)
             if (dec % 2 == 1)
-                binary[15-n] = "1"
+                binary[(bits-1)-n] = "1"
             end
             dec = dec/2
         end
     end
+    puts binary
     binary
 end
 
@@ -474,7 +478,7 @@ while (line_num < total_lines)
                 working_inst.rt = decode_reg(array[2])
             end
 
-            working_inst.immediate = binary_encode(array[-1].to_i)
+            working_inst.immediate = binary_encode(array[-1].to_i, 16)
 
             inst_out = working_inst.opcode + 
                        working_inst.rs + 
