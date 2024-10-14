@@ -80,7 +80,6 @@ def binary_encode(dec, bits)
             dec = dec/2
         end
     end
-    puts binary
     binary
 end
 
@@ -486,6 +485,8 @@ while (line_num < total_lines)
                        working_inst.immediate
 
         when "J"
+            working_inst.address = binary_encode(array[-1].to_i, 26)
+
             inst_out = working_inst.opcode + 
                        working_inst.address
 
