@@ -23,24 +23,62 @@ Instruction = Struct.new(
 
 def decode_reg(string)
     #puts string
-    "00000"
+    if (string.chars[0] != "$")
+        abort("Incorrect register token: #{string} does not start with $")
+    end
+    if (string.chars[1].match(/(0-9)/))
+        return binary_encode(string[1..-1].to_i)
+    end 
+    case (string[1].downcase)
+        when ("z")
+            return "00000"
+        when "a"
+            if (string[2] == "t")
+                return  "00001"
+            else
+                return binary_encode(string[2..-1].to_i + 4) 
+            end
+        when "v"
+            return binary_encode(string[2..-1].to_i + 2) 
+        when "t"
+            if (string[2..-1].to_i < 8)
+                return binary_encode(string[2..-1].to_i + 8) 
+            else
+                return binary_encode(string[2..-1].to_i + 24) 
+            end    
+        when "s"
+            return binary_encode(string[2..-1].to_i + 16)
+        when "k"
+            return binary_encode(string[2..-1].to_i + 26)
+        when ("g")
+            return "11100"
+        when ("s")
+            return "11101"
+        when ("f")
+            return "11110"
+        when ("r")
+            if (string[2] == "0")
+                return "00000"
+            else
+                return "11111"
+            end
+        else 
+            abort("Unrecognized register encoding #{string}")
+        end
 end
 
-def binary_encode(input)
-    output = "0000000000000000"
+def binary_encode(dec)
+    binary = "0000000000000000"
     (0..15).each do |n|
-        if (input != 0)
-            if (input % 2 == 0)
-                output[n] = "0"
-            else    
-                output[n] = "1"
+        if (dec != 0)
+            if (dec % 2 == 1)
+                binary[15-n] = "1"
             end
-            input = input/2
+            dec = dec/2
         end
     end
-    output
+    binary
 end
-
 
 puts "Starting"
 
