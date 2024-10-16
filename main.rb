@@ -3,7 +3,7 @@
 ####################
 #!/usr/bin/env/ruby
 
-IN = "input/in.txt"
+IN = "samples/sample1.asm"
 OUT = "output/out.txt"
 
 COMMENT_CHARACTER   = "#"
@@ -23,7 +23,7 @@ Instruction = Struct.new(
 
 
 def decode_reg(string)
-    #puts string
+    
     if (string.chars[0] != "$")
         abort("Incorrect register token: #{string} does not start with $")
     end
@@ -94,7 +94,7 @@ def binary_to_hex(binary, bits = 32)
 
     hex.upcase!
 
-    puts "#{binary} \t: #{integer} \t: #{hex}"
+    #puts "#{binary} \t: #{integer} \t: #{hex}"
     hex
 end
 
@@ -475,9 +475,10 @@ while (line_num < total_lines)
         #Pack the bits
     case(working_inst.type)
         when "R"
-            working_inst.rs = decode_reg(array[1])
-            working_inst.rt = decode_reg(array[2])
-            working_inst.rd = decode_reg(array[3])
+            working_inst.rs = decode_reg(array[2])
+            working_inst.rt = decode_reg(array[3])
+            working_inst.rd = decode_reg(array[1])
+            puts "#{array[1]}, #{array[2]}, #{array[3]} : #{working_inst.rs}, #{working_inst.rt}, #{working_inst.rd}"
 
             inst_out = working_inst.opcode + 
                        working_inst.rs + 
@@ -487,12 +488,15 @@ while (line_num < total_lines)
                        working_inst.funct
 
         when "I"
-            working_inst.rs = decode_reg(array[1])
+            working_inst.rt = decode_reg(array[1])
             if (array.size == 4) 
-                working_inst.rt = decode_reg(array[2])
+                working_inst.rs = decode_reg(array[2])
             end
-
+            
             working_inst.immediate = binary_encode(array[-1].to_i, 16)
+
+            #puts "#{array[1]}, #{array[2]} : #{working_inst.rs}, #{working_inst.rt}"
+            #puts "#{array[2]} : #{working_inst.immediate}"
 
             inst_out = working_inst.opcode + 
                        working_inst.rs + 
