@@ -2,9 +2,8 @@ I have been tossing around the idea of implementing a MIPS1 chip similar to the 
 
 Unfortunately I haven't worked much with the MIPS_1 architecture directly so I wanted to try to create an assembler to familiarize myself with the ISA before diving into a larger project using it.
 
-I'm using ruby primarily to become more familiar with using it.
-
-I will update this documentation when the assembler is up and running but for the moment assume it is non-functional.
+NOTE: 
+	This project is still in progress. I am still working on some aspects and have more work to do to validate the outputs. I would recommend verifying any outputs against a proven simulator like MARS or SPIM  
 
 Some notes about MIPS_1:
 	- Registers
@@ -109,4 +108,4 @@ Resources Used:
 		https://shawnzhong.github.io/JsSpim/
 		https://uweb.engr.arizona.edu/~ece369/Resources/spim/MIPSReference.pdf
 		https://bh-cookbook.github.io/mips-asm/mips-instruction-set-part-5.html
-		
+		https://computerscience.missouristate.edu/mars-mips-simulator.htm
