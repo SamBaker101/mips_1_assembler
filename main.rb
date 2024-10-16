@@ -86,7 +86,6 @@ end
 
 def binary_to_hex(binary, bits = 32)
     integer = binary.to_i(2);
-
     hex = integer.to_s(16)
 
     while (hex.length < (bits/4.0).ceil) do
@@ -501,7 +500,13 @@ while (line_num < total_lines)
                        working_inst.immediate
 
         when "J"
-            working_inst.address = binary_encode(array[-1].to_i, 26)
+            if (array[-1].match(/^[0-9]+/))
+                working_inst.address = binary_encode(array[-1].to_i, 26)
+            elsif (label_q[array[-1]] != nil)
+                working_inst.address.binary_encode(label_q[array[-1]], 26)
+            else
+                abort("Unable to locate address for: #{array[-1]}")
+            end
 
             inst_out = working_inst.opcode + 
                        working_inst.address
