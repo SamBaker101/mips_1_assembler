@@ -6,7 +6,8 @@
 IN = "input/in.txt"
 OUT = "output/out.txt"
 
-COMMENT_CHARACTER = "#"
+COMMENT_CHARACTER   = "#"
+HEX_OUT             = 1
 
 Instruction = Struct.new(
     :type       ,
@@ -81,6 +82,21 @@ def binary_encode(dec, bits)
         end
     end
     binary
+end
+
+def binary_to_hex(binary, bits = 32)
+    integer = binary.to_i(2);
+
+    hex = integer.to_s(16)
+
+    while (hex.length < (bits/4.0).ceil) do
+        hex = "0" + hex
+    end
+
+    hex.upcase!
+
+    puts "#{binary} \t: #{integer} \t: #{hex}"
+    hex
 end
 
 puts "Starting"
@@ -495,6 +511,9 @@ while (line_num < total_lines)
             inst_out = line 
     end
     
+    if (HEX_OUT)
+        inst_out = binary_to_hex(inst_out);
+    end
 
     #puts "Adding inst to out " << inst_out
     inst_q.push(inst_out)
