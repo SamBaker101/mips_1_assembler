@@ -48,7 +48,7 @@ def main()
     
         array.each_with_index do |value, index|
             if (value.chars.first == COMMENT_CHARACTER)
-                array = array[0, index - 1]
+                array = array[0, index]
             end
         end
 
@@ -58,20 +58,8 @@ def main()
 
         print_instruction(array)
 
-        working_inst = Instruction.new(
-            nil,
-            "000000",
-            "00000",
-            "00000",
-            "00000",
-            "00000",
-            "000000",
-            "0000000000000000",
-            "00000000000000000000000000" 
-        )
-    
+        working_inst = init_instruction()
         working_inst = decode_operation(array[0].upcase, working_inst)
-        
         inst_out = decode_working_inst(working_inst, array)
         
         if (HEX_OUT)
@@ -95,6 +83,20 @@ def print_instruction(array)
         print "#{value} "
     end
     puts " "
+end
+
+def init_instruction()
+    default = Instruction.new(
+        nil,
+        "000000",
+        "00000",
+        "00000",
+        "00000",
+        "00000",
+        "000000",
+        "0000000000000000",
+        "00000000000000000000000000" 
+    )
 end
 
 def decode_reg(string)
