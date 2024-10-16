@@ -46,8 +46,18 @@ def main()
         next if (array[0].nil?)
         next if (array[0].chars.first == COMMENT_CHARACTER) 
     
-        puts "Handling instruction " << array[0]
-    
+        array.each_with_index do |value, index|
+            if (value.chars.first == COMMENT_CHARACTER)
+                array = array[0, index - 1]
+            end
+        end
+
+        if (array[0].chars.first == ".")
+            #FIXME: Handle segment labels 
+        end
+
+        print_instruction(array)
+
         working_inst = Instruction.new(
             nil,
             "000000",
@@ -77,6 +87,14 @@ def main()
     
     in_file.close
     out_file.close
+end
+
+def print_instruction(array)
+    print "Handling instruction: "
+    array.each do |value|
+        print "#{value} "
+    end
+    puts " "
 end
 
 def decode_reg(string)
@@ -125,7 +143,7 @@ def decode_reg(string)
         end
 end
 
-def binary_encode(dec, bits)
+def binary_encode(dec, bits = 32)
     binary = "0"
     (0..(bits-2)).each do
         binary += "0"
@@ -149,8 +167,7 @@ def binary_to_hex(binary, bits = 32)
         hex = "0" + hex
     end
 
-    hex.upcase!
-
+    hex.downcase!
     #puts "#{binary} \t: #{integer} \t: #{hex}"
     hex
 end
@@ -496,7 +513,7 @@ def decode_working_inst(working_inst, array)
             working_inst.rs = decode_reg(array[2])
             working_inst.rt = decode_reg(array[3])
             working_inst.rd = decode_reg(array[1])
-            puts "#{array[1]}, #{array[2]}, #{array[3]} : #{working_inst.rs}, #{working_inst.rt}, #{working_inst.rd}"
+            #puts "#{array[1]}, #{array[2]}, #{array[3]} : #{working_inst.rs}, #{working_inst.rt}, #{working_inst.rd}"
 
             inst_out = working_inst.opcode + 
                     working_inst.rs + 
