@@ -21,6 +21,63 @@ Instruction = Struct.new(
     :address    ,
 )
 
+def main()
+    in_file = File.new(IN, "r")
+    out_file = File.new(OUT, "w")
+    
+    read_q  = []
+    inst_q  = []
+    label_q = []
+    
+    total_lines = 0
+    line_num = 0
+    
+    while (line = in_file.gets)
+        total_lines += 1
+        read_q.push(line)
+    end
+        
+    puts "Total lines = " << total_lines.to_s
+    
+    while (line_num < total_lines) 
+        array = read_q[line_num].split("\s"||",")
+        line_num += 1
+    
+        next if (array[0].nil?)
+        next if (array[0].chars.first == COMMENT_CHARACTER) 
+    
+        puts "Handling instruction " << array[0]
+    
+        working_inst = Instruction.new(
+            nil,
+            "000000",
+            "00000",
+            "00000",
+            "00000",
+            "00000",
+            "000000",
+            "0000000000000000",
+            "00000000000000000000000000" 
+        )
+    
+        working_inst = decode_operation(array[0].upcase, working_inst)
+        
+        inst_out = decode_working_inst(working_inst, array)
+        
+        if (HEX_OUT)
+            inst_out = binary_to_hex(inst_out);
+        end
+    
+        #puts "Adding inst to out " << inst_out
+        inst_q.push(inst_out)
+        out_file.puts(inst_out)
+    end
+    
+    puts "Finishing"
+    
+    in_file.close
+    out_file.close
+end
 
 def decode_reg(string)
     
@@ -483,65 +540,7 @@ def decode_working_inst(working_inst, array)
     inst_out
 end
 
-puts "Starting"
-
-in_file = File.new(IN, "r")
-out_file = File.new(OUT, "w")
-
-read_q  = []
-inst_q  = []
-label_q = []
-
-total_lines = 0
-line_num = 0
-
-while (line = in_file.gets)
-    total_lines += 1
-    read_q.push(line)
-end
-    
-puts "Total lines = " << total_lines.to_s
-
-while (line_num < total_lines) 
-    array = read_q[line_num].split("\s"||",")
-    line_num += 1
-
-    next if (array[0].nil?)
-    next if (array[0].chars.first == COMMENT_CHARACTER) 
-
-    puts "Handling instruction " << array[0]
-
-    working_inst = Instruction.new(
-        nil,
-        "000000",
-        "00000",
-        "00000",
-        "00000",
-        "00000",
-        "000000",
-        "0000000000000000",
-        "00000000000000000000000000" 
-    )
-
-    working_inst = decode_operation(array[0].upcase, working_inst)
-    
-    inst_out = decode_working_inst(working_inst, array)
-    
-    if (HEX_OUT)
-        inst_out = binary_to_hex(inst_out);
-    end
-
-    #puts "Adding inst to out " << inst_out
-    inst_q.push(inst_out)
-    out_file.puts(inst_out)
-end
-
-
-
-puts "Finishing"
-
-in_file.close
-out_file.close
+main()
 
 
 
