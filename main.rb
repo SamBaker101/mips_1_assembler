@@ -98,47 +98,8 @@ def binary_to_hex(binary, bits = 32)
     hex
 end
 
-puts "Starting"
-
-in_file = File.new(IN, "r")
-out_file = File.new(OUT, "w")
-
-read_q  = []
-inst_q  = []
-label_q = []
-
-total_lines = 0
-line_num = 0
-
-while (line = in_file.gets)
-    total_lines += 1
-    read_q.push(line)
-end
-    
-puts "Total lines = " << total_lines.to_s
-
-while (line_num < total_lines) 
-    array = read_q[line_num].split("\s"||",")
-    line_num += 1
-
-    next if (array[0].nil?)
-    next if (array[0].chars.first == COMMENT_CHARACTER) 
-
-    puts "Handling instruction " << array[0]
-
-    working_inst = Instruction.new(
-        nil,
-        "000000",
-        "00000",
-        "00000",
-        "00000",
-        "00000",
-        "000000",
-        "0000000000000000",
-        "00000000000000000000000000" 
-    )
-
-    case(array[0].upcase)
+def decode_operation(operation, working_inst)
+    case(operation)
         when "ADD"
         #ADD    rd, rs, rt          : Addition (with overflow)
             working_inst.type   = "R"
@@ -469,10 +430,10 @@ while (line_num < total_lines)
             label_q[array[0]] = line_num
         
     end
-    
-    #puts working_inst.type << " : " << working_inst.opcode
+    working_inst
+end
 
-        #Pack the bits
+def decode_working_inst(working_inst, array)
     case(working_inst.type)
         when "R"
             working_inst.rs = decode_reg(array[2])
@@ -481,11 +442,11 @@ while (line_num < total_lines)
             puts "#{array[1]}, #{array[2]}, #{array[3]} : #{working_inst.rs}, #{working_inst.rt}, #{working_inst.rd}"
 
             inst_out = working_inst.opcode + 
-                       working_inst.rs + 
-                       working_inst.rt + 
-                       working_inst.rd + 
-                       working_inst.shamt + 
-                       working_inst.funct
+                    working_inst.rs + 
+                    working_inst.rt + 
+                    working_inst.rd + 
+                    working_inst.shamt + 
+                    working_inst.funct
 
         when "I"
             working_inst.rt = decode_reg(array[1])
@@ -499,9 +460,9 @@ while (line_num < total_lines)
             #puts "#{array[2]} : #{working_inst.immediate}"
 
             inst_out = working_inst.opcode + 
-                       working_inst.rs + 
-                       working_inst.rt + 
-                       working_inst.immediate
+                    working_inst.rs + 
+                    working_inst.rt + 
+                    working_inst.immediate
 
         when "J"
             if (array[-1].match(/^[0-9]+/))
@@ -513,12 +474,58 @@ while (line_num < total_lines)
             end
 
             inst_out = working_inst.opcode + 
-                       working_inst.address
+                    working_inst.address
 
         else
             puts "Instruction Type not found : #{working_inst.type}"
             inst_out = line 
     end
+    inst_out
+end
+
+puts "Starting"
+
+in_file = File.new(IN, "r")
+out_file = File.new(OUT, "w")
+
+read_q  = []
+inst_q  = []
+label_q = []
+
+total_lines = 0
+line_num = 0
+
+while (line = in_file.gets)
+    total_lines += 1
+    read_q.push(line)
+end
+    
+puts "Total lines = " << total_lines.to_s
+
+while (line_num < total_lines) 
+    array = read_q[line_num].split("\s"||",")
+    line_num += 1
+
+    next if (array[0].nil?)
+    next if (array[0].chars.first == COMMENT_CHARACTER) 
+
+    puts "Handling instruction " << array[0]
+
+    working_inst = Instruction.new(
+        nil,
+        "000000",
+        "00000",
+        "00000",
+        "00000",
+        "00000",
+        "000000",
+        "0000000000000000",
+        "00000000000000000000000000" 
+    )
+
+    working_inst = decode_operation(array[0].upcase, working_inst)
+    
+    inst_out = decode_working_inst(working_inst, array)
     
     if (HEX_OUT)
         inst_out = binary_to_hex(inst_out);
