@@ -60,7 +60,7 @@ def main()
 
         working_inst = init_instruction()
         working_inst = decode_operation(array[0].upcase, working_inst)
-        inst_out = decode_working_inst(working_inst, array)
+        inst_out = encode_working_inst(working_inst, array)
         
         if (HEX_OUT)
             inst_out = binary_to_hex(inst_out);
@@ -77,14 +77,6 @@ def main()
     out_file.close
 end
 
-def print_instruction(array)
-    print "Handling instruction: "
-    array.each do |value|
-        print "#{value} "
-    end
-    puts " "
-end
-
 def init_instruction()
     default = Instruction.new(
         nil,
@@ -97,6 +89,14 @@ def init_instruction()
         "0000000000000000",
         "00000000000000000000000000" 
     )
+end
+
+def print_instruction(array)
+    print "Handling instruction: "
+    array.each do |value|
+        print "#{value} "
+    end
+    puts " "
 end
 
 def decode_reg(string)
@@ -509,7 +509,7 @@ def decode_operation(operation, working_inst)
     working_inst
 end
 
-def decode_working_inst(working_inst, array)
+def encode_working_inst(working_inst, array)
     case(working_inst.type)
         when "R"
             working_inst.rs = decode_reg(array[2])
@@ -529,8 +529,11 @@ def decode_working_inst(working_inst, array)
             if (array.size == 4) 
                 working_inst.rs = decode_reg(array[2])
             end
-            
-            working_inst.immediate = binary_encode(array[-1].to_i, 16)
+            temp = array[-1].split("\(")
+            if (temp.length > 1)
+                working_inst.rs = decode_reg(temp[1].chomp("\)"))
+            end
+            working_inst.immediate = binary_encode(temp[0].to_i, 16)
 
             #puts "#{array[1]}, #{array[2]} : #{working_inst.rs}, #{working_inst.rt}"
             #puts "#{array[2]} : #{working_inst.immediate}"
