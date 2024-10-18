@@ -67,8 +67,6 @@ Instruction List:
 	SLTI   rd, rt, Imm         : Set Less Than Immediate
 	SLTU   rd, rs, rt          : Set Less Than Unsigned
 	SLTIU  rd, rs, Imm         : Set Less Than Unsigned Immediate	
-	BCZT   label               : Branch Coprocessor z True
-	BCZF   label               : Branch Coprocessor z False	
 	BEQ    rs, rt, offset      : Branch on Equal
 	BGEZ   rs, offset          : Branch on Greater Than Equal Zero
 	BGEZAL rs, offset          : Branch on Greater Than Equal Zero And Link
@@ -87,20 +85,22 @@ Instruction List:
 	LH     rd, imm(rs)         : Load Halfword
 	LHU    rd, imm(rs)         : Load Unsigned Halfword	
 	LW     rd, imm(rs)         : Load Word
-	LWCZ   rd, imm(rs)         : Load Word	
 	LWL    rd, imm(rs)         : Load Word Left
 	LWR    rd, imm(rs)         : Load Word Right	
 	SB     rs, imm(rt)         : Store Byte
 	SH     rs, imm(rt)         : Store Halfword	
 	SW     rs, imm(rt)         : Store Word
-	SWCZ   rs, imm(rt)         : Store Word	
 	SWL    rs, imm(rt)         : Store Word Left
 	SWR    rs, imm(rt)         : Store Word Right	
 	MFHI   rd                  : Move From hi
 	MFLO   rd                  : Move From lo
-	
 	MTHI   rd                  : Move To hi
-	MTLO   rd                  : Move To low	
+	MTLO   rd                  : Move To low
+
+	LWCZ   rd, imm(rs)         : Load Word Coprocessor
+	SWCZ   rs, imm(rt)         : Store Word	Coprocessor
+	BCZT   label               : Branch Coprocessor z True
+	BCZF   label               : Branch Coprocessor z False		
 
 Resources Used:
 		https://user.eng.umd.edu/~manoj/759M/MIPSALM.html

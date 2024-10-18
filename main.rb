@@ -24,7 +24,9 @@ Instruction = Struct.new(
 
 module Mode
     DATA = 0
-    TEXT = 1
+    RDATA = 1
+    SDATA = 2
+    TEXT = 3
 end
 
 def main()
@@ -60,25 +62,35 @@ def main()
             end
         end
 
-        if (array[0].chars.first == ".")
-            if (array[0] == "\.data")
-                mode = Mode::DATA
-            elsif (array[0] == "\.text")
-                mode = Mode::TEXT
+        if (array[0].chars.first == "\.")
+            case (array[0].downcase)
+                when "\.data"
+                    mode = Mode::DATA
+                    next
+                when  "\.rdata"
+                    mode = Mode::RDATA
+                    next
+                when  "\.sdata"
+                    mode = Mode::SDATA
+                    next
+                when  "\.text"
+                    mode = Mode::TEXT
+                    next
             else
                 abort("Unrecognized code section #{array[0]}")
             end
         end
 
-        if (mode == Mode::DATA) 
-            #FIXME: capture data section inputs
-        elsif (mode == Mode::TEXT) 
-            print_instruction(array)
-            inst_out = read_instruction(array)
-        end
-
-        if (HEX_OUT)
-            inst_out = binary_to_hex(inst_out);
+        case (mode) 
+            when Mode::DATA 
+                #FIXME: capture data section inputs
+            when Mode::RDATA 
+                #FIXME: capture data section inputs
+            when Mode::SDATA 
+                #FIXME: capture data section inputs
+            when Mode::TEXT 
+                print_instruction(array)
+                inst_out = read_instruction(array)
         end
     
         #puts "Adding inst to out " << inst_out
@@ -96,6 +108,10 @@ def read_instruction(array)
     working_inst = init_instruction()
     working_inst = decode_operation(array, working_inst)
     inst_out = encode_working_inst(working_inst, array)
+
+    if (HEX_OUT)
+        inst_out = binary_to_hex(inst_out);
+    end
 end
 
 def init_instruction()
