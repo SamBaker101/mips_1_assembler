@@ -1,4 +1,5 @@
-#THIS IS A COMMENT
+#THIS IS A BASIC SANITY
+#It is the most basic program I could think of 
 
 lw $t2 45 #This is a test for in line comments
 lw $t3 10

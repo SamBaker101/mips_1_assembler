@@ -18,9 +18,6 @@ Some notes about MIPS_1:
 		- J type : Opcode[0:5], Address[6:31]
 
 	- Instruction Details
-		- Single point uses .s suffix
-		- Double uses .d suffix
-	
 		- Load/Store
 			- 8-bit, 16-bit and 32-bit
 			

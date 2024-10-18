@@ -21,10 +21,17 @@ Instruction = Struct.new(
     :address    ,
 )
 
+module Mode
+    DATA = 0
+    TEXT = 1
+end
+
 def main()
     in_file = File.new(IN, "r")
     out_file = File.new(OUT, "w")
     
+    mode = Mode::TEXT
+
     read_q  = []
     inst_q  = []
     label_q = []
@@ -53,15 +60,22 @@ def main()
         end
 
         if (array[0].chars.first == ".")
-            #FIXME: Handle segment labels 
+            if (array[0] == "\.data")
+                mode = Mode::DATA
+            elsif (array[0] == "\.text")
+                mode = Mode::TEXT
+            else
+                abort("Unrecognized code section #{array[0]}")
+            end
         end
 
-        print_instruction(array)
+        if (mode == Mode::DATA) 
+            #FIXME: capture data section inputs
+        elsif (mode == Mode::TEXT) 
+            print_instruction(array)
+            inst_out = read_instruction(array)
+        end
 
-        working_inst = init_instruction()
-        working_inst = decode_operation(array[0].upcase, working_inst)
-        inst_out = encode_working_inst(working_inst, array)
-        
         if (HEX_OUT)
             inst_out = binary_to_hex(inst_out);
         end
@@ -75,6 +89,12 @@ def main()
     
     in_file.close
     out_file.close
+end
+
+def read_instruction(array)
+    working_inst = init_instruction()
+    working_inst = decode_operation(array[0].upcase, working_inst)
+    inst_out = encode_working_inst(working_inst, array)
 end
 
 def init_instruction()
