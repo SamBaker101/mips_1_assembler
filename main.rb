@@ -547,10 +547,12 @@ end
 def encode_working_inst(working_inst, array)
     case(working_inst.type)
         when "R"
-            working_inst.rs = decode_reg(array[2])
-            working_inst.rt = decode_reg(array[3])
-            working_inst.rd = decode_reg(array[1])
-            #puts "#{array[1]}, #{array[2]}, #{array[3]} : #{working_inst.rs}, #{working_inst.rt}, #{working_inst.rd}"
+            if (!working_inst.manual_args)
+                working_inst.rs = decode_reg(array[2])
+                working_inst.rt = decode_reg(array[3])
+                working_inst.rd = decode_reg(array[1])
+                #puts "#{array[1]}, #{array[2]}, #{array[3]} : #{working_inst.rs}, #{working_inst.rt}, #{working_inst.rd}"
+            end
 
             inst_out = working_inst.opcode + 
                     working_inst.rs + 
@@ -560,16 +562,17 @@ def encode_working_inst(working_inst, array)
                     working_inst.funct
 
         when "I"
-            working_inst.rt = decode_reg(array[1])
-            if (array.size == 4) 
-                working_inst.rs = decode_reg(array[2])
+            if (!working_inst.manual_args)
+                working_inst.rt = decode_reg(array[1])
+                if (array.size == 4) 
+                    working_inst.rs = decode_reg(array[2])
+                end
+                temp = array[-1].split("\(")
+                if (temp.length > 1)
+                    working_inst.rs = decode_reg(temp[1].chomp("\)"))
+                end
+                working_inst.immediate = binary_encode(temp[0].to_i, 16)
             end
-            temp = array[-1].split("\(")
-            if (temp.length > 1)
-                working_inst.rs = decode_reg(temp[1].chomp("\)"))
-            end
-            working_inst.immediate = binary_encode(temp[0].to_i, 16)
-
             #puts "#{array[1]}, #{array[2]} : #{working_inst.rs}, #{working_inst.rt}"
             #puts "#{array[2]} : #{working_inst.immediate}"
 

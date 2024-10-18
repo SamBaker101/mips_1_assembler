@@ -3,7 +3,9 @@ I have been tossing around the idea of implementing a MIPS1 chip similar to the 
 Unfortunately I haven't worked much with the MIPS_1 architecture directly so I wanted to try to create an assembler to familiarize myself with the ISA before diving into a larger project using it.
 
 NOTE: 
-	This project is still in progress. I am still working on some aspects and have more work to do to validate the outputs. I would recommend verifying any outputs against a proven simulator like MARS or SPIM  
+	This project is still in progress. I am still working on some aspects and have more work to do to validate the outputs. I would recommend verifying any outputs against a proven simulator like MARS or SPIM.  
+
+	Also my target device in this project is the R3000 and I have implemented the instruction set based on that, It is my intention to implement the coprocessor instructions for the R3010 floating point unit as well but they are not included at this time.
 
 Some notes about MIPS_1:
 	- Registers
