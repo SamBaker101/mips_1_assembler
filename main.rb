@@ -63,22 +63,8 @@ def main()
         end
 
         if (array[0].chars.first == "\.")
-            case (array[0].downcase)
-                when "\.data"
-                    mode = Mode::DATA
-                    next
-                when  "\.rdata"
-                    mode = Mode::RDATA
-                    next
-                when  "\.sdata"
-                    mode = Mode::SDATA
-                    next
-                when  "\.text"
-                    mode = Mode::TEXT
-                    next
-            else
-                abort("Unrecognized code section #{array[0]}")
-            end
+            mode = decode_section_label(array[0].downcase)
+            next
         end
 
         case (mode) 
@@ -181,35 +167,6 @@ def decode_reg(string)
         else 
             abort("Unrecognized register encoding #{string}")
         end
-end
-
-def binary_encode(dec, bits = 32)
-    binary = "0"
-    (0..(bits-2)).each do
-        binary += "0"
-    end
-    (0..(bits-1)).each do |n|
-        if (dec != 0)
-            if (dec % 2 == 1)
-                binary[(bits-1)-n] = "1"
-            end
-            dec = dec/2
-        end
-    end
-    binary
-end
-
-def binary_to_hex(binary, bits = 32)
-    integer = binary.to_i(2);
-    hex = integer.to_s(16)
-
-    while (hex.length < (bits/4.0).ceil) do
-        hex = "0" + hex
-    end
-
-    hex.downcase!
-    #puts "#{binary} \t: #{integer} \t: #{hex}"
-    hex
 end
 
 def decode_operation(array, working_inst)
@@ -560,10 +517,26 @@ def decode_operation(array, working_inst)
     working_inst
 end
 
+def decode_section_label(label)
+    case (label)
+        when "\.data"
+            mode = Mode::DATA
+        when  "\.rdata"
+            mode = Mode::RDATA
+        when  "\.sdata"
+            mode = Mode::SDATA
+        when  "\.text"
+            mode = Mode::TEXT
+        else
+            abort("Unrecognized code section #{array[0]}")
+    end
+    mode
+end
+
 def encode_working_inst(working_inst, array)
     case(working_inst.type)
         when "R"
-            if (!working_inst.manual_args)
+            if (working_inst.manual_args == 0)
                 working_inst.rs = decode_reg(array[2])
                 working_inst.rt = decode_reg(array[3])
                 working_inst.rd = decode_reg(array[1])
@@ -578,7 +551,7 @@ def encode_working_inst(working_inst, array)
                     working_inst.funct
 
         when "I"
-            if (!working_inst.manual_args)
+            if (working_inst.manual_args == 0)
                 working_inst.rt = decode_reg(array[1])
                 if (array.size == 4) 
                     working_inst.rs = decode_reg(array[2])
@@ -598,7 +571,7 @@ def encode_working_inst(working_inst, array)
                     working_inst.immediate
 
         when "J"
-            if (!working_inst.manual_args)
+            if (working_inst.manual_args == 0)
                 if (array[-1].match(/^[0-9]+/))
                     working_inst.address = binary_encode(array[-1].to_i, 26)
                 elsif (label_q[array[-1]] != nil)
@@ -617,6 +590,36 @@ def encode_working_inst(working_inst, array)
     end
     inst_out
 end
+
+def binary_encode(dec, bits = 32)
+    binary = "0"
+    (0..(bits-2)).each do
+        binary += "0"
+    end
+    (0..(bits-1)).each do |n|
+        if (dec != 0)
+            if (dec % 2 == 1)
+                binary[(bits-1)-n] = "1"
+            end
+            dec = dec/2
+        end
+    end
+    binary
+end
+
+def binary_to_hex(binary, bits = 32)
+    integer = binary.to_i(2);
+    hex = integer.to_s(16)
+
+    while (hex.length < (bits/4.0).ceil) do
+        hex = "0" + hex
+    end
+
+    hex.downcase!
+    #puts "#{binary} \t: #{integer} \t: #{hex}"
+    hex
+end
+
 
 main()
 
