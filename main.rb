@@ -19,6 +19,7 @@ Instruction = Struct.new(
     :funct      ,
     :immediate  ,
     :address    ,
+    :manual_args
 )
 
 module Mode
@@ -93,7 +94,7 @@ end
 
 def read_instruction(array)
     working_inst = init_instruction()
-    working_inst = decode_operation(array[0].upcase, working_inst)
+    working_inst = decode_operation(array, working_inst)
     inst_out = encode_working_inst(working_inst, array)
 end
 
@@ -107,7 +108,8 @@ def init_instruction()
         "00000",
         "000000",
         "0000000000000000",
-        "00000000000000000000000000" 
+        "00000000000000000000000000",
+        0 
     )
 end
 
@@ -194,8 +196,8 @@ def binary_to_hex(binary, bits = 32)
     hex
 end
 
-def decode_operation(operation, working_inst)
-    case(operation)
+def decode_operation(array, working_inst)
+    case(array[0].upcase)
         when "ADD"
         #ADD    rd, rs, rt          : Addition (with overflow)
             working_inst.type   = "R"
@@ -356,16 +358,6 @@ def decode_operation(operation, working_inst)
             working_inst.type   = "I"
             working_inst.opcode = "001001"
 
-        when "BCZT" #FIXME: ?
-        #BCZT   label               : Branch Coprocessor z True
-            working_inst.type   = "I"
-            working_inst.opcode = "000000"
-        
-        when "BCZF" #FIXME: ?
-        #BCZF   label               : Branch Coprocessor z False
-            working_inst.type   = "I"
-            working_inst.opcode = "000000"
-
         when "BEQ"
         #BEQ    rs, rt, offset      : Branch on Equal
             working_inst.type   = "I"
@@ -453,20 +445,15 @@ def decode_operation(operation, working_inst)
             working_inst.type   = "I"
             working_inst.opcode = "100011" 
 
-        when "LWCZ" #FIXME: ?
-        #LWCZ   rd, imm(rs)         : Load Word
-            working_inst.type   = "I"
-            working_inst.opcode = "000000"
-
-        when "LWL" #FIXME: ?
+        when "LWL" 
         #LWL    rd, imm(rs)         : Load Word Left
             working_inst.type   = "I"
-            working_inst.opcode = "000000"
+            working_inst.opcode = "100010"
         
-        when "LWR" #FIXME: ?
+        when "LWR" 
         #LWR    rd, imm(rs)         : Load Word Right
             working_inst.type   = "I"
-            working_inst.opcode = "000000"
+            working_inst.opcode = "100110"
 
         when "SB" 
         #SB     rs, imm(rt)         : Store Byte
@@ -483,17 +470,12 @@ def decode_operation(operation, working_inst)
             working_inst.type   = "I"
             working_inst.opcode = "101011" 
 
-        when "SWCZ" #FIXME: ?
-        #SWCZ   rs, imm(rt)         : Store Word
-            working_inst.type   = "I"
-            working_inst.opcode = "000000"
-
-        when "SWL" #FIXME: ?
+        when "SWL"
         #SWL    rs, imm(rt)         : Store Word Left
             working_inst.type   = "I"
             working_inst.opcode = "000000"
         
-        when "SWR" #FIXME: ?
+        when "SWR" 
         #SWR    rs, imm(rt)         : Store Word Right
             working_inst.type   = "I"
             working_inst.opcode = "000000"
@@ -521,6 +503,39 @@ def decode_operation(operation, working_inst)
             working_inst.type   = "R"
             working_inst.opcode = "000000"
             working_inst.funct  = "010011"
+        
+        when "CFCZ"
+            #FIXME: Coprocessor control not implemented yet
+        when "COPZ"
+            #FIXME: Coprocessor control not implemented yet
+        when "CTCZ"
+            #FIXME: Coprocessor control not implemented yet
+        when "LWCZ" 
+            #FIXME: Coprocessor control not implemented yet
+        when "SWCZ" 
+            #FIXME: Coprocessor control not implemented yet
+        when "MFCZ" 
+            #FIXME: Coprocessor control not implemented yet
+        when "MTCZ" 
+            #FIXME: Coprocessor control not implemented yet
+        when "BCZT"
+            #FIXME: Coprocessor control not implemented yet    
+        when "BCZF"
+            #FIXME: Coprocessor control not implemented yet
+
+        when "BREAK"
+        #BREAK                     : Immediately transfer control to Exception Handles
+            working_inst.type   = "J"
+            working_inst.opcode = "000000"
+            working_inst.address = array[1] + "001101"
+            working_inst.manual_args = 1;
+    
+        when "SYSCALL"
+            #BREAK                     : Immediately transfer control to Exception Handles
+            working_inst.type   = "J"
+            working_inst.opcode = "000000"
+            working_inst.address = array[1] + "001100"
+            working_inst.manual_args = 1;
 
         else
             label_q[array[0]] = line_num
@@ -564,12 +579,14 @@ def encode_working_inst(working_inst, array)
                     working_inst.immediate
 
         when "J"
-            if (array[-1].match(/^[0-9]+/))
-                working_inst.address = binary_encode(array[-1].to_i, 26)
-            elsif (label_q[array[-1]] != nil)
-                working_inst.address.binary_encode(label_q[array[-1]], 26)
-            else
-                abort("Unable to locate address for: #{array[-1]}")
+            if (!working_inst.manual_args)
+                if (array[-1].match(/^[0-9]+/))
+                    working_inst.address = binary_encode(array[-1].to_i, 26)
+                elsif (label_q[array[-1]] != nil)
+                    working_inst.address.binary_encode(label_q[array[-1]], 26)
+                else
+                    abort("Unable to locate address for: #{array[-1]}")
+                end
             end
 
             inst_out = working_inst.opcode + 
