@@ -28,9 +28,45 @@ Data_Item = Struct.new(
     :content    ,
 )
 
-class InstructionC
-    @@working_inst
+module Mode
+    DATA = 0
+    RDATA = 1
+    TEXT = 2
+end
 
+class LineC
+    def binary_encode(dec, bits = 32)
+        binary = "0"
+        (0..(bits-2)).each do
+            binary += "0"
+        end
+        (0..(bits-1)).each do |n|
+            if (dec != 0)
+                if (dec % 2 == 1)
+                    binary[(bits-1)-n] = "1"
+                end
+                dec = dec/2
+            end
+        end
+        binary
+    end
+    
+    def binary_to_hex(binary, bits = 32)
+        integer = binary.to_i(2);
+        hex = integer.to_s(16)
+    
+        while (hex.length < (bits/4.0).ceil) do
+            hex = "0" + hex
+        end
+    
+        hex.downcase!
+        #puts "#{binary} \t: #{integer} \t: #{hex}"
+        hex
+    end
+end
+
+class InstructionC < LineC
+    @@working_inst
 
     def init()
         @working_inst = Instruction.new(
@@ -518,18 +554,10 @@ class InstructionC
         end
         inst_out
     end
-    
 end
 
-class DataC
+class DataC < LineC
 
-end
-
-module Mode
-    DATA = 0
-    RDATA = 1
-    SDATA = 2
-    TEXT = 3
 end
 
 def main()
@@ -575,8 +603,6 @@ def main()
                 #FIXME: capture data section inputs
             when Mode::RDATA 
                 #FIXME: capture data section inputs
-            when Mode::SDATA 
-                #FIXME: capture data section inputs
             when Mode::TEXT 
                 
                 line = InstructionC.new()
@@ -610,36 +636,6 @@ def decode_section_label(label)
     end
     mode
 end
-
-def binary_encode(dec, bits = 32)
-    binary = "0"
-    (0..(bits-2)).each do
-        binary += "0"
-    end
-    (0..(bits-1)).each do |n|
-        if (dec != 0)
-            if (dec % 2 == 1)
-                binary[(bits-1)-n] = "1"
-            end
-            dec = dec/2
-        end
-    end
-    binary
-end
-
-def binary_to_hex(binary, bits = 32)
-    integer = binary.to_i(2);
-    hex = integer.to_s(16)
-
-    while (hex.length < (bits/4.0).ceil) do
-        hex = "0" + hex
-    end
-
-    hex.downcase!
-    #puts "#{binary} \t: #{integer} \t: #{hex}"
-    hex
-end
-
 
 main()
 
