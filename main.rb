@@ -22,6 +22,12 @@ Instruction = Struct.new(
     :manual_args
 )
 
+Data_Item = Struct.new(
+    :offset     ,
+    :size       ,
+    :content    ,
+)
+
 module Mode
     DATA = 0
     RDATA = 1
@@ -90,16 +96,6 @@ def main()
     out_file.close
 end
 
-def read_instruction(array)
-    working_inst = init_instruction()
-    working_inst = decode_operation(array, working_inst)
-    inst_out = encode_working_inst(working_inst, array)
-
-    if (HEX_OUT)
-        inst_out = binary_to_hex(inst_out);
-    end
-end
-
 def init_instruction()
     default = Instruction.new(
         nil,
@@ -115,58 +111,22 @@ def init_instruction()
     )
 end
 
+def read_instruction(array)
+    working_inst = init_instruction()
+    working_inst = decode_operation(array, working_inst)
+    inst_out = encode_working_inst(working_inst, array)
+
+    if (HEX_OUT)
+        inst_out = binary_to_hex(inst_out);
+    end
+end
+
 def print_instruction(array)
     print "Handling instruction: "
     array.each do |value|
         print "#{value} "
     end
     puts " "
-end
-
-def decode_reg(string)
-    
-    if (string.chars[0] != "$")
-        abort("Incorrect register token: #{string} does not start with $")
-    end
-    if (string.chars[1].match(/(0-9)/))
-        return binary_encode(string[1..-1].to_i, 5)
-    end 
-    case (string[1].downcase)
-        when ("z")
-            return "00000"
-        when "a"
-            if (string[2] == "t")
-                return  "00001"
-            else
-                return binary_encode(string[2..-1].to_i + 4, 5) 
-            end
-        when "v"
-            return binary_encode(string[2..-1].to_i + 2, 5) 
-        when "t"
-            if (string[2..-1].to_i < 8)
-                return binary_encode(string[2..-1].to_i + 8, 5) 
-            else
-                return binary_encode(string[2..-1].to_i + 24, 5) 
-            end    
-        when "s"
-            return binary_encode(string[2..-1].to_i + 16, 5)
-        when "k"
-            return binary_encode(string[2..-1].to_i + 26, 5)
-        when ("g")
-            return "11100"
-        when ("s")
-            return "11101"
-        when ("f")
-            return "11110"
-        when ("r")
-            if (string[2] == "0")
-                return "00000"
-            else
-                return "11111"
-            end
-        else 
-            abort("Unrecognized register encoding #{string}")
-        end
 end
 
 def decode_operation(array, working_inst)
@@ -531,6 +491,52 @@ def decode_section_label(label)
             abort("Unrecognized code section #{array[0]}")
     end
     mode
+end
+
+def decode_reg(string)
+    
+    if (string.chars[0] != "$")
+        abort("Incorrect register token: #{string} does not start with $")
+    end
+    if (string.chars[1].match(/(0-9)/))
+        return binary_encode(string[1..-1].to_i, 5)
+    end 
+    case (string[1].downcase)
+        when ("z")
+            return "00000"
+        when "a"
+            if (string[2] == "t")
+                return  "00001"
+            else
+                return binary_encode(string[2..-1].to_i + 4, 5) 
+            end
+        when "v"
+            return binary_encode(string[2..-1].to_i + 2, 5) 
+        when "t"
+            if (string[2..-1].to_i < 8)
+                return binary_encode(string[2..-1].to_i + 8, 5) 
+            else
+                return binary_encode(string[2..-1].to_i + 24, 5) 
+            end    
+        when "s"
+            return binary_encode(string[2..-1].to_i + 16, 5)
+        when "k"
+            return binary_encode(string[2..-1].to_i + 26, 5)
+        when ("g")
+            return "11100"
+        when ("s")
+            return "11101"
+        when ("f")
+            return "11110"
+        when ("r")
+            if (string[2] == "0")
+                return "00000"
+            else
+                return "11111"
+            end
+        else 
+            abort("Unrecognized register encoding #{string}")
+        end
 end
 
 def encode_working_inst(working_inst, array)
