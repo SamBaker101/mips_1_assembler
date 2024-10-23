@@ -40,8 +40,40 @@ class LineC
         end
     end
 
-    def detect_format_and_convert(in)
-        #TODO: do something
+    def detect_format_and_convert(input, bits = 16)
+        if (input.class == "Integer" || input.class == "Fixnum")
+            return binary_encode(input, 16)  
+        elsif
+            if (input[0,1] == "0x")
+                for digit in input |a|
+                    if (!a.match(/\d|[a-fA-F]/))
+                        abort("Invalid octal digit: #{input}")
+                    end
+                end
+                integer = input[2,-1].to_i(16)
+                binary  = integer.to_s(2)
+                while (binary.length < bits) do
+                    binary = "0" + binary
+                end
+                return binary
+            end
+        elsif
+            if (input[0] == "0")
+                for digit in input |a|
+                    if (a > 7)
+                        abort("Invalid octal digit: #{input}")
+                    end
+                end
+                integer = input[2,-1].to_i(8)
+                binary  = integer.to_s(2)
+                while (binary.length < bits) do
+                    binary = "0" + binary
+                end
+                return binary
+            end
+        else
+            return input
+        end
     end
 
     def binary_encode(dec, bits = 32)

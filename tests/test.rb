@@ -4,12 +4,14 @@
 # MIPS_1 Assembler - Testfile
 ####################
 
+#File list
+require "./main.rb"
+
 def call_tests()
     #List available test functions here
 end
 
 #### class LineC ####
-
 
 #    def initialize(array)
 #    def get_array()
@@ -34,6 +36,8 @@ end
 #### MISC ####
 
 #def decode_section_label(label)
+
+call_tests()
 
 
 
