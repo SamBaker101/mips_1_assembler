@@ -3,12 +3,16 @@
 ####################
 #!/usr/bin/env/ruby
 
+#TODO: Accept other number formats (hex, octal ect.)
+#TODO: Reg instructions should accept 2 or 3 regs
+
 IN = "samples/sample1.asm"
 OUT = "output/out.txt"
 
 COMMENT_CHARACTER   = "#"
 HEX_OUT             = 1
 
+#TODO: Now that I have classes I don't really need these structs
 Instruction = Struct.new(
     :type       ,
     :opcode     ,
@@ -35,6 +39,26 @@ module Mode
 end
 
 class LineC
+    @@input = []
+    @@hex_output = "00000000"
+    @@bin_output = "00000000000000000000000000000000"
+
+    def initialize(array)
+        @input = array
+    end
+
+    def get_array()
+        return @input  #TODO: Move comment, nil and type checks into this class to avoid need to return input
+    end
+
+    def get_output
+        if (HEX_OUT)
+            return @hex_output
+        else
+            return @bin_output
+        end
+    end
+
     def binary_encode(dec, bits = 32)
         binary = "0"
         (0..(bits-2)).each do
@@ -68,7 +92,8 @@ end
 class InstructionC < LineC
     @@working_inst
 
-    def init()
+    def initialize(array = nil)
+        @input = array
         @working_inst = Instruction.new(
             nil,
             "000000",
@@ -83,12 +108,11 @@ class InstructionC < LineC
         )
     end
 
-    def read(array)
-        self.init()
-        self.print_line(array)
+    def read()
+        self.print_line(@input)
 
-        @working_inst = self.decode_operation(array, @working_inst)
-        inst_out = encode(@working_inst, array)
+        @working_inst = self.decode_operation(@input, @working_inst)
+        inst_out = encode(@working_inst, @input)
     
         if (HEX_OUT)
             inst_out = binary_to_hex(inst_out);
@@ -581,20 +605,21 @@ def main()
     puts "Total lines = " << total_lines.to_s
     
     while (line_num < total_lines) 
-        array = read_q[line_num].split("\s"||",")
+        line_array = read_q[line_num].split("\s"||",")
+        line = LineC.new(line_array)
         line_num += 1
+        
+        next if (line.get_array[0].nil?)
+        next if (line.get_array[0].chars.first == COMMENT_CHARACTER) 
     
-        next if (array[0].nil?)
-        next if (array[0].chars.first == COMMENT_CHARACTER) 
-    
-        array.each_with_index do |value, index|
+        line.get_array.each_with_index do |value, index|
             if (value.chars.first == COMMENT_CHARACTER)
-                array = array[0, index]
+                line = LineC.new(line.get_array[0, index])
             end
         end
 
-        if (array[0].chars.first == "\.")
-            mode = decode_section_label(array[0].downcase)
+        if (line.get_array[0].chars.first == "\.")
+            mode = decode_section_label(line.get_array[0].downcase)
             next
         end
 
@@ -605,8 +630,8 @@ def main()
                 #FIXME: capture data section inputs
             when Mode::TEXT 
                 
-                line = InstructionC.new()
-                inst_out = line.read(array)
+                line = InstructionC.new(line.get_array())
+                inst_out = line.read()
         end
     
         #puts "Adding inst to out " << inst_out
