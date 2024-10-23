@@ -1,7 +1,8 @@
+#!/usr/bin/env/ruby
+
 # Sam Baker 09/2024
 # MIPS_1 Assembler
 ####################
-#!/usr/bin/env/ruby
 
 #TODO: Accept other number formats (hex, octal ect.)
 #TODO: Reg instructions should accept 2 or 3 regs
@@ -37,6 +38,10 @@ class LineC
         else
             return @bin_output
         end
+    end
+
+    def detect_format_and_convert(in)
+        #TODO: do something
     end
 
     def binary_encode(dec, bits = 32)
