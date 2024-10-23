@@ -12,15 +12,6 @@ OUT = "output/out.txt"
 COMMENT_CHARACTER   = "#"
 HEX_OUT             = 1
 
-#TODO: Now that I have classes I don't really need these structs
-
-
-Data_Item = Struct.new(
-    :offset     ,
-    :size       ,
-    :content    ,
-)
-
 module Mode
     DATA = 0
     RDATA = 1
@@ -575,6 +566,16 @@ class InstructionC < LineC
 end
 
 class DataC < LineC
+    @offset  
+    @size    
+    @content 
+    
+    def initialize(array)
+        @input      = array
+        @offset     = "0x00000000"  
+        @size       = "0x00000000"
+        @content    = "0x00000000"
+    end
 
 end
 
