@@ -4,6 +4,8 @@
 # MIPS_1 Assembler - Testfile
 ####################
 
+#TODO: Randomize these tests where possible
+
 #File list
 require "./bin/line_c.rb"
 require "./bin/instruction_c.rb"
@@ -15,11 +17,16 @@ $HEX_OUT             = 1
 $test_array_random  = ["abcd", "33", 31, "Boop"]
 
 def call_tests()
-    #List available test functions here
+    ### LineC Tests ###
     line = LineC.new($test_array_random)
     test_get_array(line)
     test_set_get_output(line)
     test_detect_format_and_convert(line)
+
+
+    ### InstructionC Tests ###
+
+    ### DataC Tests ###
 
 end
 
@@ -52,10 +59,10 @@ end
 
 #   def detect_format_and_convert(input)
 def test_detect_format_and_convert(line)
-    hex = "0xabcd"
+    hex = "0x7bcd"
     dec = hex.to_i(16)
-    bin = dec.to_s(2)
-    oct = "0" + dec.to_s(8)
+    bin = "0" + dec.to_s(2)
+    oct = "00" + dec.to_s(8)
     
     hex2bin = line.detect_format_and_convert(hex)
     if (hex2bin != bin)

@@ -22,7 +22,7 @@ class LineC
         @hex_output = binary_to_hex(bin_input)
     end
 
-    def get_output
+    def get_output()
         if ($HEX_OUT)
             return @hex_output
         else
@@ -43,10 +43,17 @@ class LineC
             end
             integer = input.to_i(16)
             binary  = integer.to_s(2)
-            while (binary.length < (bits/4.0).ceil) do
+            while (binary.length < bits) do
                 binary = "0" + binary
             end
             return binary
+        elsif (input.length == bits)
+            input.chars.each do |a|
+                if (!a.match(/[01]/))
+                    abort("Invalid binary digit: #{input}")
+                end
+            end
+            return input
         elsif (input[0] == "0")
             input.chars.each do |a|
                 if (a.to_i() > 7)
@@ -55,7 +62,7 @@ class LineC
             end
             integer = input.to_i(8)
             binary  = integer.to_s(2)
-            while (binary.length < (bits/3.0).ceil) do
+            while (binary.length < bits) do
                 binary = "0" + binary
             end
             return binary
