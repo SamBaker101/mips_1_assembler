@@ -17,6 +17,11 @@ class LineC
         return @input  #TODO: Move comment, nil and type checks into this class to avoid need to return input
     end
 
+    def set_output(bin_input)
+        @bin_output = bin_input
+        @hex_output = binary_to_hex(bin_input)
+    end
+
     def get_output
         if ($HEX_OUT)
             return @hex_output
