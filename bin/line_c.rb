@@ -31,36 +31,34 @@ class LineC
     end
 
     def detect_format_and_convert(input, bits = 16)
-        if (input.class == "Integer" || input.class == "Fixnum")
-            return binary_encode(input, 16)  
-        elsif
-            if (input[0,1] == "0x")
-                for digit in input |a|
-                    if (!a.match(/\d|[a-fA-F]/))
-                        abort("Invalid octal digit: #{input}")
-                    end
+        if (input.class == 123.class)
+            binary = self.binary_encode(input, 16)  
+            return binary
+        elsif (input[0..1] == "0x" || input[0..1] == "0X")
+            input = input[2..-1]
+            input.chars.each do |a|
+                if (!a.match(/\d|[a-fA-F]/))
+                    abort("Invalid octal digit: #{input}")
                 end
-                integer = input[2,-1].to_i(16)
-                binary  = integer.to_s(2)
-                while (binary.length < bits) do
-                    binary = "0" + binary
-                end
-                return binary
             end
-        elsif
-            if (input[0] == "0")
-                for digit in input |a|
-                    if (a > 7)
-                        abort("Invalid octal digit: #{input}")
-                    end
-                end
-                integer = input[2,-1].to_i(8)
-                binary  = integer.to_s(2)
-                while (binary.length < bits) do
-                    binary = "0" + binary
-                end
-                return binary
+            integer = input.to_i(16)
+            binary  = integer.to_s(2)
+            while (binary.length < (bits/4.0).ceil) do
+                binary = "0" + binary
             end
+            return binary
+        elsif (input[0] == "0")
+            input.chars.each do |a|
+                if (a.to_i() > 7)
+                    abort("Invalid octal digit: #{input}")
+                end
+            end
+            integer = input.to_i(8)
+            binary  = integer.to_s(2)
+            while (binary.length < (bits/3.0).ceil) do
+                binary = "0" + binary
+            end
+            return binary
         else
             return input
         end

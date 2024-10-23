@@ -13,14 +13,13 @@ $COMMENT_CHARACTER   = "#"
 $HEX_OUT             = 1
 
 $test_array_random  = ["abcd", "33", 31, "Boop"]
-$test_output_bin    = "10001100000010100000000000101101"
-$test_output_hex    = "8c0a002d"
 
 def call_tests()
     #List available test functions here
     line = LineC.new($test_array_random)
     test_get_array(line)
     test_set_get_output(line)
+    test_detect_format_and_convert(line)
 
 end
 
@@ -39,17 +38,48 @@ end
 #   def set_output  
 #   def get_output
 def test_set_get_output(line)
-    line.set_output($test_output_bin)
+    test_output_bin    = "10001100000010100000000000101101"
+    test_output_hex    = "8c0a002d"
+
+    line.set_output(test_output_bin)
     output = line.get_output()
-    if (output != $test_output_hex)
-        abort("ERROR: set_get_output error, input = #{$test_output_bin}:#{$test_output_hex}, out= #{output}")
+    if (output != test_output_hex)
+        abort("ERROR: set_get_output error, input = #{test_output_bin}:#{test_output_hex}, out= #{output}")
     else
         puts "TEST: set_get_output(): Completed Successfully"
     end
 end
 
+#   def detect_format_and_convert(input)
+def test_detect_format_and_convert(line)
+    hex = "0xabcd"
+    dec = hex.to_i(16)
+    bin = dec.to_s(2)
+    oct = "0" + dec.to_s(8)
+    
+    hex2bin = line.detect_format_and_convert(hex)
+    if (hex2bin != bin)
+        abort("ERROR: detect_format_and_convert - hex, input = #{hex}:#{bin}, out= #{hex2bin}")
+    end
 
-#   def detect_format_and_convert(in)
+    dec2bin = line.detect_format_and_convert(dec)
+    if (dec2bin != bin)
+        abort("ERROR: detect_format_and_convert - dec, input = #{dec}:#{bin}, out= #{dec2bin}")
+    end
+
+    bin2bin = line.detect_format_and_convert(bin)
+    if (bin2bin != bin)
+        abort("ERROR: detect_format_and_convert - bin, input = #{bin}:#{bin}, out= #{bin2bin}")
+    end
+
+    oct2bin = line.detect_format_and_convert(oct)
+    if (oct2bin != bin)
+        abort("ERROR: detect_format_and_convert - oct, input = #{oct}:#{bin}, out= #{oct2bin}")
+    end
+
+    puts "TEST: detect_format_and_convert: Completed Successfully"
+end
+
 #   def binary_encode(dec, bits = 32)    
 #   def binary_to_hex(binary, bits = 32)
 
