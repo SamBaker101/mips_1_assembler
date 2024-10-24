@@ -22,8 +22,9 @@ def call_tests()
     test_get_array(line)
     test_set_get_output(line)
     test_detect_format_and_convert(line)
-
-
+    test_binary_encode(line)
+    test_binary_to_hex(line)
+    
     ### InstructionC Tests ###
 
     ### DataC Tests ###
@@ -88,7 +89,31 @@ def test_detect_format_and_convert(line)
 end
 
 #   def binary_encode(dec, bits = 32)    
+def test_binary_encode(line)
+    dec = 96549
+    bin = dec.to_s(2)
+    while (bin.length < 32) do
+        bin = "0" + bin
+    end
+    output = line.binary_encode(dec)
+    if (output != bin)
+        abort("ERROR: binary_encode, input = #{dec}, out= #{bin}")
+    else
+        puts "TEST: binary_encode(): Completed Successfully"
+    end
+end
+
 #   def binary_to_hex(binary, bits = 32)
+def test_binary_to_hex(line)
+    hex = "8c0a002d"
+    bin = (hex.to_i(16)).to_s(2)
+    output = line.binary_to_hex(bin)
+    if (output != hex)
+        abort("ERROR: binary_to_hex, input = #{bin}, out= #{hex}")
+    else
+        puts "TEST: binary_to_hex(): Completed Successfully"
+    end
+end
 
 #### class InstructionC < LineC ####
 
