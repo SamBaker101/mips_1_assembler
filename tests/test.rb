@@ -129,14 +129,28 @@ end
 def test_is_directive()
     line = LineC.new(["rd", "t3", "10"])
     if (line.is_directive() != 0)
-        abort(abort("ERROR: is_directive, input = #{test_line.get_array()}, out= #{1}"))
+        abort(abort("ERROR: is_directive, input = #{line.get_array()}, out= 1"))
     end
     line = LineC.new([".rdata", "101011"])
+    if (line.is_directive() != 1)
+        abort(abort("ERROR: is_directive, input = #{line.get_array()}, out= 0"))
+    end
+    puts "TEST: is_directive(): Completed Successfully"
+end
+
+#   def is_empty()
+def test_is_empty()
+    line = LineC.new(["rd", "t3", "10"])
+    if (line.is_empty() != 0)
+        abort(abort("ERROR: is_empty, input = #{test_line.get_array()}, out= #{1}"))
+    end
+    line = LineC.new(["#This is a comment"])
     if (line.is_directive() != 1)
         abort(abort("ERROR: is_directive, input = #{test_line.get_array()}, out= #{1}"))
     end
     puts "TEST: is_directive(): Completed Successfully"
 end
+    
 
 #   def decode_directive()
 def test_decode_directive_mode()    
@@ -155,7 +169,7 @@ def test_decode_directive_mode()
     puts "TEST: decode_directive(): Completed Successfully"
 end
 
-#   def is_empty()
+
 #   def chop_comments()
 
 #### class InstructionC < LineC ####
