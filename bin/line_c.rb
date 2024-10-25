@@ -11,8 +11,12 @@ class LineC
     @hex_output = "00000000"
     @bin_output = "00000000000000000000000000000000"
 
-    def initialize(array)
-        @input = array
+    def initialize(line_in)
+        if(line_in.class == "abc".class)
+            @input = line_in.split("\s"||",")
+        else
+            @input = line_in
+        end
     end
 
     def get_array()

@@ -42,12 +42,10 @@ def main()
     puts "Total lines = " << total_lines.to_s
     
     while (line_num < total_lines) 
-        line_array = read_q[line_num].split("\s"||",")
-        line = LineC.new(line_array)
+        line = LineC.new(read_q[line_num])
         line_num += 1
         
         next if (line.is_empty() == 1)
-
         line.chop_comments()
 
         if (line.is_directive() == 1)
