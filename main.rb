@@ -13,7 +13,6 @@ require "./bin/data_c.rb"
 $IN = "samples/sample1.asm"
 $OUT = "output/out.txt"
 
-$COMMENT_CHARACTER   = "#"
 $HEX_OUT             = 1
 
 module Mode
@@ -47,14 +46,9 @@ def main()
         line = LineC.new(line_array)
         line_num += 1
         
-        next if (line.get_array[0].nil?)
-        next if (line.get_array[0].chars.first == $COMMENT_CHARACTER) 
-    
-        line.get_array.each_with_index do |value, index|
-            if (value.chars.first == $COMMENT_CHARACTER)
-                line = LineC.new(line.get_array[0, index])
-            end
-        end
+        next if (line.is_empty() == 1)
+
+        line.chop_comments()
 
         if (line.is_directive() == 1)
             mode = line.decode_directive()

@@ -4,14 +4,9 @@
 # MIPS_1 Assembler - Line Class Definition
 ####################
 
-class LineC
-    module Mode
-        DATA = 0
-        RDATA = 1
-        TEXT = 2
-    end
-    
+$COMMENT_CHARACTER   = "#"
 
+class LineC
     @input = []
     @hex_output = "00000000"
     @bin_output = "00000000000000000000000000000000"
@@ -125,6 +120,22 @@ class LineC
                 return Mode::TEXT
             else
                 abort("Unrecognized code section #{label}")
+        end
+    end
+
+    def is_empty()
+        if ((@input[0].nil?) || (@input[0].chars.first == $COMMENT_CHARACTER))
+            return 1
+        else
+            return 0
+        end
+    end
+
+    def chop_comments()        
+        @input.each_with_index do |value, index|
+            if (value.chars.first == $COMMENT_CHARACTER)
+                @input = @input[0, index]
+            end
         end
     end
 end

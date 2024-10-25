@@ -155,6 +155,9 @@ def test_decode_directive()
     puts "TEST: decode_directive(): Completed Successfully"
 end
 
+#   def is_empty()
+#   def chop_comments()
+
 #### class InstructionC < LineC ####
 
 #   def read()
