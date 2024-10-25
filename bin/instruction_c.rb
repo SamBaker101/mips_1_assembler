@@ -468,7 +468,7 @@ class InstructionC < LineC
                     else
                         @rs = "00000"
                     end
-                    @immediate = binary_encode(temp[0].to_i, 16)
+                    @immediate = self.detect_format_and_convert(temp[0].to_i, 16)
 
                 end
                 #puts "#{@input[1]}, #{@input[2]} : #{@rs}, #{@rt}"
@@ -482,11 +482,7 @@ class InstructionC < LineC
             when "J"
                 if (@manual_args == 0)
                     if (@input[-1].match(/^[0-9]+/))
-                        @address = binary_encode(@input[-1].to_i, 26)
-                    elsif (label_q[@input[-1]] != nil)
-                        @address.binary_encode(label_q[@input[-1]], 26)
-                    else
-                        abort("Unable to locate address for: #{@input[-1]}")
+                        @address = self.detect_format_and_convert(@input[-1].to_i, 26)
                     end
                 end
     
