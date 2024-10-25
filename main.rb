@@ -6,9 +6,9 @@
 
 #TODO: Reg instructions should accept 2 or 3 regs
 
-require "./bin/line_c.rb"
-require "./bin/instruction_c.rb"
-require "./bin/data_c.rb"
+require "./src/line_c.rb"
+require "./src/instruction_c.rb"
+require "./src/data_c.rb"
 
 $IN = "samples/sample1.asm"
 $OUT = "output/out.txt"

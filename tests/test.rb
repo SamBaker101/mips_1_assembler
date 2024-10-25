@@ -7,9 +7,9 @@
 #TODO: Randomize these tests where possible
 
 #File list
-require "./bin/line_c.rb"
-require "./bin/instruction_c.rb"
-require "./bin/data_c.rb"
+require "./src/line_c.rb"
+require "./src/instruction_c.rb"
+require "./src/data_c.rb"
 
 $COMMENT_CHARACTER   = "#"
 $HEX_OUT             = 1
