@@ -56,8 +56,8 @@ def main()
             end
         end
 
-        if (line.is_section_label() == 1)
-            mode = decode_section_label(line.get_array[0].downcase)
+        if (line.is_directive() == 1)
+            mode = line.decode_directive()
             next
         end
 
@@ -81,20 +81,6 @@ def main()
     
     in_file.close
     out_file.close
-end
-
-def decode_section_label(label)
-    case (label)
-        when "\.data"
-            mode = Mode::DATA
-        when  "\.rdata"
-            mode = Mode::RDATA
-        when  "\.text"
-            mode = Mode::TEXT
-        else
-            abort("Unrecognized code section #{label}")
-    end
-    mode
 end
 
 main()

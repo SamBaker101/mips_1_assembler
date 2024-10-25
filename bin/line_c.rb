@@ -5,6 +5,13 @@
 ####################
 
 class LineC
+    module Mode
+        DATA = 0
+        RDATA = 1
+        TEXT = 2
+    end
+    
+
     @input = []
     @hex_output = "00000000"
     @bin_output = "00000000000000000000000000000000"
@@ -100,11 +107,24 @@ class LineC
         hex
     end
 
-    def is_section_label()
+    def is_directive()
         if (@input[0].chars.first == "\.")
             return 1
         else
             return 0
+        end
+    end
+
+    def decode_directive()
+        case (@input[0].downcase)
+            when "\.data"
+                return Mode::DATA
+            when  "\.rdata"
+                return Mode::RDATA
+            when  "\.text"
+                return Mode::TEXT
+            else
+                abort("Unrecognized code section #{label}")
         end
     end
 end
