@@ -114,7 +114,7 @@ class LineC
         end
     end
 
-    def decode_directive()
+    def decode_directive_mode(mode)
         case (@input[0].downcase)
             when "\.data"
                 return Mode::DATA
@@ -123,7 +123,7 @@ class LineC
             when  "\.text"
                 return Mode::TEXT
             else
-                abort("Unrecognized code section #{label}")
+                return mode
         end
     end
 

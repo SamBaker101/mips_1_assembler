@@ -49,7 +49,7 @@ def main()
         line.chop_comments()
 
         if (line.is_directive() == 1)
-            mode = line.decode_directive()
+            mode = line.decode_directive_mode(mode)
             next
         end
 

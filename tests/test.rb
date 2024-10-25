@@ -31,7 +31,7 @@ def call_tests()
     test_binary_encode(line)
     test_binary_to_hex(line)
     test_is_directive()
-    test_decode_directive()
+    test_decode_directive_mode()
 
     ### InstructionC Tests ###
 
@@ -139,17 +139,17 @@ def test_is_directive()
 end
 
 #   def decode_directive()
-def test_decode_directive()    
+def test_decode_directive_mode()    
     line = LineC.new([".data", "101011"])
-    if (line.decode_directive() != Mode::DATA)
+    if (line.decode_directive_mode(Mode::RDATA) != Mode::DATA)
         abort(abort("ERROR: decode_directive, input = #{test_line.get_array()}"))
     end
     line = LineC.new([".rdata", "101011"])
-    if (line.decode_directive() != Mode::RDATA)
+    if (line.decode_directive_mode(Mode::DATA) != Mode::RDATA)
         abort(abort("ERROR: decode_directive, input = #{test_line.get_array()}"))
     end
     line = LineC.new([".text", "101011"])
-    if (line.decode_directive() != Mode::TEXT)
+    if (line.decode_directive_mode(Mode::TEXT) != Mode::TEXT)
         abort(abort("ERROR: decode_directive, input = #{test_line.get_array()}"))
     end
     puts "TEST: decode_directive(): Completed Successfully"
