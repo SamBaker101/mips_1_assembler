@@ -99,4 +99,12 @@ class LineC
         #puts "#{binary} \t: #{integer} \t: #{hex}"
         hex
     end
+
+    def is_section_label()
+        if (@input[0].chars.first == "\.")
+            return 1
+        else
+            return 0
+        end
+    end
 end

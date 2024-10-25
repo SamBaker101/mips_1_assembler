@@ -1,10 +1,10 @@
 #!/usr/bin/env/ruby
 
 # Sam Baker 09/2024
-# MIPS_1 Assembler - Data Class Definitions
+# MIPS_1 Assembler - RData Class Definitions
 ####################
 
-class DataC < LineC
+class RDataC < LineC
     @offset  
     @size    
     @content 

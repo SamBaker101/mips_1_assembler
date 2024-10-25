@@ -24,10 +24,13 @@ def call_tests()
     test_detect_format_and_convert(line)
     test_binary_encode(line)
     test_binary_to_hex(line)
+    test_is_section_label()
     
     ### InstructionC Tests ###
 
     ### DataC Tests ###
+
+    ### RDataC Tests ###
 
 end
 
@@ -113,6 +116,19 @@ def test_binary_to_hex(line)
     else
         puts "TEST: binary_to_hex(): Completed Successfully"
     end
+end
+
+#   def is_section_label()
+def test_is_section_label()
+    line = LineC.new(["rd", "t3", "10"])
+    if (line.is_section_label() != 0)
+        abort(abort("ERROR: is_section_label, input = #{test_line.get_array()}, out= #{1}"))
+    end
+    line = LineC.new([".rdata", "101011"])
+    if (line.is_section_label() != 1)
+        abort(abort("ERROR: is_section_label, input = #{test_line.get_array()}, out= #{1}"))
+    end
+    puts "TEST: is_section_label(): Completed Successfully"
 end
 
 #### class InstructionC < LineC ####
