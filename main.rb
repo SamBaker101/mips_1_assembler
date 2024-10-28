@@ -37,6 +37,18 @@ def main()
     while (line = in_file.gets)
         total_lines += 1
         read_q.push(line)
+
+        line = LineC.new(line)
+        next if (line.is_empty() == 1)
+        next if (line.is_directive() == 1)
+
+        #TODO: Check the entire file for labels befor start parsing instructions
+        label_check = line.check_for_labels()
+        if (label_check != 0)
+            #TODO: This should be indexed by the label not the value, will make lookup a pain
+            label_q[total_lines] = label_check
+            next
+        end 
     end
         
     puts "Total lines = " << total_lines.to_s
@@ -45,6 +57,7 @@ def main()
         line = LineC.new(read_q[line_num])
         line_num += 1
         
+        next if (label_q[line_num] != nil)
         next if (line.is_empty() == 1)
         line.chop_comments()
 
@@ -52,14 +65,6 @@ def main()
             mode = line.decode_directive_mode(mode)
             next
         end
-
-        #TODO: Check the entire file for labels befor start parsing instructions
-        label_check = line.check_for_labels()
-        if (label_check != 0)
-            #TODO: This should be indexed by the label not the value, will make lookup a pain
-            label_q[line_num] = label_check
-            next
-        end 
 
         case (mode) 
             when Mode::DATA 

@@ -490,7 +490,7 @@ class InstructionC < LineC
     
             else
                 puts "Instruction Type not found : #{@type}"
-                bin_output = line 
+                bin_output = @opcode + @address 
         end
     end
 end
