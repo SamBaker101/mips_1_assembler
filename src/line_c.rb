@@ -114,6 +114,14 @@ class LineC
         end
     end
 
+    def is_empty()
+        if ((@input[0].nil?) || (@input[0].chars.first == $COMMENT_CHARACTER))
+            return 1
+        else
+            return 0
+        end
+    end
+
     def decode_directive_mode(mode)
         case (@input[0].downcase)
             when "\.data"
@@ -127,9 +135,73 @@ class LineC
         end
     end
 
-    def is_empty()
-        if ((@input[0].nil?) || (@input[0].chars.first == $COMMENT_CHARACTER))
-            return 1
+    def check_for_labels()
+        valid_list = [
+	    "ADD"       ,    
+	    "ADDI"      ,   
+	    "ADDU"      ,   
+	    "ADDIU"     ,  
+	    "AND"       ,    
+	    "ANDI"      ,   
+	    "DIV"       ,    
+	    "DIVU"      ,   
+	    "MULT"      ,   
+	    "MULTU"     ,  
+	    "NOR"       ,    
+	    "OR"        ,     
+	    "ORI"       ,    
+	    "SLL"       ,    
+	    "SLLV"      ,   
+	    "SRA"       ,    
+	    "SRAV"      ,   
+	    "SR1"       ,    
+	    "SR1V"      ,   
+	    "SUB"       ,    
+	    "SUBU"      ,   
+	    "XOR"       ,    
+	    "XORI"      ,   
+	    "LUI"       ,    
+	    "SLT"       ,    
+	    "SLTI"      ,   
+	    "SLTU"      ,   
+	    "SLTIU"     ,  
+	    "BEQ"       ,    
+	    "BGEZ"      ,   
+	    "BGEZAL"    ,     
+	    "BGTZ"      ,   
+	    "BLEZ"      ,   
+	    "BGEZAL"    ,     
+	    "BLTZAL"    ,     
+	    "BLTZ"      ,   
+	    "BNE"       ,    
+	    "J"         ,  
+	    "JAL"       ,    
+	    "JALR"      ,   
+	    "JR"        ,     
+	    "LB"        ,     
+	    "LBU"       ,    
+	    "LH"        ,     
+	    "LHU"       ,    
+	    "LW"        ,     
+	    "LWL"       ,    
+	    "LWR"       ,    
+	    "SB"        ,     
+	    "SH"        ,     
+	    "SW"        ,     
+	    "SWL"       ,    
+	    "SWR"       ,    
+	    "MFHI"      ,   
+	    "MFLO"      ,   
+	    "MTHI"      ,   
+	    "MTLO"      ,   
+	    "LWCZ"      ,   
+	    "SWCZ"      ,   
+	    "BCZT"      ,   
+	    "BCZF"     
+        ]
+        if (!valid_list.include? @input[0].upcase)
+            label = @input[0]       
+            return label
         else
             return 0
         end
@@ -142,4 +214,6 @@ class LineC
             end
         end
     end
+
+
 end

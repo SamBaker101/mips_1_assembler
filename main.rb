@@ -53,6 +53,14 @@ def main()
             next
         end
 
+        #TODO: Check the entire file for labels befor start parsing instructions
+        label_check = line.check_for_labels()
+        if (label_check != 0)
+            #TODO: This should be indexed by the label not the value, will make lookup a pain
+            label_q[line_num] = label_check
+            next
+        end 
+
         case (mode) 
             when Mode::DATA 
                 line = DataC.new(line.get_array())
@@ -70,6 +78,13 @@ def main()
     end
     
     puts "Finishing"
+    
+    label_q.each_with_index do |l, n|
+        if (l == nil) 
+            next 
+        end
+        puts "Label: #{l}:#{n}"
+    end
     
     in_file.close
     out_file.close

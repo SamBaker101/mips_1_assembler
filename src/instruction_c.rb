@@ -388,8 +388,7 @@ class InstructionC < LineC
                 @manual_args = 1;
     
             else
-                label_q[@input[0]] = line_num
-            
+                puts "No op found for #{@input[0]}"
         end
     end
     
