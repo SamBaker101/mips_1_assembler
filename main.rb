@@ -5,6 +5,7 @@
 ####################
 
 #TODO: Reg instructions should accept 2 or 3 regs
+#TODO: Add mnemonic instructions and substitutions
 
 require "./src/line_c.rb"
 require "./src/instruction_c.rb"
@@ -14,6 +15,7 @@ $IN = "samples/sample1.asm"
 $OUT = "output/out.txt"
 
 $HEX_OUT             = 1
+$INST_OFFSET         = "0x40000000"
 
 module Mode
     DATA = 0
@@ -29,7 +31,7 @@ def main()
 
     read_q  = []
     inst_q  = []
-    label_q = []
+    label_q = {}
     
     total_lines = 0
     line_num = 0
@@ -42,11 +44,10 @@ def main()
         next if (line.is_empty() == 1)
         next if (line.is_directive() == 1)
 
-        #TODO: Check the entire file for labels befor start parsing instructions
         label_check = line.check_for_labels()
         if (label_check != 0)
             #TODO: This should be indexed by the label not the value, will make lookup a pain
-            label_q[total_lines] = label_check
+            label_q.store(label_check , ((total_lines * 4) + $INST_OFFSET.to_i(16)).to_s(16))
             next
         end 
     end
@@ -84,11 +85,11 @@ def main()
     
     puts "Finishing"
     
-    label_q.each_with_index do |l, n|
+    label_q.each do |l|
         if (l == nil) 
             next 
         end
-        puts "Label: #{l}:#{n}"
+        puts "Label: #{l}"
     end
     
     in_file.close
