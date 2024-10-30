@@ -5,6 +5,7 @@
 ####################
 
 $COMMENT_CHARACTER   = "#"
+$INST_OFFSET         = "0x40000000"
 
 class LineC
     @input = []

@@ -16,7 +16,7 @@ class RDataC < LineC
         @content    = "0x00000000"
     end
 
-    def read()
+    def read(label_q, line_num)
         puts "Data line read not initialized"
     end
 end

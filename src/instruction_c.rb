@@ -30,11 +30,11 @@ class InstructionC < LineC
         @manual_args   = 0
     end
 
-    def read()
+    def read(label_q, line_num)
         self.print_line(@input)
 
         self.decode_operation()
-        @bin_output = self.encode()
+        @bin_output = self.encode(label_q, line_num)
         @hex_output = binary_to_hex(@bin_output);
     end
     
@@ -438,7 +438,7 @@ class InstructionC < LineC
             end
     end
 
-    def encode()
+    def encode(label_q, line_num)
         case(@type)
             when "R"
                 if (@manual_args == 0)
@@ -482,9 +482,14 @@ class InstructionC < LineC
                 if (@manual_args == 0)
                     if (@input[-1].match(/^[0-9]+/))
                         @address = self.detect_format_and_convert(@input[-1].to_i, 26)
+                    else
+                        @input[-1].chomp!
+                        raw_address = label_q[@input[-1]]
+                        @address = (raw_address.to_i(16) - $INST_OFFSET.to_i(16) - line_num*4).to_s(2)
                     end
                 end
     
+                puts "#{@opcode} : #{@address}"
                 @bin_output = @opcode + 
                         @address
     

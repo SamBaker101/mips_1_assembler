@@ -15,7 +15,6 @@ $IN = "samples/sample1.asm"
 $OUT = "output/out.txt"
 
 $HEX_OUT             = 1
-$INST_OFFSET         = "0x40000000"
 
 module Mode
     DATA = 0
@@ -46,7 +45,6 @@ def main()
 
         label_check = line.check_for_labels()
         if (label_check != 0)
-            #TODO: This should be indexed by the label not the value, will make lookup a pain
             label_q.store(label_check , ((total_lines * 4) + $INST_OFFSET.to_i(16)).to_s(16))
             next
         end 
@@ -76,7 +74,7 @@ def main()
                 line = InstructionC.new(line.get_array())
         end
     
-        line.read()
+        line.read(label_q, line_num)
 
         #puts "Adding inst to out " << inst_out
         inst_q.push(line.get_output())
