@@ -34,6 +34,7 @@ def main()
     
     total_lines = 0
     line_num = 0
+    instr_num =0
     
     while (line = in_file.gets)
         total_lines += 1
@@ -45,10 +46,10 @@ def main()
 
         label_check = line.check_for_labels()
         if (label_check != 0)
-            label_q.store(label_check , ((line_num * 4) + $INST_OFFSET.to_i(16)).to_s(16))
+            label_q.store(label_check , ((instr_num * 4) + $INST_OFFSET.to_i(16)).to_s(16))
             next
         end 
-        line_num += 1
+        instr_num += 1
     end
         
     puts "Total lines = " << total_lines.to_s
@@ -60,7 +61,7 @@ def main()
         next if (label_q[line_num] != nil)
         next if (line.is_empty() == 1)
         next if (line.check_for_labels != 0)
-        
+
         line.chop_comments()
 
         if (line.is_directive() == 1)
