@@ -136,71 +136,9 @@ class LineC
     end
 
     def check_for_labels()
-        valid_list = [
-	    "ADD"       ,    
-	    "ADDI"      ,   
-	    "ADDU"      ,   
-	    "ADDIU"     ,  
-	    "AND"       ,    
-	    "ANDI"      ,   
-	    "DIV"       ,    
-	    "DIVU"      ,   
-	    "MULT"      ,   
-	    "MULTU"     ,  
-	    "NOR"       ,    
-	    "OR"        ,     
-	    "ORI"       ,    
-	    "SLL"       ,    
-	    "SLLV"      ,   
-	    "SRA"       ,    
-	    "SRAV"      ,   
-	    "SR1"       ,    
-	    "SR1V"      ,   
-	    "SUB"       ,    
-	    "SUBU"      ,   
-	    "XOR"       ,    
-	    "XORI"      ,   
-	    "LUI"       ,    
-	    "SLT"       ,    
-	    "SLTI"      ,   
-	    "SLTU"      ,   
-	    "SLTIU"     ,  
-	    "BEQ"       ,    
-	    "BGEZ"      ,   
-	    "BGEZAL"    ,     
-	    "BGTZ"      ,   
-	    "BLEZ"      ,   
-	    "BGEZAL"    ,     
-	    "BLTZAL"    ,     
-	    "BLTZ"      ,   
-	    "BNE"       ,    
-	    "J"         ,  
-	    "JAL"       ,    
-	    "JALR"      ,   
-	    "JR"        ,     
-	    "LB"        ,     
-	    "LBU"       ,    
-	    "LH"        ,     
-	    "LHU"       ,    
-	    "LW"        ,     
-	    "LWL"       ,    
-	    "LWR"       ,    
-	    "SB"        ,     
-	    "SH"        ,     
-	    "SW"        ,     
-	    "SWL"       ,    
-	    "SWR"       ,    
-	    "MFHI"      ,   
-	    "MFLO"      ,   
-	    "MTHI"      ,   
-	    "MTLO"      ,   
-	    "LWCZ"      ,   
-	    "SWCZ"      ,   
-	    "BCZT"      ,   
-	    "BCZF"     
-        ]
-        if (!valid_list.include? @input[0].upcase)
-            label = @input[0]       
+        @input[0].chomp!
+        if (@input[0].chars.last == ":")
+            label = @input[0][0..-2]       
             return label
         else
             return 0
