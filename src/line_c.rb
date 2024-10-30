@@ -5,7 +5,7 @@
 ####################
 
 $COMMENT_CHARACTER   = "#"
-$INST_OFFSET         = "0x40000000"
+$INST_OFFSET         = "0x00400000"
 
 class LineC
     @input = []
@@ -90,6 +90,12 @@ class LineC
                 end
                 dec = dec/2
             end
+        end
+        if (dec < 0)
+            dec = dec - 1
+            (0..(bits-1)).each do
+                binary = (binary == "1") ? "0" : "1"
+            end 
         end
         binary
     end

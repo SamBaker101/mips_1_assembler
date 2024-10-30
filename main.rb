@@ -45,13 +45,14 @@ def main()
 
         label_check = line.check_for_labels()
         if (label_check != 0)
-            label_q.store(label_check , ((total_lines * 4) + $INST_OFFSET.to_i(16)).to_s(16))
+            label_q.store(label_check , ((line_num * 4) + $INST_OFFSET.to_i(16)).to_s(16))
             next
         end 
+        line_num += 1
     end
         
     puts "Total lines = " << total_lines.to_s
-    
+    line_num = 0
     while (line_num < total_lines) 
         line = LineC.new(read_q[line_num])
         line_num += 1

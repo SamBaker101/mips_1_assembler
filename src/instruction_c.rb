@@ -485,14 +485,12 @@ class InstructionC < LineC
                     else
                         @input[-1].chomp!
                         raw_address = label_q[@input[-1]]
-                        @address = (raw_address.to_i(16) - $INST_OFFSET.to_i(16) - line_num*4).to_s(2)
+                        @address = binary_encode(raw_address.to_i(16), 28)[0..-3]
                     end
                 end
-    
-                puts "#{@opcode} : #{@address}"
+                
                 @bin_output = @opcode + 
                         @address
-    
             else
                 puts "Instruction Type not found : #{@type}"
                 bin_output = @opcode + @address 
