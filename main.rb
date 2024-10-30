@@ -59,6 +59,8 @@ def main()
         
         next if (label_q[line_num] != nil)
         next if (line.is_empty() == 1)
+        next if (line.check_for_labels != 0)
+        
         line.chop_comments()
 
         if (line.is_directive() == 1)
