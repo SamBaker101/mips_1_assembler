@@ -11,10 +11,13 @@ require "./src/line_c.rb"
 require "./src/instruction_c.rb"
 require "./src/data_c.rb"
 
-$IN = "samples/sample1.asm"
-$OUT = "output/out.txt"
+$IN         = "samples/sample1.asm"
+$OUT        = "output/out.txt"
+$MAP_FILE   = "maps/instruction_map.csv"
 
 $HEX_OUT             = 1
+$INSTRUCTION_MAP     = []
+$INSTRUCTION_INDEX   = []
 
 module Mode
     DATA = 0
@@ -26,6 +29,8 @@ def main()
     in_file = File.new($IN, "r")
     out_file = File.new($OUT, "w")
     
+    load_maps()
+
     mode = Mode::TEXT
 
     read_q  = []
@@ -35,7 +40,7 @@ def main()
     total_lines = 0
     line_num = 0
     instr_num =0
-    
+
     while (line = in_file.gets)
         total_lines += 1
         read_q.push(line)
@@ -96,6 +101,20 @@ def main()
     
     in_file.close
     out_file.close
+end
+
+def load_maps()
+    map_file = File.new($MAP_FILE, "r")
+    while (line = map_file.gets) 
+        line = line.split(",")
+        line.each do |item|
+            item.chomp!
+            item.strip!
+        end
+        #puts "#{line[0]}:#{line[1]}:#{line[2]}:#{line[3]}:#{line[4]}"
+        $INSTRUCTION_MAP.push(line)
+        $INSTRUCTION_INDEX.push(line[0])
+    end
 end
 
 main()
