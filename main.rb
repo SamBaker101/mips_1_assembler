@@ -18,10 +18,15 @@ $HEX_OUT             = 1
 $INSTRUCTION_MAP     = []
 $INSTRUCTION_INDEX   = []
 
+#TODO: Add missing directives
+#TODO: Add instruction mnemonics
+#TODO: Data sections
+
 module Mode
     DATA = 0
     RDATA = 1
     TEXT = 2
+
 end
 
 def main()
@@ -106,6 +111,7 @@ def load_maps()
     map_file = File.new($MAP_FILE, "r")
     while (line = map_file.gets) 
         line = line.split(",")
+        next if line[0] = "instruction"
         line.each do |item|
             item.chomp!
             item.strip!
