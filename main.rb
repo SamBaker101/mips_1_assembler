@@ -4,7 +4,6 @@
 # MIPS_1 Assembler
 ####################
 
-#TODO: Reg instructions should accept 2 or 3 regs
 #TODO: Add mnemonic instructions and substitutions
 
 require "./src/line_c.rb"

@@ -144,10 +144,10 @@ class InstructionC < LineC
         case(@type)
             when "R"
                 if (@manual_args == 0)
-                    @rs = decode_reg(@input[2])
-                    @rt = decode_reg(@input[3])
+                    @rs = decode_reg(@input[-2])
+                    @rt = decode_reg(@input[-1])
                     @rd = decode_reg(@input[1])
-                    puts "#{@input[1]}, #{@input[2]}, #{@input[3]} : #{@rs}, #{@rt}, #{@rd}"
+                    #puts "#{@input[1]}, #{@input[2]}, #{@input[3]} : #{@rs}, #{@rt}, #{@rd}"
                 end
     
                 @bin_output = @opcode + 
@@ -173,7 +173,7 @@ class InstructionC < LineC
 
                 end
                 #puts "#{@input[1]}, #{@input[2]} : #{@rs}, #{@rt}"
-                puts "#{@manual_args} : #{@input[-1]} : #{@immediate} : #{temp}"
+                #puts "#{@manual_args} : #{@input[-1]} : #{@immediate} : #{temp}"
     
                 @bin_output = @opcode + 
                         @rs + 
