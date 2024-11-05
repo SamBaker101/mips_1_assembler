@@ -11,16 +11,17 @@ require "./src/instruction_c.rb"
 require "./src/data_c.rb"
 
 $IN         = "samples/sample1.asm"
-$OUT        = "output/out.txt"
+$INST_OUT   = "output/inst_out.txt"
+$DATA_OUT   = "output/data_out.txt"
 $MAP_FILE   = "maps/instruction_map.csv"
 
 $HEX_OUT             = 1
 $INSTRUCTION_MAP     = []
 $INSTRUCTION_INDEX   = []
 
-#TODO: Add missing directives
 #TODO: Add instruction mnemonics
 #TODO: Data sections
+#TODO: Add missing directives
 
 module Mode
     DATA = 0
@@ -31,8 +32,9 @@ end
 
 def main()
     in_file = File.new($IN, "r")
-    out_file = File.new($OUT, "w")
-    
+    inst_out_file = File.new($INST_OUT, "w")
+    data_out_file = File.new($DATA_OUT, "w")
+
     load_maps()
 
     mode = Mode::TEXT
@@ -91,7 +93,7 @@ def main()
 
         #puts "Adding inst to out " << inst_out
         inst_q.push(line.get_output())
-        out_file.puts(line.get_output())
+        inst_out_file.puts(line.get_output())
     end
     
     puts "Finishing"
@@ -104,14 +106,13 @@ def main()
     end
     
     in_file.close
-    out_file.close
+    inst_out_file.close
 end
 
 def load_maps()
-    map_file = File.new($MAP_FILE, "r")
+    map_file = File.new($MAP_FILE, "r")    
     while (line = map_file.gets) 
         line = line.split(",")
-        next if line[0] = "instruction"
         line.each do |item|
             item.chomp!
             item.strip!
