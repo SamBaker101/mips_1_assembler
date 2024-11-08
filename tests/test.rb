@@ -7,12 +7,22 @@
 #TODO: Randomize these tests where possible
 
 #File list
+require "./src/parse_c.rb"
 require "./src/line_c.rb"
 require "./src/instruction_c.rb"
 require "./src/data_c.rb"
 
 $COMMENT_CHARACTER   = "#"
 $HEX_OUT             = 1
+
+$IN         = "samples/sample1.asm"
+$INST_OUT   = "output/inst_out.txt"
+$DATA_OUT   = "output/data_out.txt"
+$MAP_FILE   = "maps/instruction_map.csv"
+
+$HEX_OUT             = 1
+$INSTRUCTION_MAP     = []
+$INSTRUCTION_INDEX   = []
 
 module Mode
     DATA = 0
@@ -23,6 +33,9 @@ end
 $test_array_random  = ["abcd", "33", 31, "Boop"]
 
 def call_tests()
+    parser = ParseC.new()
+    parser.parse_file()
+
     ### LineC Tests ###
     line = LineC.new($test_array_random)
     test_get_array(line)
