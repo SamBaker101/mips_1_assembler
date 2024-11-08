@@ -15,14 +15,25 @@ class ParseC
     @inst_q  
     @label_q 
 
+    @total_lines
+    @line_num 
+    @instr_num
+
     def initialize()
         load_maps()
     
-        in_file = File.new($IN, "r")
-        inst_out_file = File.new($INST_OUT, "w")
-        data_out_file = File.new($DATA_OUT, "w")
+        @in_file = File.new($IN, "r")
+        @inst_out_file = File.new($INST_OUT, "w")
+        @data_out_file = File.new($DATA_OUT, "w")
     
         @mode = Mode::TEXT
+        @read_q  = []
+        @inst_q  = []
+        @label_q = {}
+        
+        @total_lines    = 0
+        @line_num       = 0
+        @instr_num      = 0
     end
 
     def load_maps()
@@ -39,18 +50,10 @@ class ParseC
         end
     end
 
-    def parse_file()
-        @read_q  = []
-        @inst_q  = []
-        @label_q = {}
-        
-        total_lines = 0
-        line_num = 0
-        instr_num =0
-    
-        while (line = in_file.gets)
-            total_lines += 1
-            read_q.push(line)
+    def fill_read_q()
+        while (line = @in_file.gets)
+            @total_lines += 1
+            @read_q.push(line)
     
             line = LineC.new(line)
             next if (line.is_empty() == 1)
@@ -58,19 +61,21 @@ class ParseC
     
             label_check = line.check_for_labels()
             if (label_check != 0)
-                label_q.store(label_check , ((instr_num * 4) + $INST_OFFSET.to_i(16)).to_s(16))
+                @label_q.store(label_check , ((@instr_num * 4) + $INST_OFFSET.to_i(16)).to_s(16))
                 next
             end 
-            instr_num += 1
+            @instr_num += 1
         end
+    end
+
+    def parse_file()
+        puts "Total lines = " << @total_lines.to_s
+        @line_num = 0
+        while (@line_num < @total_lines) 
+            line = LineC.new(@read_q[@line_num])
+            @line_num += 1
             
-        puts "Total lines = " << total_lines.to_s
-        line_num = 0
-        while (line_num < total_lines) 
-            line = LineC.new(read_q[line_num])
-            line_num += 1
-            
-            next if (label_q[line_num] != nil)
+            next if (@label_q[@line_num] != nil)
             next if (line.is_empty() == 1)
             next if (line.check_for_labels != 0)
     
@@ -90,23 +95,24 @@ class ParseC
                     line = InstructionC.new(line.get_array())
             end
         
-            line.read(label_q, line_num)
+            line.read(@label_q, @line_num)
     
             #puts "Adding inst to out " << inst_out
-            inst_q.push(line.get_output())
-            inst_out_file.puts(line.get_output())
+            @inst_q.push(line.get_output())
+            @inst_out_file.puts(line.get_output())
         end
         
         puts "Finishing"
         
-        label_q.each do |l|
+        @label_q.each do |l|
             if (l == nil) 
                 next 
             end
             puts "Label: #{l}"
         end
         
-        in_file.close
-        inst_out_file.close
+        @in_file.close
+        @inst_out_file.close
+        @data_out_file.close
     end
 end

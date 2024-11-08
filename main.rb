@@ -31,6 +31,7 @@ end
 
 def main()
     parser = ParseC.new()
+    parser.fill_read_q()
     parser.parse_file()
 end
 
