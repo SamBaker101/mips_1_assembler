@@ -1,5 +1,9 @@
 directive, type, value
-baeifna
-beonfa
-eafnae bfapoe
-nfoieanfa
+.text,  S,  0
+.rdata, S,  1
+.data,  S,  2
+.lit4,  S,  3
+.lit8,  S,  4
+.bss,   S,  5
+.sdata, S,  6
+.sbss,  S,  7

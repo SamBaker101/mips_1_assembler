@@ -130,15 +130,13 @@ class LineC
     end
 
     def decode_directive_mode(mode)
-        case (@input[0].downcase)
-            when "\.data"
-                return Mode::DATA
-            when  "\.rdata"
-                return Mode::RDATA
-            when  "\.text"
-                return Mode::TEXT
-            else
-                return mode
+        index = $DIRECTIVE_INDEX.find_index(@input[0].downcase)
+        
+        if (index == nil)
+            return -1
+        else
+            #puts "THING #{index} #{$DIRECTIVE_MAP[index][2]}"
+            return $DIRECTIVE_MAP[index][2].to_i()
         end
     end
 

@@ -5,9 +5,14 @@
 ####################
 
 module Mode
-    DATA = 0
-    RDATA = 1
-    TEXT = 2
+    TEXT    = 0
+    RDATA   = 1
+    DATA    = 2
+    LIT4    = 3
+    LIT8    = 4
+    BSS     = 5
+    SDATA   = 6
+    SBSS    = 7
 end
 
 class ParseC 
@@ -100,7 +105,6 @@ class ParseC
                 @mode = @line.decode_directive_mode(@mode)
                 next
             end
-    
             case (@mode) 
                 when Mode::DATA 
                     @line = DataC.new(@line.get_array())
@@ -140,9 +144,9 @@ class ParseC
 
     def parse_file()
         fill_queues()
+        print_labels()
         parse_input()        
         print_to_file()        
-        print_labels()
         close_files()
     end
 end
