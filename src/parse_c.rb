@@ -88,6 +88,29 @@ class ParseC
         end
     end
 
+    def check_for_mode_update(line_for_check)
+        if (line_for_check.is_directive() == 1)
+            new_mode = line_for_check.decode_directive_mode()
+            if (new_mode != -1)
+                @mode = new_mode 
+                return 1
+            end
+        end
+        return 0
+    end
+
+    def update_line_class(array, mode)
+        case (mode) 
+            when Mode::DATA 
+                return DataC.new(@line.get_array())
+            when Mode::RDATA 
+                return DataC.new(@line.get_array())
+            when Mode::TEXT 
+                return InstructionC.new(@line.get_array())
+    end
+
+    end
+
     def parse_input()
         puts "Total lines = " << @total_lines.to_s
         @line_num = 0
@@ -100,23 +123,11 @@ class ParseC
             next if (@line.check_for_labels != 0)
     
             @line.chop_comments()
-    
-            if (@line.is_directive() == 1)
-                @mode = @line.decode_directive_mode(@mode)
-                next
-            end
-            case (@mode) 
-                when Mode::DATA 
-                    @line = DataC.new(@line.get_array())
-                when Mode::RDATA 
-                    @line = DataC.new(@line.get_array())
-                when Mode::TEXT 
-                    @line = InstructionC.new(@line.get_array())
-            end
-        
+            next if (check_for_mode_update(@line) == 1)
+
+            @line = update_line_class(@line.get_array(), @mode)
             @line.read(@label_q, @line_num)
-    
-            #puts "Adding inst to out " << inst_out
+            
             @inst_q.push(@line.get_output()) 
         end
     end

@@ -129,7 +129,7 @@ class LineC
         end
     end
 
-    def decode_directive_mode(mode)
+    def decode_directive_mode()
         index = $DIRECTIVE_INDEX.find_index(@input[0].downcase)
         
         if (index == nil || $DIRECTIVE_MAP[index][1] != "S")
