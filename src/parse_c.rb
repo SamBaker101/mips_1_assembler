@@ -45,11 +45,11 @@ class ParseC
     end
 
     def load_all_maps()
-        load_map($INST_MAP_FILE)
-        load_map($DIR_MAP_FILE)
+        load_map($INST_MAP_FILE, $INSTRUCTION_MAP, $INSTRUCTION_INDEX)
+        load_map($DIR_MAP_FILE, $DIRECTIVE_MAP, $DIRECTIVE_INDEX)
     end
 
-    def load_map(map_path)
+    def load_map(map_path, map, index)
         map_file = File.new(map_path, "r")    
         map_file.gets #Skip header
         while (line = map_file.gets) 
@@ -60,8 +60,8 @@ class ParseC
                 item.strip!
             end
             #puts "#{line[0]}:#{line[1]}:#{line[2]}:#{line[3]}:#{line[4]}"
-            $INSTRUCTION_MAP.push(line)
-            $INSTRUCTION_INDEX.push(line[0])
+            map.push(line)
+            index.push(line[0])
         end
     end
 
