@@ -102,13 +102,12 @@ class ParseC
     def update_line_class(array, mode)
         case (mode) 
             when Mode::DATA 
-                return DataC.new(@line.get_array())
+                return DataC.new(array)
             when Mode::RDATA 
-                return DataC.new(@line.get_array())
+                return DataC.new(array)
             when Mode::TEXT 
-                return InstructionC.new(@line.get_array())
-    end
-
+                return InstructionC.new(array)
+        end
     end
 
     def parse_input()
@@ -127,7 +126,7 @@ class ParseC
 
             @line = update_line_class(@line.get_array(), @mode)
             @line.read(@label_q, @line_num)
-            
+
             @inst_q.push(@line.get_output()) 
         end
     end
