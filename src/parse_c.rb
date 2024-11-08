@@ -5,9 +5,24 @@
 ####################
 
 class ParseC 
-    
+    @in_file       
+    @inst_out_file 
+    @data_out_file 
+
+    @mode
+
+    @read_q  
+    @inst_q  
+    @label_q 
+
     def initialize()
         load_maps()
+    
+        in_file = File.new($IN, "r")
+        inst_out_file = File.new($INST_OUT, "w")
+        data_out_file = File.new($DATA_OUT, "w")
+    
+        @mode = Mode::TEXT
     end
 
     def load_maps()
@@ -25,17 +40,9 @@ class ParseC
     end
 
     def parse_file()
-        in_file = File.new($IN, "r")
-        inst_out_file = File.new($INST_OUT, "w")
-        data_out_file = File.new($DATA_OUT, "w")
-    
-        parser = ParseC.new()
-    
-        mode = Mode::TEXT
-    
-        read_q  = []
-        inst_q  = []
-        label_q = {}
+        @read_q  = []
+        @inst_q  = []
+        @label_q = {}
         
         total_lines = 0
         line_num = 0
