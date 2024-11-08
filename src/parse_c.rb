@@ -4,6 +4,12 @@
 # MIPS_1 Assembler - Parser Class
 ####################
 
+module Mode
+    DATA = 0
+    RDATA = 1
+    TEXT = 2
+end
+
 class ParseC 
     @in_file       
     @inst_out_file 
@@ -20,16 +26,16 @@ class ParseC
     @instr_num
 
     def initialize()
-        load_maps()
+        load_all_maps()
     
-        @in_file = File.new($IN, "r")
-        @inst_out_file = File.new($INST_OUT, "w")
-        @data_out_file = File.new($DATA_OUT, "w")
+        @in_file        = File.new($IN, "r")
+        @inst_out_file  = File.new($INST_OUT, "w")
+        @data_out_file  = File.new($DATA_OUT, "w")
     
-        @mode = Mode::TEXT
-        @read_q  = []
-        @inst_q  = []
-        @label_q = {}
+        @mode       = Mode::TEXT
+        @read_q     = []
+        @inst_q     = []
+        @label_q    = {}
         
         @total_lines    = 0
         @line_num       = 0
@@ -38,9 +44,16 @@ class ParseC
         @line
     end
 
-    def load_maps()
-        map_file = File.new($MAP_FILE, "r")    
+    def load_all_maps()
+        load_map($INST_MAP_FILE)
+        load_map($DIR_MAP_FILE)
+    end
+
+    def load_map(map_path)
+        map_file = File.new(map_path, "r")    
+        map_file.gets #Skip header
         while (line = map_file.gets) 
+        
             line = line.split(",")
             line.each do |item|
                 item.chomp!
@@ -128,12 +141,8 @@ class ParseC
     def parse_file()
         fill_queues()
         parse_input()        
-        print_to_file()
-
-        puts "Finishing"
-        
+        print_to_file()        
         print_labels()
         close_files()
-        
     end
 end

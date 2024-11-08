@@ -33,6 +33,7 @@ end
 $test_array_random  = ["abcd", "33", 31, "Boop"]
 
 def call_tests()
+    #TODO: Should test the Parse class functions individually
     parser = ParseC.new()
     parser.parse_file()
 
