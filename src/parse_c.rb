@@ -34,6 +34,8 @@ class ParseC
         @total_lines    = 0
         @line_num       = 0
         @instr_num      = 0
+
+        @line
     end
 
     def load_maps()
@@ -50,16 +52,16 @@ class ParseC
         end
     end
 
-    def fill_read_q()
+    def fill_queues()
         while (line = @in_file.gets)
             @total_lines += 1
             @read_q.push(line)
     
-            line = LineC.new(line)
-            next if (line.is_empty() == 1)
-            next if (line.is_directive() == 1)
+            @line = LineC.new(line)
+            next if (@line.is_empty() == 1)
+            next if (@line.is_directive() == 1)
     
-            label_check = line.check_for_labels()
+            label_check = @line.check_for_labels()
             if (label_check != 0)
                 @label_q.store(label_check , ((@instr_num * 4) + $INST_OFFSET.to_i(16)).to_s(16))
                 next
@@ -68,51 +70,70 @@ class ParseC
         end
     end
 
-    def parse_file()
+    def parse_input()
         puts "Total lines = " << @total_lines.to_s
         @line_num = 0
         while (@line_num < @total_lines) 
-            line = LineC.new(@read_q[@line_num])
+            @line = LineC.new(@read_q[@line_num])
             @line_num += 1
             
             next if (@label_q[@line_num] != nil)
-            next if (line.is_empty() == 1)
-            next if (line.check_for_labels != 0)
+            next if (@line.is_empty() == 1)
+            next if (@line.check_for_labels != 0)
     
-            line.chop_comments()
+            @line.chop_comments()
     
-            if (line.is_directive() == 1)
-                mode = line.decode_directive_mode(mode)
+            if (@line.is_directive() == 1)
+                @mode = @line.decode_directive_mode(@mode)
                 next
             end
     
-            case (mode) 
+            case (@mode) 
                 when Mode::DATA 
-                    line = DataC.new(line.get_array())
+                    @line = DataC.new(@line.get_array())
                 when Mode::RDATA 
-                    line = DataC.new(line.get_array())
+                    @line = DataC.new(@line.get_array())
                 when Mode::TEXT 
-                    line = InstructionC.new(line.get_array())
+                    @line = InstructionC.new(@line.get_array())
             end
         
-            line.read(@label_q, @line_num)
+            @line.read(@label_q, @line_num)
     
             #puts "Adding inst to out " << inst_out
-            @inst_q.push(line.get_output())
-            @inst_out_file.puts(line.get_output())
+            @inst_q.push(@line.get_output()) 
         end
-        
-        puts "Finishing"
-        
+    end
+
+    def print_to_file()
+        @inst_q.each do |i|
+            @inst_out_file.puts(i)
+        end
+    end
+
+    def print_labels()
         @label_q.each do |l|
             if (l == nil) 
                 next 
             end
             puts "Label: #{l}"
         end
-        
+    end
+
+    def close_files()
         @in_file.close
         @inst_out_file.close
         @data_out_file.close
+    end
+
+    def parse_file()
+        fill_queues()
+        parse_input()        
+        print_to_file()
+
+        puts "Finishing"
+        
+        print_labels()
+        close_files()
+        
     end
 end
