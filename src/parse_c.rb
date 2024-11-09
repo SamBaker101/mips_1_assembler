@@ -23,12 +23,16 @@ class ParseC
     @mode
 
     @read_q  
-    @inst_q  
-    @label_q 
+    @label_q
+    
+    @inst_q
+    @data_q 
+    @rdata_q
 
     @total_lines
     @line_num 
     @instr_num
+    @working_lines
 
     def initialize()
         load_all_maps()
@@ -39,14 +43,18 @@ class ParseC
     
         @mode       = Mode::TEXT
         @read_q     = []
-        @inst_q     = []
         @label_q    = {}
-        
+
+        @inst_q     = []
+        @data_q     = []
+        @rdata_q    = []
+            
         @total_lines    = 0
         @line_num       = 0
         @instr_num      = 0
 
         @line
+        @working_lines = []
     end
 
     def load_all_maps()
@@ -125,9 +133,18 @@ class ParseC
             next if (check_for_mode_update(@line) == 1)
 
             @line = update_line_class(@line.get_array(), @mode)
-            @line.read(@label_q, @line_num)
+            @working_lines = @line.read(@label_q, @line_num)
 
-            @inst_q.push(@line.get_output()) 
+            @working_lines.each do |i|
+                case (@mode) 
+                    when Mode::DATA 
+                        @data_q.push(i)
+                    when Mode::RDATA 
+                        @rdata.push(i)
+                    when Mode::TEXT 
+                        @inst_q.push(i) 
+                end
+            end
         end
     end
 

@@ -36,6 +36,8 @@ class InstructionC < LineC
         self.decode_operation()
         @bin_output = self.encode(label_q, line_num)
         @hex_output = binary_to_hex(@bin_output);
+    
+        return [self.get_output()]
     end
     
     def print_line(array)
