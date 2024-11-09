@@ -152,6 +152,10 @@ class ParseC
         @inst_q.each do |i|
             @inst_out_file.puts(i)
         end
+
+        @data_q.each do |i|
+            @data_out_file.puts(i)
+        end
     end
 
     def print_labels()
