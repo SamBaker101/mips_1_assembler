@@ -2,7 +2,7 @@
 #It is the most basic program I could think of 
 .data
 	.byte 4, 3, 72
-	.half 256
+	.half 1, 1, 2 : 256, 32, 5
 	.word 458
 
 .text

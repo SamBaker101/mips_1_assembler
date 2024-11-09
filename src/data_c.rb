@@ -27,7 +27,22 @@ class DataC < LineC
         end
     end        
 
-    def add_mem_lines()
+    def check_for_mult()
+        while (index = @input.find_index(":"))
+            puts "#{index}   #{@input[0]}---#{@input[1]}---#{@input[2]}---#{@input[3]}"
+            value = @input[index + 1]
+            repeat = @input[index - 1].to_i()
+            puts "#{repeat}:#{value}"
+            @input.delete_at(index + 1)
+            @input.delete_at(index)
+            @input.delete_at(index - 1)
+            puts "#{index}   #{@input[0]}---#{@input[1]}---#{@input[2]}---#{@input[3]}"
+            
+            repeat.times {@input.insert(index - 1, value)}
+        end
+    end
+
+    def parse_mem_lines()
         @input.each do |i|
             if i[0] == "."
                 @size = get_size(i)
@@ -40,7 +55,8 @@ class DataC < LineC
     end
 
     def read(label_q, line_num)
-        add_mem_lines()
+        check_for_mult()
+        parse_mem_lines()
         #TODO: Do these values need to be packed in the output file?
         return @output_array
     end
