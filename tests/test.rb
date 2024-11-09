@@ -18,16 +18,24 @@ $HEX_OUT             = 1
 $IN         = "samples/sample1.asm"
 $INST_OUT   = "output/inst_out.txt"
 $DATA_OUT   = "output/data_out.txt"
-$MAP_FILE   = "maps/instruction_map.csv"
+$INST_MAP_FILE  = "maps/instruction_map.csv"
+$DIR_MAP_FILE   = "maps/directive_map.csv"
 
 $HEX_OUT             = 1
 $INSTRUCTION_MAP     = []
 $INSTRUCTION_INDEX   = []
+$DIRECTIVE_MAP       = [] 
+$DIRECTIVE_INDEX     = []
 
 module Mode
-    DATA = 0
-    RDATA = 1
-    TEXT = 2
+    TEXT    = 0
+    RDATA   = 1
+    DATA    = 2
+    LIT4    = 3
+    LIT8    = 4
+    BSS     = 5
+    SDATA   = 6
+    SBSS    = 7
 end
 
 $test_array_random  = ["abcd", "33", 31, "Boop"]
@@ -169,16 +177,16 @@ end
 #   def decode_directive()
 def test_decode_directive_mode()    
     line = LineC.new([".data", "101011"])
-    if (line.decode_directive_mode(Mode::RDATA) != Mode::DATA)
-        abort(abort("ERROR: decode_directive, input = #{test_line.get_array()}"))
+    if (line.decode_directive_mode() != Mode::DATA)
+        abort(abort("ERROR: decode_directive, input = #{line.get_array()}"))
     end
     line = LineC.new([".rdata", "101011"])
-    if (line.decode_directive_mode(Mode::DATA) != Mode::RDATA)
-        abort(abort("ERROR: decode_directive, input = #{test_line.get_array()}"))
+    if (line.decode_directive_mode() != Mode::RDATA)
+        abort(abort("ERROR: decode_directive, input = #{line.get_array()}"))
     end
     line = LineC.new([".text", "101011"])
-    if (line.decode_directive_mode(Mode::TEXT) != Mode::TEXT)
-        abort(abort("ERROR: decode_directive, input = #{test_line.get_array()}"))
+    if (line.decode_directive_mode() != Mode::TEXT)
+        abort(abort("ERROR: decode_directive, input = #{line.get_array()}"))
     end
     puts "TEST: decode_directive(): Completed Successfully"
 end
