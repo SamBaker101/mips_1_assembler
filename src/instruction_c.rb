@@ -15,7 +15,7 @@ class InstructionC < LineC
     @immediate     
     @address       
     @manual_args   
-
+    
     def initialize(array)
         @input = array
         @type          = nil

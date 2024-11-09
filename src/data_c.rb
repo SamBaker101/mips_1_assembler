@@ -5,7 +5,6 @@
 ####################
 
 class DataC < LineC
-    @offset  
     @size    
     @content 
     @output_array
@@ -29,14 +28,12 @@ class DataC < LineC
 
     def check_for_mult()
         while (index = @input.find_index(":"))
-            puts "#{index}   #{@input[0]}---#{@input[1]}---#{@input[2]}---#{@input[3]}"
             value = @input[index + 1]
             repeat = @input[index - 1].to_i()
-            puts "#{repeat}:#{value}"
+
             @input.delete_at(index + 1)
             @input.delete_at(index)
             @input.delete_at(index - 1)
-            puts "#{index}   #{@input[0]}---#{@input[1]}---#{@input[2]}---#{@input[3]}"
             
             repeat.times {@input.insert(index - 1, value)}
         end
