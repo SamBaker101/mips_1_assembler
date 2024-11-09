@@ -41,6 +41,7 @@ class DataC < LineC
 
     def read(label_q, line_num)
         add_mem_lines()
+        #TODO: Do these values need to be packed in the output file?
         return @output_array
     end
 end
