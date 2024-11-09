@@ -1,7 +1,9 @@
 #THIS IS A BASIC SANITY
 #It is the most basic program I could think of 
 .data
-	.byte 4
+	.byte 4, 3, 72
+	.half 256
+	.word 458
 
 .text
 	lw $t2 45 #This is a test for in line comments
