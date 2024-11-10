@@ -23,8 +23,9 @@ $DIRECTIVE_INDEX     = []
 
 
 #TODO: Add instruction mnemonics
-#TODO: Data sections
 #TODO: Add missing directives
+#TODO: There is very little error/invalid arg checking
+#TODO: Complete the rest of the unit tests
 
 def main()
     parser = ParseC.new()

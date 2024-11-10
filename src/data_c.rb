@@ -22,7 +22,11 @@ class DataC < LineC
             return -1
         else 
             index = $DIRECTIVE_INDEX.find_index(directive)
-            return $DIRECTIVE_MAP[index][2].to_i()
+            if ($DIRECTIVE_MAP[index][1] != "B")
+                return -1
+            else
+                return $DIRECTIVE_MAP[index][2].to_i()
+            end
         end
     end        
 
