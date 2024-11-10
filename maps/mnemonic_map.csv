@@ -1,1 +1,14 @@
-mnemonic, descript, command1, comand2, ...
+mnemonic, command1, comand2, ...
+MOVE    , "addu #{rd} #{rs} ${r0}"
+B       , "beq #{r0} #{r0} #{label}"
+BGE     , "slt #{at} #{rs} #{rt}"   , "beq #{at} #{r0} #{label}"
+BGEU    , "sltu #{at} #{rs} #{rt}"  , "beq #{at} #{r0} #{label}"
+BGT     , "slt #{at} #{rt} #{rs}"   , "bne #{at} #{r0} #{label}"
+BGTU    , "sltu #{at} #{rt} #{rs}"  , "beq #{at} #{r0} #{label}"
+BLE     , "slt #{at} #{rt} #{rs}"   , "beq #{at} #{r0} #{label}"
+BLEU    , "sltu #{at} #{rt} #{rs}"  , "beq #{at} #{r0} #{label}"
+BLT     , "slt #{at} #{rs} #{rt}"   , "bne #{at} #{r0} #{label}"
+BLTU    , "sltu #{at} #{rs} #{rt}"  , "bne #{at} #{r0} #{label}"
+BEQZ    , "beq #{rs} #{r0} #{label}"
+BNEZ    , "bne #{rs} #{r0} #{label}"
+BAL     , "bgezal #{r0} #{label}"
