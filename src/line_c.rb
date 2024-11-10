@@ -158,5 +158,4 @@ class LineC
         end
     end
 
-
 end

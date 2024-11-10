@@ -20,12 +20,15 @@ $INST_OUT   = "output/inst_out.txt"
 $DATA_OUT   = "output/data_out.txt"
 $INST_MAP_FILE  = "maps/instruction_map.csv"
 $DIR_MAP_FILE   = "maps/directive_map.csv"
+$MNE_MAP_FILE   = "maps/mnemonic_map.csv"   
 
 $HEX_OUT             = 1
 $INSTRUCTION_MAP     = []
 $INSTRUCTION_INDEX   = []
 $DIRECTIVE_MAP       = [] 
 $DIRECTIVE_INDEX     = []
+$MNEMONIC_MAP       = [] 
+$MNEMONIC_INDEX     = []
 
 module Mode
     TEXT    = 0
