@@ -31,6 +31,7 @@ class DataC < LineC
     end        
 
     def check_for_mult()
+        #TODO: MARS doesn't appear to support this syntax, find out why
         while (index = @input.find_index(":"))
             value = @input[index + 1]
             repeat = @input[index - 1].to_i()
