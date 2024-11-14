@@ -56,10 +56,25 @@ class DataC < LineC
         end
     end
 
+    def pack_mem()
+        #This is broken
+        bit_counter = 0
+        mem_array = Array.new(1024*8)
+        @output_array.each do |n|
+            n.split("").each do |b|
+                mem_array[bit_counter] = b
+                bit_counter += 1
+            end
+        end
+        for i in (0..(1024)) do
+            @output_array[i] = mem_array[i*8..i*8+7]
+        end
+    end
+
     def read(label_q, line_num)
         check_for_mult()
         parse_mem_lines()
-        #TODO: Do these values need to be packed in the output file?
+        pack_mem()
         return @output_array
     end
 end
