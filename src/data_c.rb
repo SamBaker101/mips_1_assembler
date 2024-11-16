@@ -57,33 +57,23 @@ class DataC < LineC
     end
 
     def pack_mem()
-        start = 0
-        finish = 0
-        size = 0
-        index = 0
         mem_array = @output_array.clone
-        (0..1024).each do |i|
-            @output_array[i] = "00000000"
-        end
-        (0..mem_array.size() - 1).each do |i|
-            if (mem_array[i] == nil)
-                break
-            elsif mem_array[i].size() == size
-                finish = i
-            else 
-                temp = ""
-                (start..finish).each do |k|
-                    temp = temp + mem_array[k]
+        @output_array = []
+        array_length = mem_array.size();
+        item_size = mem_array[0].size;
+        index = 0;
+        while array_length > 0;    
+            @output_array[index] = ""
+            for i in (0..8/item_size - 1)    
+                if (mem_array[i] == nil)
+                    @output_array[index] = ("0" * item_size) + @output_array[index] 
+                else
+                    @output_array[index] = mem_array[i] + @output_array[index]
                 end
-                puts "#{i} : #{temp} : #{mem_array[i].size()} : #{mem_array.size()}"
-                while (temp.size() < 8) do
-                    temp = temp + "0"
-                end
-                @output_array[index] = temp
-                index += 1    
+                array_length -= 1;
+                puts "#{i} : #{index} : #{@output_array[index]}"
             end
-            size = mem_array[i].size()
-            start = finish
+            index += 1
         end
     end
 
