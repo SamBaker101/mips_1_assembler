@@ -65,10 +65,10 @@ class DataC < LineC
         while array_length > 0;    
             @output_array[index] = ""
             for i in (0..8/item_size - 1)    
-                if (mem_array[i] == nil)
+                if (mem_array[i + index * (8/item_size)] == nil)
                     @output_array[index] = ("0" * item_size) + @output_array[index] 
                 else
-                    @output_array[index] = mem_array[i] + @output_array[index]
+                    @output_array[index] = mem_array[i + index * (8/item_size)] + @output_array[index]
                 end
                 array_length -= 1;
                 puts "#{i} : #{index} : #{@output_array[index]}"
