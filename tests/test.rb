@@ -48,6 +48,8 @@ def call_tests()
     parser = ParseC.new()
     parser.parse_file()
 
+    ### ParseC Tests ###
+
     ### LineC Tests ###
     line = LineC.new($test_array_random)
     test_get_array(line)
@@ -65,6 +67,18 @@ def call_tests()
     ### RDataC Tests ###
 
 end
+
+    ### ParseC Tests ###
+    #load_all_maps()
+    #load_map(map_path, map, index)
+    #fill_queues()
+    #check_for_mode_update(line_for_check)
+    #update_line_class(array, mode)
+    #parse_input()
+    #print_to_file()
+    #print_labels()
+    #close_files()
+    #parse_file()
 
 #### class LineC ####
 
@@ -194,6 +208,9 @@ def test_decode_directive_mode()
     puts "TEST: decode_directive(): Completed Successfully"
 end
 
+# check_for_labels
+# chop_comments
+
 
 #   def chop_comments()
 
@@ -207,11 +224,13 @@ end
 
 #### class DataC < LineC ####
     
-#   def initialize(array)
+#   get_size(directive)
+#   check_for_mult()
+#   parse_mem_lanes()
+#   pack_mem()
+#   read()
 
 #### MISC ####
-
-#   def decode_section_label(label)
 
 call_tests()
 
