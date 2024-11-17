@@ -71,7 +71,7 @@ class DataC < LineC
                     @output_array[index] = mem_array[i + index * (8/item_size)] + @output_array[index]
                 end
                 array_length -= 1;
-                puts "#{i} : #{index} : #{@output_array[index]}"
+                #puts "#{i} : #{index} : #{@output_array[index]}"
             end
             index += 1
         end

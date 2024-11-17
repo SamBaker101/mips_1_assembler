@@ -30,17 +30,6 @@ $DIRECTIVE_INDEX     = []
 $MNEMONIC_MAP       = [] 
 $MNEMONIC_INDEX     = []
 
-module Mode
-    TEXT    = 0
-    RDATA   = 1
-    DATA    = 2
-    LIT4    = 3
-    LIT8    = 4
-    BSS     = 5
-    SDATA   = 6
-    SBSS    = 7
-end
-
 $test_array_random  = ["abcd", "33", 31, "Boop"]
 
 def call_tests()
