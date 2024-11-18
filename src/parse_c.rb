@@ -57,6 +57,10 @@ class ParseC
         @working_lines = []
     end
 
+    def get_from_read_q(index)
+        return @read_q[index]
+    end
+
     def load_all_maps()
         load_map($INST_MAP_FILE, $INSTRUCTION_MAP, $INSTRUCTION_INDEX)
         load_map($DIR_MAP_FILE, $DIRECTIVE_MAP, $DIRECTIVE_INDEX)
@@ -79,8 +83,8 @@ class ParseC
         end
     end
 
-    def fill_queues()
-        while (line = @in_file.gets)
+    def fill_queues(in_file)
+        while (line = in_file.gets)
             @total_lines += 1
             @read_q.push(line)
     
@@ -160,11 +164,11 @@ class ParseC
     end
 
     def print_labels()
-        @label_q.each do |l|
+        @label_q.each_with_index do |l, i|
             if (l == nil) 
                 next 
             end
-            puts "Label: #{l}"
+            puts "Label: #{i}:#{l}"
         end
     end
 
@@ -175,7 +179,7 @@ class ParseC
     end
 
     def parse_file()
-        fill_queues()
+        fill_queues(@in_file)
         print_labels()
         parse_input()        
         print_to_file()        

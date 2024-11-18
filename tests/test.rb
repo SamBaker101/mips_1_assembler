@@ -39,6 +39,7 @@ def call_tests()
 
     ### ParseC Tests ###
     test_load_all_maps()
+    test_fill_queues()
 
     ### LineC Tests ###
     line = LineC.new($test_array_random)
@@ -77,6 +78,17 @@ end
 
     
     #fill_queues()
+def test_fill_queues()
+    parser = ParseC.new()
+    parser.fill_queues(File.new($IN, "r"))
+    if (parser.get_from_read_q(0).chomp != "#THIS IS A BASIC SANITY")
+        abort("ERROR: fill_queues(), read_q[0] = #{parser.get_from_read_q(0)}")
+    else
+        puts "TEST: fill_queues(): Completed Successfully"
+    end
+
+end
+
     #check_for_mode_update(line_for_check)
     #update_line_class(array, mode)
     #parse_input()
