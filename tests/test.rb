@@ -38,6 +38,7 @@ def call_tests()
     parser.parse_file()
 
     ### ParseC Tests ###
+    test_load_all_maps()
 
     ### LineC Tests ###
     line = LineC.new($test_array_random)
@@ -60,6 +61,21 @@ end
     ### ParseC Tests ###
     #load_all_maps()
     #load_map(map_path, map, index)
+def test_load_all_maps()
+    parser = ParseC.new()
+    parser.load_all_maps()
+    if ($INSTRUCTION_MAP[0][0] != "ADD")
+        abort("ERROR: load_all_maps(), $INSTRUCTION_MAP[0][0] = #{$INSTRUCTION_MAP[0][0]}")
+    elsif ($DIRECTIVE_MAP[0][0] != ".text")
+        abort("ERROR: load_all_maps(), $DIRECTIVE_MAP[0][0] = #{$DIRECTIVE_MAP[0][0]}")
+    elsif ($MNEMONIC_MAP[0][0] != "MOVE")
+        abort("ERROR: load_all_maps(), $MNEMONIC_MAP[0][0] = #{$MNEMONIC_MAP[0][0]}")
+    else
+        puts "TEST: load_all_maps(): Completed Successfully"
+    end
+end
+
+    
     #fill_queues()
     #check_for_mode_update(line_for_check)
     #update_line_class(array, mode)
