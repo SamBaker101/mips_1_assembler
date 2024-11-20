@@ -86,8 +86,12 @@ class ParseC
     def fill_queues(in_file)
         while (line = in_file.gets)
             @total_lines += 1
-            @read_q.push(line)
-    
+            
+            lines = line.split(";")
+            lines.each do |l|            
+                @read_q.push(l)
+            end
+
             @line = LineC.new(line)
             next if (@line.is_empty() == 1)
             next if (@line.is_directive() == 1)
