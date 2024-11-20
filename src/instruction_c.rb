@@ -39,7 +39,15 @@ class InstructionC < LineC
     
         return [self.get_output()]
     end
-    
+
+    def is_reg(operand)
+        if (operand[0].match(/[$rR]/))
+            return 1
+        else
+            return 0
+        end
+    end
+
     def print_line(array)
         print "Handling instruction: "
         array.each do |value|
