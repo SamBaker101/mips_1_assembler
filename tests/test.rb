@@ -40,6 +40,7 @@ def call_tests()
     ### ParseC Tests ###
     test_load_all_maps()
     test_fill_queues()
+    test_check_for_mode_update()
 
     ### LineC Tests ###
     line = LineC.new($test_array_random)
@@ -90,6 +91,19 @@ def test_fill_queues()
 end
 
     #check_for_mode_update(line_for_check)
+def test_check_for_mode_update()
+    parser = ParseC.new()
+    mode_list = [[".text"], [".rdata"], [".data"], [".lit4"], [".lit8"], [".bss"], [".sdata"], [".sbss"]]
+    (0..(mode_list.size() - 1)).each do |n|
+        line = LineC.new(mode_list[n])
+        parser.check_for_mode_update(line)
+        if (parser.get_mode() != n)
+            abort("ERROR: check_for_mode_update(), expected = #{n}:#{mode_list[n]}, got #{parser.get_mode()}")
+        end
+    end
+    puts "TEST: check_for_mode_update(): Completed Successfully"
+end
+
     #update_line_class(array, mode)
     #parse_input()
     #print_to_file()
