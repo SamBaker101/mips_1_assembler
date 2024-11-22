@@ -289,7 +289,13 @@ end
 
 # chop_comments
 def test_chop_comments()
-    puts "Test not implemented: #{__method__.to_s}"
+    line = LineC.new(["a", "b", "#c", "d", "e"])
+    line.chop_comments() 
+    if (line.get_array().size != 2);
+        abort("ERROR: #{__method__.to_s}")
+    else
+        puts "TEST: #{__method__.to_s}: Completed Successfully"
+    end
 end
 
 #### class InstructionC < LineC ####
