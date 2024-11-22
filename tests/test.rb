@@ -36,17 +36,19 @@ def call_tests()
     #This runs a full assembly of the selected test file ($IN)
     parser = ParseC.new()
     parser.parse_file()
+    #TODO: Replace parse_file with test_parse_file()
+    #This will be more involved, does full assemble, set up compare between sample output and MARS output
+    #test_parse_file() 
 
     ### ParseC Tests ###
     test_load_all_maps()
     test_fill_queues()
     test_check_for_mode_update()
     test_update_line_class()
-    test_parse_input()
-    test_print_to_file()
-    test_print_labels()
-    test_close_files()
-    test_parse_file()
+    #test_parse_input()     these will be part of test_parse_file
+    #test_print_to_file()   these will be part of test_parse_file
+    #test_print_labels()    these will be part of test_parse_file
+    #test_close_files()     these will be part of test_parse_file
 
     ### LineC Tests ###
     line = LineC.new($test_array_random)
@@ -57,16 +59,35 @@ def call_tests()
     test_binary_to_hex(line)
     test_is_directive()
     test_decode_directive_mode()
+    test_check_for_labels()
+    test_chop_comments()
 
     ### InstructionC Tests ###
+    inst = LineC.new($test_array_random)
+    test_read()
+    test_is_reg()
+    test_print_line()
+    test_decode_operation()
+    test_decode_reg()
+    test_encode()
 
     ### DataC Tests ###
+    test_get_size()
+    test_check_for_mult()
+    test_parse_mem_lanes()
+    test_pack_mem()
+    test_read()
 
     ### RDataC Tests ###
 
 end
 
     ### ParseC Tests ###
+    #parse_file()
+    def test_parse_file()
+        puts "Test not implemented: test_parse_file("
+    end    
+
     #load_all_maps()
     #load_map(map_path, map, index)
 def test_load_all_maps()
@@ -123,27 +144,6 @@ def test_update_line_class()
     end
     puts "TEST: update_line_class(): Completed Successfully"
 end
-
-def test_parse_input()
-    puts "Test not implemented: test_parse_input"
-end
-
-def test_print_to_file()
-    puts "Test not implemented: test_print_to_file"
-end
-
-def test_print_labels()
-    puts "Test not implemented: test_print_labels()"
-end
-
-def test_close_files()
-    puts "Test not implemented: test_close_files()"
-end
-
-def test_parse_file()
-    puts "Test not implemented: test_parse_file("
-end
-
 
 #### class LineC ####
 
@@ -274,26 +274,73 @@ def test_decode_directive_mode()
 end
 
 # check_for_labels
+def test_check_for_labels()
+    puts "Test not implemented: #{__method__.to_s}"
+end
 # chop_comments
-
-
-#   def chop_comments()
+def test_chop_comments()
+    puts "Test not implemented: #{__method__.to_s}"
+end
 
 #### class InstructionC < LineC ####
 
-#   def read()
-#   def print_line(array)
-#   def decode_operation()
-#   def decode_reg(string)
-#   def encode()
+#read()
+def test_read()
+    puts "Test not implemented: #{__method__.to_s}"
+end
+
+#is_reg(operand)
+def test_is_reg()
+    puts "Test not implemented: #{__method__.to_s}"
+end
+
+#print_line(array)
+def test_print_line()
+    puts "Test not implemented: #{__method__.to_s}"
+end
+
+#decode_operation()
+def test_decode_operation()
+    puts "Test not implemented: #{__method__.to_s}"
+end
+
+#decode_reg(string)
+def test_decode_reg()
+    puts "Test not implemented: #{__method__.to_s}"
+end
+
+#encode()
+def test_encode()
+    puts "Test not implemented: #{__method__.to_s}"
+end
+
 
 #### class DataC < LineC ####
     
 #   get_size(directive)
+def test_get_size()
+    puts "Test not implemented: #{__method__.to_s}"
+end
+
 #   check_for_mult()
+def test_check_for_mult()
+    puts "Test not implemented: #{__method__.to_s}"
+end
+
 #   parse_mem_lanes()
+def test_parse_mem_lanes()
+    puts "Test not implemented: #{__method__.to_s}"
+end
+
 #   pack_mem()
+def test_pack_mem()
+    puts "Test not implemented: #{__method__.to_s}"
+end
+
 #   read()
+def test_read()
+    puts "Test not implemented: #{__method__.to_s}"
+end
 
 #### MISC ####
 
