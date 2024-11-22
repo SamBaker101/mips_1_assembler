@@ -64,7 +64,7 @@ class ParseC
     def get_mode()
         return @mode
     end
-    
+
     def load_all_maps()
         load_map($INST_MAP_FILE, $INSTRUCTION_MAP, $INSTRUCTION_INDEX)
         load_map($DIR_MAP_FILE, $DIRECTIVE_MAP, $DIRECTIVE_INDEX)

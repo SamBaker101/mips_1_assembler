@@ -41,6 +41,7 @@ def call_tests()
     test_load_all_maps()
     test_fill_queues()
     test_check_for_mode_update()
+    test_update_line_class()
 
     ### LineC Tests ###
     line = LineC.new($test_array_random)
@@ -105,6 +106,19 @@ def test_check_for_mode_update()
 end
 
     #update_line_class(array, mode)
+def test_update_line_class()
+    parser = ParseC.new()
+    class_list = ["InstructionC", "DataC", "DataC"]
+    (0..(class_list.size() - 1)).each do |n|
+        line = LineC.new($test_array_random)
+        line = parser.update_line_class($test_array_random, n)
+        if (line.class().to_s != class_list[n])
+            abort("ERROR: update_line_class(), expected = #{n}:#{class_list[n]}, got #{line.class()}")
+        end
+    end
+    puts "TEST: update_line_class(): Completed Successfully"
+end
+
     #parse_input()
     #print_to_file()
     #print_labels()
