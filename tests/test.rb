@@ -33,7 +33,7 @@ $MNEMONIC_INDEX     = []
 $test_array_random  = ["abcd", "33", 31, "Boop"]
 
 def call_tests()
-    #TODO: Should test the Parse class functions individually
+    #This runs a full assembly of the selected test file ($IN)
     parser = ParseC.new()
     parser.parse_file()
 
@@ -42,6 +42,11 @@ def call_tests()
     test_fill_queues()
     test_check_for_mode_update()
     test_update_line_class()
+    test_parse_input()
+    test_print_to_file()
+    test_print_labels()
+    test_close_files()
+    test_parse_file()
 
     ### LineC Tests ###
     line = LineC.new($test_array_random)
@@ -119,11 +124,26 @@ def test_update_line_class()
     puts "TEST: update_line_class(): Completed Successfully"
 end
 
-    #parse_input()
-    #print_to_file()
-    #print_labels()
-    #close_files()
-    #parse_file()
+def test_parse_input()
+    puts "Test not implemented: test_parse_input"
+end
+
+def test_print_to_file()
+    puts "Test not implemented: test_print_to_file"
+end
+
+def test_print_labels()
+    puts "Test not implemented: test_print_labels()"
+end
+
+def test_close_files()
+    puts "Test not implemented: test_close_files()"
+end
+
+def test_parse_file()
+    puts "Test not implemented: test_parse_file("
+end
+
 
 #### class LineC ####
 
