@@ -4,6 +4,8 @@
 # MIPS_1 Assembler - Data Class Definitions
 ####################
 
+#TODO: Labels for data items (variables)
+
 class DataC < LineC
     @size    
     @content 

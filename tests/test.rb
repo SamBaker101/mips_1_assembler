@@ -255,7 +255,6 @@ def test_is_empty()
     puts "TEST: is_directive(): Completed Successfully"
 end
     
-
 #   def decode_directive()
 def test_decode_directive_mode()    
     line = LineC.new([".data", "101011"])
@@ -275,8 +274,19 @@ end
 
 # check_for_labels
 def test_check_for_labels()
-    puts "Test not implemented: #{__method__.to_s}"
+    line = LineC.new(["test_label:"])
+    if (line.check_for_labels() == 0);
+        abort("ERROR: check_for_labels() did not identify test label")
+    end
+
+    line = LineC.new($test_array_random)
+    if (line.check_for_labels() != 0);
+        abort("ERROR: check_for_labels() identified non_label")
+    else
+        puts "TEST: #{__method__.to_s}: Completed Successfully"
+    end
 end
+
 # chop_comments
 def test_chop_comments()
     puts "Test not implemented: #{__method__.to_s}"
