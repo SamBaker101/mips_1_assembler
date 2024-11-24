@@ -63,13 +63,13 @@ def call_tests()
     test_chop_comments()
 
     ### InstructionC Tests ###
-    inst = LineC.new($test_array_random)
-    test_read()
-    test_is_reg()
-    test_print_line()
-    test_decode_operation()
-    test_decode_reg()
-    test_encode()
+    inst = InstructionC.new($test_array_random)
+    #test_read() - This is a parent function 
+    test_is_reg(inst)
+    test_print_line(inst)
+    test_decode_operation(inst)
+    test_decode_reg(inst)
+    test_encode(inst)
 
     ### DataC Tests ###
     test_get_size()
@@ -301,27 +301,33 @@ def test_read()
 end
 
 #is_reg(operand)
-def test_is_reg()
-    puts "Test not implemented: #{__method__.to_s}"
+def test_is_reg(inst)
+    if (inst.is_reg("addu") != 0)
+        abort(abort("ERROR: #{__method__.to_s}, input = addu, out = #{1}"))
+    end
+    if (inst.is_reg("$at") == 0)
+        abort(abort("ERROR: #{__method__.to_s}, input = $at, out= #{0}"))
+    end
+    puts "TEST: #{__method__.to_s}: Completed Successfully"
 end
 
 #print_line(array)
-def test_print_line()
+def test_print_line(inst)
     puts "Test not implemented: #{__method__.to_s}"
 end
 
 #decode_operation()
-def test_decode_operation()
+def test_decode_operation(inst)
     puts "Test not implemented: #{__method__.to_s}"
 end
 
 #decode_reg(string)
-def test_decode_reg()
+def test_decode_reg(inst)
     puts "Test not implemented: #{__method__.to_s}"
 end
 
 #encode()
-def test_encode()
+def test_encode(inst)
     puts "Test not implemented: #{__method__.to_s}"
 end
 
