@@ -63,7 +63,7 @@ class DataC < LineC
         pointer = mem.align(@size)
         @output_array.each do |item|
             (item.size()/2).times do |j|
-                index = item.size()/2 - (j*2)
+                index = item.size() - j*2 - 1
                 puts "#{item}:#{item.size}:#{item.size/2}:#{j*2}::#{index}"
 
                 mem.set_byte(pointer, item[(index - 1) .. index])
