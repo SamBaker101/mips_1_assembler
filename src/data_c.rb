@@ -60,12 +60,11 @@ class DataC < LineC
 
     def pack_mem(mem)
         pointer = mem.get_pointer()
-        pointer = mem.align(@size)
+        puts @output_array
+        pointer = mem.align(@size/8)
         @output_array.each do |item|
             (item.size()/2).times do |j|
                 index = item.size() - j*2 - 1
-                puts "#{item}:#{item.size}:#{item.size/2}:#{j*2}::#{index}"
-
                 mem.set_byte(pointer, item[(index - 1) .. index])
                 pointer += 1
             end

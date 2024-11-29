@@ -55,6 +55,7 @@ class MemC
     def align(bytes)
         pointer = get_pointer()
         while (pointer % bytes != 0) do
+            puts "#{pointer}::#{bytes}:#{pointer % bytes}"
             @mem_array[pointer] = "00"
             pointer += 1
         end
