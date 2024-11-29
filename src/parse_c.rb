@@ -150,25 +150,51 @@ class ParseC
             @working_lines = @line.read(@label_q, @line_num)
 
             @working_lines.each do |i|
-                case (@mode) 
-                    when Mode::DATA 
-                        @data_q.push(i)
-                    when Mode::RDATA 
-                        @rdata.push(i)
-                    when Mode::TEXT 
-                        @inst_q.push(i) 
+                pointer = get_pointer()
+                (i.size()/2).times do |j|
+                    $MEM_ARRAY[pointer] = i[(j*2) .. (j*2 + 1)]
+                    pointer += 1
                 end
+                set_pointer(pointer)
             end
         end
     end
 
+    def get_pointer()
+        case (@mode) 
+            when Mode::DATA 
+                pointer = $MEM_DATA_POINTER
+            when Mode::RDATA 
+                pointer = $MEM_DATA_POINTER #FIXME: This should have a seperate address range
+            when Mode::TEXT 
+                pointer = $MEM_INST_POINTER
+        end
+        return pointer
+    end
+
+    def set_pointer(pointer)
+        case (@mode) 
+            when Mode::DATA 
+                 $MEM_DATA_POINTER = pointer
+            when Mode::RDATA 
+                $MEM_DATA_POINTER = pointer#FIXME: This should have a seperate address range
+            when Mode::TEXT 
+                $MEM_INST_POINTER = pointer
+        end
+    end
+
+    #TODO: Need to pack these into lines
     def print_to_file()
-        @inst_q.each do |i|
-            @inst_out_file.puts(i)
+        ($MEM_INST_OFFSET .. $MEM_INST_POINTER).each do |i|
+            @inst_out_file.puts($MEM_ARRAY[i])
         end
 
-        @data_q.each do |i|
-            @data_out_file.puts(i)
+        ($MEM_DATA_OFFSET .. $MEM_DATA_POINTER).each do |i|
+            @data_out_file.puts($MEM_ARRAY[i])
+        end
+
+        $MEM_ARRAY.each do |i|
+            @out_file.puts(i)
         end
     end
 

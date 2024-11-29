@@ -30,7 +30,7 @@ $MEM_INST_POINTER       = $MEM_INST_OFFSET
 $MEM_DATA_OFFSET        = 0x00400000
 $MEM_DATA_POINTER       = $MEM_DATA_OFFSET
 
-$MEM_ARRAY              = Array.new($MEM_SIZE)
+$MEM_ARRAY              = Array.new($MEM_SIZE, "00")
 
 
 #TODO: Implement instruction mnemonics
