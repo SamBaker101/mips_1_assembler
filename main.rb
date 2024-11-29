@@ -22,6 +22,15 @@ $DIRECTIVE_INDEX     = []
 $MNEMONIC_MAP       = [] 
 $MNEMONIC_INDEX     = []
 
+#TODO: This should probably be its own class
+$MEM_SIZE               = 1024
+$MEM_INST_OFFSET        = 0
+$MEM_INST_POINTER       = $MEM_INST_OFFSET
+
+$MEM_DATA_OFFSET        = 0x00400000
+$MEM_DATA_POINTER       = $MEM_DATA_OFFSET
+
+$MEM_ARRAY              = Array.new($MEM_SIZE)
 
 
 #TODO: Implement instruction mnemonics
