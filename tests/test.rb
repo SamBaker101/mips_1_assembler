@@ -11,6 +11,7 @@ require "./src/parse_c.rb"
 require "./src/line_c.rb"
 require "./src/instruction_c.rb"
 require "./src/data_c.rb"
+require "./src/mem_c.rb"
 
 $COMMENT_CHARACTER   = "#"
 $INST_OFFSET         = "0x00400000"
@@ -27,7 +28,6 @@ $DIRECTIVE_MAP       = []
 $DIRECTIVE_INDEX     = []
 $MNEMONIC_MAP       = [] 
 $MNEMONIC_INDEX     = []
-
 
 $test_array_random  = ["abcd", "33", 31, "Boop"]
 

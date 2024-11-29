@@ -4,6 +4,10 @@
 # MIPS_1 Assembler - Parser Class
 ####################
 
+$MEM_SIZE               = 2045
+$MEM_INST_OFFSET        = 0
+$MEM_DATA_OFFSET        = 0x00400000
+
 module Mode
     TEXT    = 0
     RDATA   = 1
@@ -17,8 +21,6 @@ end
 
 class ParseC 
     @in_file       
-    @inst_out_file 
-    @data_out_file 
 
     @mode
 
@@ -34,13 +36,12 @@ class ParseC
     @instr_num
     @working_lines
 
+    @mem
+
     def initialize()
         load_all_maps()
     
         @in_file        = File.new("samples/#{$FILE_NAME}.asm", "r")
-        @inst_out_file  = File.new("output/#{$FILE_NAME}_inst.txt", "w")
-        @data_out_file  = File.new("output/#{$FILE_NAME}_data.txt", "w")
-        @out_file       = File.new("output/#{$FILE_NAME}.txt", "w")
 
         @mode       = Mode::TEXT
         @read_q     = []
@@ -56,6 +57,8 @@ class ParseC
 
         @line
         @working_lines = []
+
+        @mem = MemC.new($MEM_SIZE, $MEM_INST_OFFSET, $MEM_DATA_OFFSET, self)
     end
 
     def get_from_read_q(index)
@@ -150,64 +153,8 @@ class ParseC
             @working_lines = @line.read(@label_q, @line_num)
 
             @working_lines.each do |i|
-                write_into_mem(i)
+                @mem.write_into_mem(i)
             end
-        end
-    end
-
-    def write_into_mem(line)
-        pointer = get_pointer()
-        (line.size()/2).times do |j|
-            $MEM_ARRAY[pointer] = line[(j*2) .. (j*2 + 1)]
-            pointer += 1
-        end
-        set_pointer(pointer)
-    end
-
-    def get_pointer()
-        case (@mode) 
-            when Mode::DATA 
-                pointer = $MEM_DATA_POINTER
-            when Mode::RDATA 
-                pointer = $MEM_DATA_POINTER #FIXME: This should have a seperate address range
-            when Mode::TEXT 
-                pointer = $MEM_INST_POINTER
-        end
-        return pointer
-    end
-
-    def set_pointer(pointer)
-        case (@mode) 
-            when Mode::DATA 
-                 $MEM_DATA_POINTER = pointer
-            when Mode::RDATA 
-                $MEM_DATA_POINTER = pointer#FIXME: This should have a seperate address range
-            when Mode::TEXT 
-                $MEM_INST_POINTER = pointer
-        end
-    end
-
-    #TODO: Checks are pretty ugly here, should be cleaned up or abstracted
-    def print_to_file(line_length = 4)
-        ($MEM_INST_OFFSET .. $MEM_INST_POINTER - 1).each do |i|
-            if ((i - $MEM_INST_OFFSET) != 0 && ((i - $MEM_INST_OFFSET) % line_length) == 0)
-                @inst_out_file.puts("")
-            end
-            @inst_out_file.print($MEM_ARRAY[i])
-        end
-
-        ($MEM_DATA_OFFSET .. $MEM_DATA_POINTER - 1 ).each do |i|
-            if ((i - $MEM_DATA_OFFSET) != 0 && ((i - $MEM_DATA_OFFSET) % line_length) == 0)
-                @data_out_file.puts("")
-            end
-            @data_out_file.print($MEM_ARRAY[i])
-        end
-
-        $MEM_ARRAY.each_with_index do |item, i|
-            if (i != 0 && i % line_length == 0)
-                @out_file.puts("")
-            end
-            @out_file.print(item)
         end
     end
 
@@ -222,16 +169,14 @@ class ParseC
 
     def close_files()
         @in_file.close
-        @inst_out_file.close
-        @data_out_file.close
-        @out_file.close
+        @mem.close_files()
     end
 
     def parse_file()
         fill_queues(@in_file)
         print_labels()
         parse_input()        
-        print_to_file()        
+        @mem.print_to_file()        
         close_files()
     end
 end

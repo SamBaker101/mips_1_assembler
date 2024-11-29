@@ -8,6 +8,7 @@ require "./src/parse_c.rb"
 require "./src/line_c.rb"
 require "./src/instruction_c.rb"
 require "./src/data_c.rb"
+require "./src/mem_c.rb"
 
 $FILE_NAME       = "sample1"
 $INST_MAP_FILE  = "maps/instruction_map.csv"
@@ -21,17 +22,6 @@ $DIRECTIVE_MAP       = []
 $DIRECTIVE_INDEX     = []
 $MNEMONIC_MAP       = [] 
 $MNEMONIC_INDEX     = []
-
-#TODO: This should probably be its own class
-$MEM_SIZE               = 1024
-$MEM_INST_OFFSET        = 0
-$MEM_INST_POINTER       = $MEM_INST_OFFSET
-
-$MEM_DATA_OFFSET        = 0x00400000
-$MEM_DATA_POINTER       = $MEM_DATA_OFFSET
-
-$MEM_ARRAY              = Array.new($MEM_SIZE, "00")
-
 
 #TODO: Implement instruction mnemonics
 #TODO: Add missing directives
