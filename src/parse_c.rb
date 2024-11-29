@@ -150,14 +150,18 @@ class ParseC
             @working_lines = @line.read(@label_q, @line_num)
 
             @working_lines.each do |i|
-                pointer = get_pointer()
-                (i.size()/2).times do |j|
-                    $MEM_ARRAY[pointer] = i[(j*2) .. (j*2 + 1)]
-                    pointer += 1
-                end
-                set_pointer(pointer)
+                write_into_mem(i)
             end
         end
+    end
+
+    def write_into_mem(line)
+        pointer = get_pointer()
+        (line.size()/2).times do |j|
+            $MEM_ARRAY[pointer] = line[(j*2) .. (j*2 + 1)]
+            pointer += 1
+        end
+        set_pointer(pointer)
     end
 
     def get_pointer()
