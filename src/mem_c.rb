@@ -93,7 +93,7 @@ class MemC
 
     def print_to_file(line_length, file, start, finish)
         line = Array.new(line_length, "00")
-        (start .. finish - 1).each do |i|
+        (start .. finish).each do |i|
             if ((i - start) != 0 && (i % line_length == 0))
                 (0..line_length - 1).each do |j|
                     file.print(line[(line_length - 1) - j])

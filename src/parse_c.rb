@@ -4,9 +4,9 @@
 # MIPS_1 Assembler - Parser Class
 ####################
 
-$MEM_SIZE               = 2045
+$MEM_SIZE               = 2048
 $MEM_INST_OFFSET        = 0
-$MEM_DATA_OFFSET        = 0x00400000
+$MEM_DATA_OFFSET        = 512
 
 module Mode
     TEXT    = 0
