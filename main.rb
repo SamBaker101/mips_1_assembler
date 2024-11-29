@@ -9,9 +9,7 @@ require "./src/line_c.rb"
 require "./src/instruction_c.rb"
 require "./src/data_c.rb"
 
-$IN         = "samples/sample1.asm"
-$INST_OUT   = "output/inst_out.txt"
-$DATA_OUT   = "output/data_out.txt"
+$FILE_NAME       = "sample1"
 $INST_MAP_FILE  = "maps/instruction_map.csv"
 $DIR_MAP_FILE   = "maps/directive_map.csv"
 $MNE_MAP_FILE   = "maps/mnemonic_map.csv"   
@@ -26,10 +24,11 @@ $MNEMONIC_INDEX     = []
 
 
 
-#TODO: Add instruction mnemonics
+#TODO: Implement instruction mnemonics
 #TODO: Add missing directives
 #TODO: There is very little error/invalid arg checking
 #TODO: Complete the rest of the unit tests
+
 
 def main()
     parser = ParseC.new()

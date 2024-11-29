@@ -37,10 +37,11 @@ class ParseC
     def initialize()
         load_all_maps()
     
-        @in_file        = File.new($IN, "r")
-        @inst_out_file  = File.new($INST_OUT, "w")
-        @data_out_file  = File.new($DATA_OUT, "w")
-    
+        @in_file        = File.new("samples/#{$FILE_NAME}.asm", "r")
+        @inst_out_file  = File.new("output/#{$FILE_NAME}_inst.txt", "w")
+        @data_out_file  = File.new("output/#{$FILE_NAME}_data.txt", "w")
+        @out_file       = File.new("output/#{$FILE_NAME}.txt", "w")
+
         @mode       = Mode::TEXT
         @read_q     = []
         @label_q    = {}
@@ -184,6 +185,7 @@ class ParseC
         @in_file.close
         @inst_out_file.close
         @data_out_file.close
+        @out_file.close
     end
 
     def parse_file()

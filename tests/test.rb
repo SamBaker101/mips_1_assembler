@@ -15,9 +15,7 @@ require "./src/data_c.rb"
 $COMMENT_CHARACTER   = "#"
 $INST_OFFSET         = "0x00400000"
 
-$IN         = "samples/sample1.asm"
-$INST_OUT   = "output/inst_out.txt"
-$DATA_OUT   = "output/data_out.txt"
+$FILE_NAME       = "sample1"
 $INST_MAP_FILE  = "maps/instruction_map.csv"
 $DIR_MAP_FILE   = "maps/directive_map.csv"
 $MNE_MAP_FILE   = "maps/mnemonic_map.csv"   
@@ -29,6 +27,7 @@ $DIRECTIVE_MAP       = []
 $DIRECTIVE_INDEX     = []
 $MNEMONIC_MAP       = [] 
 $MNEMONIC_INDEX     = []
+
 
 $test_array_random  = ["abcd", "33", 31, "Boop"]
 
@@ -66,7 +65,7 @@ def call_tests()
     inst = InstructionC.new($test_array_random)
     #test_read() - This is a parent function 
     test_is_reg(inst)
-    test_print_line(inst)
+    #test_print_line(inst) - Print doesnt really need test
     test_decode_operation(inst)
     test_decode_reg(inst)
     test_encode(inst)
@@ -105,7 +104,7 @@ end
     
     #fill_queues()
 def test_fill_queues(parser)
-    parser.fill_queues(File.new($IN, "r"))
+    parser.fill_queues(File.new("samples/#{$FILE_NAME}.asm", "r"))
     if (parser.get_from_read_q(0).chomp != "#THIS IS A BASIC SANITY")
         abort("ERROR: #{__method__.to_s}, read_q[0] = #{parser.get_from_read_q(0)}")
     else
@@ -309,11 +308,6 @@ def test_is_reg(inst)
         abort(abort("ERROR: #{__method__.to_s}, input = $at, out= #{0}"))
     end
     puts "TEST: #{__method__.to_s}: Completed Successfully"
-end
-
-#print_line(array)
-def test_print_line(inst)
-    puts "Test not implemented: #{__method__.to_s}"
 end
 
 #decode_operation()
