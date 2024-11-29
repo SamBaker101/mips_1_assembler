@@ -150,8 +150,9 @@ class ParseC
             next if (check_for_mode_update(@line) == 1)
 
             @line = update_line_class(@line.get_array(), @mode)
-            @working_lines = @line.read(@label_q, @line_num)
+            @working_lines = @line.read(@label_q, @line_num, @mem)
 
+            next if (@working_lines == nil) #TODO: In process of moving mem write into read
             @working_lines.each do |i|
                 @mem.write_into_mem(i)
             end
@@ -176,7 +177,7 @@ class ParseC
         fill_queues(@in_file)
         print_labels()
         parse_input()        
-        @mem.print_to_file()        
+        @mem.print_out_files()        
         close_files()
     end
 end

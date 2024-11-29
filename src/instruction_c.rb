@@ -30,7 +30,7 @@ class InstructionC < LineC
         @manual_args   = 0
     end
 
-    def read(label_q, line_num)
+    def read(label_q, line_num, mem)
         self.print_line(@input)
 
         self.decode_operation()

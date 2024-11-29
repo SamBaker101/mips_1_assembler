@@ -58,31 +58,25 @@ class DataC < LineC
         end
     end
 
-    def pack_mem()
-        mem_array = @output_array.clone
-        @output_array = []
-        array_length = mem_array.size();
-        item_size = mem_array[0].size;
-        index = 0;
-        while array_length > 0;    
-            @output_array[index] = ""
-            for i in (0..8/item_size - 1)    
-                if (mem_array[i + index * (8/item_size)] == nil)
-                    @output_array[index] = ("0" * item_size) + @output_array[index] 
-                else
-                    @output_array[index] = mem_array[i + index * (8/item_size)] + @output_array[index]
-                end
-                array_length -= 1;
-                #puts "#{i} : #{index} : #{@output_array[index]}"
+    def pack_mem(mem)
+        pointer = mem.get_pointer()
+        pointer = mem.align(@size)
+        @output_array.each do |item|
+            (item.size()/2).times do |j|
+                index = item.size()/2 - (j*2)
+                puts "#{item}:#{item.size}:#{item.size/2}:#{j*2}::#{index}"
+
+                mem.set_byte(pointer, item[(index - 1) .. index])
+                pointer += 1
             end
-            index += 1
         end
+        mem.set_pointer(pointer)
     end
 
-    def read(label_q, line_num)
+    def read(label_q, line_num, mem)
         check_for_mult()
         parse_mem_lines()
-        pack_mem()
-        return @output_array
+        pack_mem(mem)
+        return nil
     end
 end

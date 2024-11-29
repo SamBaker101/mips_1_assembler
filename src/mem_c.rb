@@ -19,7 +19,6 @@ class MemC
     @data_out_file
     @out_file     
 
-
     def initialize(mem_size, inst_offset, data_offset, parser)
         @mem_size               = mem_size
         @mem_inst_offset        = inst_offset
@@ -55,8 +54,9 @@ class MemC
 
     def align(bytes)
         pointer = get_pointer()
-        if (pointer % bytes != 0)
-            pointer += (bytes - pointer % bytes)
+        while (pointer % bytes != 0) do
+            @mem_array[pointer] = "00"
+            pointer += 1
         end
         set_pointer(pointer) 
     end
@@ -84,27 +84,22 @@ class MemC
         end
     end
 
-    #TODO: Checks are pretty ugly here, should be cleaned up or abstracted
-    def print_to_file(line_length = 4)
-        (@mem_inst_offset .. @mem_inst_pointer - 1).each do |i|
-            if ((i - @mem_inst_offset) != 0 && ((i - @mem_inst_offset) % line_length) == 0)
-                @inst_out_file.puts("")
-            end
-            @inst_out_file.print(@mem_array[i])
-        end
+    def print_out_files(line_length = 4)
+        print_to_file(line_length, @inst_out_file, @mem_inst_offset, @mem_inst_pointer)
+        print_to_file(line_length, @data_out_file, @mem_data_offset, @mem_data_pointer)
+        print_to_file(line_length, @out_file, 0, @mem_size)
+    end
 
-        (@mem_data_offset .. @mem_data_pointer - 1 ).each do |i|
-            if ((i - @mem_data_offset) != 0 && ((i - @mem_data_offset) % line_length) == 0)
-                @data_out_file.puts("")
+    def print_to_file(line_length, file, start, finish)
+        line = Array.new(line_length, "00")
+        (start .. finish - 1).each do |i|
+            if ((i - start) != 0 && (i % line_length == 0))
+                (0..line_length - 1).each do |j|
+                    file.print(line[(line_length - 1) - j])
+                end
+                file.puts("")
             end
-            @data_out_file.print(@mem_array[i])
-        end
-
-        @mem_array.each_with_index do |item, i|
-            if (i != 0 && i % line_length == 0)
-                @out_file.puts("")
-            end
-            @out_file.print(item)
+            line[i % line_length] = (@mem_array[i])
         end
     end
 
