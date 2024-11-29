@@ -183,18 +183,27 @@ class ParseC
         end
     end
 
-    #TODO: Need to pack these into lines
-    def print_to_file()
-        ($MEM_INST_OFFSET .. $MEM_INST_POINTER).each do |i|
-            @inst_out_file.puts($MEM_ARRAY[i])
+    #TODO: Checks are pretty ugly here, should be cleaned up or abstracted
+    def print_to_file(line_length = 4)
+        ($MEM_INST_OFFSET .. $MEM_INST_POINTER - 1).each do |i|
+            if ((i - $MEM_INST_OFFSET) != 0 && ((i - $MEM_INST_OFFSET) % line_length) == 0)
+                @inst_out_file.puts("")
+            end
+            @inst_out_file.print($MEM_ARRAY[i])
         end
 
-        ($MEM_DATA_OFFSET .. $MEM_DATA_POINTER).each do |i|
-            @data_out_file.puts($MEM_ARRAY[i])
+        ($MEM_DATA_OFFSET .. $MEM_DATA_POINTER - 1 ).each do |i|
+            if ((i - $MEM_DATA_OFFSET) != 0 && ((i - $MEM_DATA_OFFSET) % line_length) == 0)
+                @data_out_file.puts("")
+            end
+            @data_out_file.print($MEM_ARRAY[i])
         end
 
-        $MEM_ARRAY.each do |i|
-            @out_file.puts(i)
+        $MEM_ARRAY.each_with_index do |item, i|
+            if (i != 0 && i % line_length == 0)
+                @out_file.puts("")
+            end
+            @out_file.print(item)
         end
     end
 
