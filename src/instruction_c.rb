@@ -15,7 +15,7 @@ class InstructionC < LineC
     @immediate     
     @address       
     @manual_args   
-    
+
     def initialize(array)
         @input = array
         @type          = nil
@@ -31,13 +31,14 @@ class InstructionC < LineC
     end
 
     def read(label_q, line_num, mem)
-        self.print_line(@input)
+        print_line(@input)
 
-        self.decode_operation()
-        @bin_output = self.encode(label_q, line_num)
+        decode_operation()
+        @bin_output = encode(label_q, line_num)
         @hex_output = binary_to_hex(@bin_output);
     
-        return [self.get_output()]
+        pack_mem(mem)
+        return nil
     end
 
     def is_reg(operand)
@@ -207,5 +208,16 @@ class InstructionC < LineC
                 puts "Instruction Type not found : #{@type}"
                 bin_output = @opcode + @address 
         end
+    end
+
+    def pack_mem(mem)
+        pointer = mem.get_pointer()
+        item = @hex_output
+        (item.size()/2).times do |j|
+            index = item.size() - j*2 - 1
+            mem.set_byte(pointer, item[(index - 1) .. index])
+            pointer += 1
+        end
+        mem.set_pointer(pointer)
     end
 end

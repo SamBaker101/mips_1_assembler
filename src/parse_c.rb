@@ -138,7 +138,7 @@ class ParseC
     def parse_input()
         puts "Total lines = " << @total_lines.to_s
         @line_num = 0
-        while (@line_num < @total_lines) 
+        while (@line_num <= @total_lines) 
             @line = LineC.new(@read_q[@line_num])
             @line_num += 1
             
