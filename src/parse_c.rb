@@ -34,7 +34,6 @@ class ParseC
     @total_lines
     @line_num 
     @instr_num
-    @working_lines
 
     @mem
 
@@ -56,7 +55,6 @@ class ParseC
         @instr_num      = 0
 
         @line
-        @working_lines = []
 
         @mem = MemC.new($MEM_SIZE, $MEM_INST_OFFSET, $MEM_DATA_OFFSET, self)
     end
@@ -150,12 +148,7 @@ class ParseC
             next if (check_for_mode_update(@line) == 1)
 
             @line = update_line_class(@line.get_array(), @mode)
-            @working_lines = @line.read(@label_q, @line_num, @mem)
-
-            next if (@working_lines == nil) #TODO: In process of moving mem write into read
-            @working_lines.each do |i|
-                @mem.write_into_mem(i)
-            end
+            @line.read(@label_q, @line_num, @mem)
         end
     end
 
