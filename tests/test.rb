@@ -39,6 +39,9 @@ def call_tests()
     #This will be more involved, does full assemble, set up compare between sample output and MARS output
     #test_parse_file() 
 
+    dummy_mem = MemC.new($MEM_SIZE, $MEM_INST_OFFSET, $MEM_DATA_OFFSET, self)
+
+
     ### ParseC Tests ###
     test_load_all_maps(parser)
     test_fill_queues(parser)
@@ -62,7 +65,7 @@ def call_tests()
     test_chop_comments()
 
     ### InstructionC Tests ###
-    inst = InstructionC.new($test_array_random)
+    inst = InstructionC.new($test_array_random, dummy_mem)
     #test_read() - This is a parent function 
     test_is_reg(inst)
     #test_print_line(inst) - Print doesnt really need test
