@@ -125,11 +125,11 @@ class ParseC
     def update_line_class(array, mode)
         case (mode) 
             when Mode::DATA 
-                return DataC.new(array)
+                return DataC.new(array, @mem)
             when Mode::RDATA 
-                return DataC.new(array)
+                return DataC.new(array, @mem)
             when Mode::TEXT 
-                return InstructionC.new(array)
+                return InstructionC.new(array, @mem)
         end
     end
 
@@ -148,7 +148,7 @@ class ParseC
             next if (check_for_mode_update(@line) == 1)
 
             @line = update_line_class(@line.get_array(), @mode)
-            @line.read(@label_q, @line_num, @mem)
+            @line.read(@label_q, @line_num)
         end
     end
 

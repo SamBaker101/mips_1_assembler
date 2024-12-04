@@ -10,13 +10,15 @@ class DataC < LineC
     @size    
     @content 
     @output_array
-    
-    def initialize(array)
+    @mem
+
+    def initialize(array, mem)
         @input      = array
         @offset     = "0x00000000"  
         @size       = 32
         @content    = "0x00000000"
         @output_array = []
+        @mem        = mem
     end
 
     def get_size(directive)
@@ -47,35 +49,39 @@ class DataC < LineC
     end
 
     def parse_mem_lines()
-        @input.each do |i|
-            if i[0] == "."
-                @size = get_size(i)
-            else
-                @bin_output = binary_encode(i.to_i(), @size)
-                @hex_output = binary_to_hex(@bin_output, @size)
-                @output_array.push(get_output())
+        if (@input[0] == ".align")
+            @mem.align(@input[1].to_i)
+        elsif
+            @input.each do |i|
+                if i[0] == "."
+                    @size = get_size(i)
+                else
+                    @bin_output = binary_encode(i.to_i(), @size)
+                    @hex_output = binary_to_hex(@bin_output, @size)
+                    @output_array.push(get_output())
+                end
             end
         end
     end
 
-    def pack_mem(mem)
-        pointer = mem.get_pointer()
+    def pack_mem()
+        pointer = @mem.get_pointer()
         puts @output_array
-        pointer = mem.align(@size/8)
+        pointer = @mem.align(@size/8)
         @output_array.each do |item|
             (item.size()/2).times do |j|
                 index = item.size() - j*2 - 1
-                mem.set_byte(pointer, item[(index - 1) .. index])
+                @mem.set_byte(pointer, item[(index - 1) .. index])
                 pointer += 1
             end
         end
-        mem.set_pointer(pointer)
+        @mem.set_pointer(pointer)
     end
 
-    def read(label_q, line_num, mem)
+    def read(label_q, line_num)
         check_for_mult()
         parse_mem_lines()
-        pack_mem(mem)
+        pack_mem()
         return nil
     end
 end

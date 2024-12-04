@@ -122,7 +122,7 @@ class LineC
     end
 
     def is_empty()
-        if ((@input[0].nil?) || (@input[0].chars.first == $COMMENT_CHARACTER))
+        if ((@input.nil? || @input[0].nil?) || (@input[0].chars.first == $COMMENT_CHARACTER))
             return 1
         else
             return 0

@@ -15,8 +15,9 @@ class InstructionC < LineC
     @immediate     
     @address       
     @manual_args   
+    @mem
 
-    def initialize(array)
+    def initialize(array, mem)
         @input = array
         @type          = nil
         @opcode        = "000000"
@@ -28,16 +29,17 @@ class InstructionC < LineC
         @immediate     = "0000000000000000"
         @address       = "00000000000000000000000000"
         @manual_args   = 0
+        @mem = mem
     end
 
-    def read(label_q, line_num, mem)
+    def read(label_q, line_num)
         print_line(@input)
 
         decode_operation()
         @bin_output = encode(label_q, line_num)
         @hex_output = binary_to_hex(@bin_output);
     
-        pack_mem(mem)
+        pack_mem()
         return nil
     end
 
@@ -210,14 +212,14 @@ class InstructionC < LineC
         end
     end
 
-    def pack_mem(mem)
-        pointer = mem.get_pointer()
+    def pack_mem()
+        pointer = @mem.get_pointer()
         item = @hex_output
         (item.size()/2).times do |j|
             index = item.size() - j*2 - 1
-            mem.set_byte(pointer, item[(index - 1) .. index])
+            @mem.set_byte(pointer, item[(index - 1) .. index])
             pointer += 1
         end
-        mem.set_pointer(pointer)
+        @mem.set_pointer(pointer)
     end
 end
