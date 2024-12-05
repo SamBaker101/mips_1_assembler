@@ -91,14 +91,22 @@ class InstructionC < LineC
                 #BREAK                     : Immediately transfer control to Exception Handles
                     @type   = "J"
                     @opcode = "000000"
-                    @address = @input[1] + "001101"
+                    if (@input[1].nil?)
+                        @address = "00000000000000000000001100"
+                    else    
+                        @address = @input[1] + "001100"
+                    end
                     @manual_args = 1;
                 
                 when "SYSCALL"
                     #BREAK                     : Immediately transfer control to Exception Handles
                     @type   = "J"
                     @opcode = "000000"
-                    @address = @input[1] + "001100"
+                    if (@input[1].nil?)
+                        @address = "00000000000000000000001100"
+                    else    
+                        @address = @input[1] + "001100"
+                    end
                     @manual_args = 1;
                 
                 else
