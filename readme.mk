@@ -107,4 +107,5 @@ Resources Used:
 		https://shawnzhong.github.io/JsSpim/
 		https://uweb.engr.arizona.edu/~ece369/Resources/spim/MIPSReference.pdf
 		https://bh-cookbook.github.io/mips-asm/mips-instruction-set-part-5.html
-		https://computerscience.missouristate.edu/mars-mips-simulator.htm
+		https://computerscience.missouristate.edu/mars-mips-simulator.html
+		https://www.udemy.com/course/the-complete-mips-programming-course/learn/lecture/37060212#content
