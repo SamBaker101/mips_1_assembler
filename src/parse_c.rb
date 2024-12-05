@@ -92,10 +92,12 @@ class ParseC
     def fill_queues(in_file)
         while (line = in_file.gets)
             @total_lines += 1
-            
             lines = line.split(";")
-            lines.each do |l|            
-                @read_q.push(l)
+            lines.each do |l|    
+                l = check_mnemonics(l)
+                l.each do |m|
+                    @read_q.push(m)
+                end
             end
 
             @line = LineC.new(line)
@@ -120,6 +122,26 @@ class ParseC
             end
         end
         return 0
+    end
+
+    def check_mnemonics(line)
+        line_q = [line]
+        line.strip!
+        line = line.split(" "||",")
+        if (!line[0].nil?)
+            index = $MNEMONIC_INDEX.find_index(line[0].upcase)
+            if (index != nil)
+                puts "INDEX FOUND #{index}"
+            else
+                case(line[0].upcase)    
+                    when "LA"
+                        puts "LA"
+                    when "LI"    
+                        puts "LI"
+                end
+            end
+        end
+        return line_q
     end
 
     def update_line_class(array, mode)

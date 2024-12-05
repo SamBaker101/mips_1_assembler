@@ -21,7 +21,7 @@ class LineC
     end
 
     def get_array()
-        return @input  #TODO: Move comment, nil and type checks into this class to avoid need to return input
+        return @input
     end
 
     def set_output(bin_input)
@@ -158,4 +158,9 @@ class LineC
         end
     end
 
+    def check_mnemonics()
+        line_q = [@input]
+
+        return line_q
+    end
 end
