@@ -131,7 +131,22 @@ class ParseC
         if (!line[0].nil?)
             index = $MNEMONIC_INDEX.find_index(line[0].upcase)
             if (index != nil)
-                puts "INDEX FOUND #{index}"
+                line_q = $MNEMONIC_MAP[index][1..-1]
+                line_q.each_with_index do |n, i|
+                    #TODO: There are alot more cases to be dealt with here
+                    
+                    if (line.length == 4)
+                        line_q[i].sub! '#{rd}', line[1]
+                        line_q[i].sub! '#{rs}', line[2]
+                        line_q[i].sub! '#{rt}', line[3]
+                    else (line.length == 3)
+                        line_q[i].sub! '#{rd}', line[1]
+                        line_q[i].sub! '#{rs}', line[1]
+                        line_q[i].sub! '#{rt}', line[2]
+                    end
+                    
+                    puts "#{i} :: #{line_q[i]}"
+                end
             else
                 case(line[0].upcase)    
                     when "LA"
@@ -141,6 +156,8 @@ class ParseC
                 end
             end
         end
+        
+
         return line_q
     end
 
