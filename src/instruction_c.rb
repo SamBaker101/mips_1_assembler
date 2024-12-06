@@ -156,6 +156,8 @@ class InstructionC < LineC
                 else
                     return "11111"
                 end
+            when ("0")
+                return "00000"
             else 
                 abort("Unrecognized register encoding #{string}")
             end

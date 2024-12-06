@@ -163,9 +163,9 @@ class ParseC
                         temp_line = LineC.new(line)
                         value = temp_line.detect_format_and_convert(line[2], 32).to_i(2) #This feels more complicated than necessary
                         if (value < 32000 && value > -32000)
-                            return ["addiu #{line[1]} $0 #{value}"]
+                            return ["addiu #{line[1]} $r0 #{value}"]
                         elsif (temp_line.detect_value_and_convert(value, 32)[16..31] == 0)
-                            return ["ori #{line[1]} $0 #{value}"]
+                            return ["ori #{line[1]} $r0 #{value}"]
                         elsif (temp_line.detect_value_and_convert(value, 32)[0..15] == 0)
                             return "lui #{line[1]} #{value}"
                         else
