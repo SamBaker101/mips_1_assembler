@@ -89,7 +89,6 @@ class ParseC
         end
     end
 
-    #FIXME: This handles things poorly
     def fill_queues(in_file)
         while (line = in_file.gets)
             @total_lines += 1
@@ -215,20 +214,24 @@ class ParseC
                     when "LA"
                         puts "#{address[0]} : #{value} : #{binary_value} : #{hi} : #{low}" 
                         if (address.length == 1)
-                            return [ "lui $at #{hi}",
-                                     "addiu #{line[1]} $at #{low}" ]
+                            if (hi == 0)
+                                return ["addi #{line[1]} $at #{low}" ]
+                            else
+                                return [ "lui $at #{hi}",
+                                     "addi #{line[1]} $at #{low}" ]
+                            end
                         else
                             if (value < 32000 && value > -32000)
                                 return ["addiu #{line[1]} #{address[1]} #{value}"]
                             else
                                 return    [ "lui $at, #{hi}",
-                                            "addiu #{line[1]} $at, #{low}",
-                                            "addu #{line[1]} #{line[1]} #{address[1]}"]
+                                            "addi #{line[1]} $at, #{low}",
+                                            "add #{line[1]} #{line[1]} #{address[1]}"]
                             end
                         end
                     when "LI"    
                         if (value < 32000 && value > -32000)
-                            return ["addiu #{line[1]} $r0 #{value}"]
+                            return ["addi #{line[1]} $r0 #{value}"]
                         elsif (hi == 0)
                             return ["ori #{line[1]} $r0 #{value}"]
                         elsif (low == 0)

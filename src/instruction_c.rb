@@ -164,6 +164,12 @@ class InstructionC < LineC
     end
 
     def encode(label_q, line_num)
+        @input.each_with_index do |value, i|
+            next if (i == 0)
+            if (label_q[@input[i]] != nil)
+                @input[i] = label_q[@input[i]]
+            end
+        end
         case(@type)
             when "R"
                 if (@manual_args == 0)
@@ -192,7 +198,7 @@ class InstructionC < LineC
                     else
                         @rs = "00000"
                     end
-                    @immediate = detect_format_and_convert(temp[0].to_i, 16)
+                    @immediate = detect_format_and_convert(temp[0], 16)
 
                 end
                 #puts "#{@input[1]}, #{@input[2]} : #{@rs}, #{@rt}"
