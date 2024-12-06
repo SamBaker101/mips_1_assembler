@@ -163,11 +163,13 @@ class ParseC
                             return [ "lui $at #{hi}",
                                      "addiu #{line[1]} $at #{low}" ]
                         else
-                            #la $2, 4($3) →     addiu $2, $3, 4
-                        
-                        #la $2, addr($3) →  lui $at, %hi_addr
-                        #                   addiu $2, $at, %lo_addr
-                        #                   addu $2, $2, $3 
+                            if (value < 32000 && value > -32000)
+                                return ["addiu #{line[1]} #{address[1]} #{value}"]
+                            else
+                                return    [ "lui $at, #{hi}",
+                                            "addiu #{line[1]} $at, #{low}",
+                                            "addu #{line[1]} #{line[1]} #{address[1]}"]
+                            end
                         end
                     when "LI"    
                         
@@ -179,7 +181,7 @@ class ParseC
                         elsif (hi == 0)
                             return ["ori #{line[1]} $r0 #{value}"]
                         elsif (low == 0)
-                            return "lui #{line[1]} #{value}"
+                            return ["lui #{line[1]} #{value}"]
                         else
                             return  [ "lui #{line[1]} #{low.to_i(2)}",
                                       "ori #{line[1]} #{line[1]} #{hi.to_i(2)}" ] 
