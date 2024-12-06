@@ -104,17 +104,19 @@ class ParseC
     end
 
     def fill_label_q()
-        address = 0;
-
+        address = 0
+        data = 0
         @read_q.each do |line|
             @line = LineC.new(line)
+            
             next if (@line.is_empty() == 1)
 
             if (@line.get_array[0] == '.data')
                 address = $MEM_DATA_OFFSET
-
+                data    = 1
             elsif (@line.get_array[0] == '.text')
                 address = $MEM_INST_OFFSET
+                data    = 0
             end
             
             next if (@line.is_directive() == 1)
@@ -124,7 +126,34 @@ class ParseC
                 @label_q[label_check] = "0x" + (address).to_s(16)
             end 
 
-            address += 4
+            if (data == 0)
+                address += 4
+            else 
+                case (@line.get_array[1])
+                    when ".byte"
+                        @line.get_array[2..-1].each do 
+                            address += 1
+                        end
+                    when ".half"
+                        @line.get_array[2..-1].each do 
+                            address += 2
+                        end
+                    when ".word"
+                        @line.get_array[2..-1].each do 
+                            address += 4
+                        end
+                    when ".float"
+                        @line.get_array[2..-1].each do 
+                            address += 4
+                        end
+                    when ".double"
+                        @line.get_array[2..-1].each do 
+                            address += 8
+                        end
+                    else
+                        address += 4
+                    end
+                end
             @instr_num += 1
         end
     end
