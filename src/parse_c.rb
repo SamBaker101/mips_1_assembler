@@ -4,9 +4,9 @@
 # MIPS_1 Assembler - Parser Class
 ####################
 
-$MEM_SIZE               = 2048
+$MEM_SIZE               = 0x006000
 $MEM_INST_OFFSET        = 0
-$MEM_DATA_OFFSET        = 512
+$MEM_DATA_OFFSET        = 0x002000
 
 module Mode
     TEXT    = 0
@@ -89,6 +89,7 @@ class ParseC
         end
     end
 
+    #FIXME: This handles things poorly
     def fill_queues(in_file)
         while (line = in_file.gets)
             @total_lines += 1
@@ -99,16 +100,31 @@ class ParseC
                     @read_q.push(m)
                 end
             end
+        end
+    end
 
+    def fill_label_q()
+        address = 0;
+
+        @read_q.each do |line|
             @line = LineC.new(line)
             next if (@line.is_empty() == 1)
+
+            if (@line.get_array[0] == '.data')
+                address = $MEM_DATA_OFFSET
+
+            elsif (@line.get_array[0] == '.text')
+                address = $MEM_INST_OFFSET
+            end
+            
             next if (@line.is_directive() == 1)
-    
+
             label_check = @line.check_for_labels()
             if (label_check != 0)
-                @label_q[label_check] = ((@instr_num * 4) + $INST_OFFSET.to_i(16)).to_s(16)
-                next
+                @label_q[label_check] = "0x" + (address).to_s(16)
             end 
+
+            address += 4
             @instr_num += 1
         end
     end
@@ -149,16 +165,18 @@ class ParseC
             else
                 #TODO: These could be simplified alot if I move the format conversion functions out of LineC and generalize them
                 temp_line = LineC.new(line)
+                address = line[-1].split("("||")")
+                value   = check_label_q(address[0])
+                if (value.class != 1.class)                        
+                    value   = temp_line.detect_format_and_convert(value, 32).to_i(2)
+                end
+                binary_value =  value.to_s(2)
+                hi      = binary_value[16..31].to_s.to_i(2)
+                low     = binary_value[0..15].to_s.to_i(2)
+
                 case(line[0].upcase)    
                     when "LA"
-                        address = line[2].split("("||")")
-                        value   = check_label_q(address[0])
-                        if (value.class != 1.class)                        
-                            value   = temp_line.detect_format_and_convert(value, 32).to_i(2)
-                        end
-                        hi      = temp_line.detect_format_and_convert(value, 32)[16..31]
-                        low     = temp_line.detect_format_and_convert(value, 32)[0..15]
-                        
+                        #puts "#{address[0]} : #{value} : #{binary_value} : #{hi.class} : #{low.class}" 
                         if (address.length == 1)
                             return [ "lui $at #{hi}",
                                      "addiu #{line[1]} $at #{low}" ]
@@ -172,10 +190,6 @@ class ParseC
                             end
                         end
                     when "LI"    
-                        
-                        value   = temp_line.detect_format_and_convert(line[2], 32).to_i(2)
-                        hi      = temp_line.detect_format_and_convert(value, 32)[16..31]
-                        low     = temp_line.detect_format_and_convert(value, 32)[0..15]
                         if (value < 32000 && value > -32000)
                             return ["addiu #{line[1]} $r0 #{value}"]
                         elsif (hi == 0)
@@ -252,6 +266,7 @@ class ParseC
 
     def parse_file()
         fill_queues(@in_file)
+        fill_label_q()
         print_labels()
         parse_input()        
         @mem.print_out_files()        

@@ -50,6 +50,7 @@ class LineC
             end
             integer = input.to_i(16)
             binary  = integer.to_s(2)
+            
             while (binary.length < bits) do
                 binary = "0" + binary
             end
@@ -158,9 +159,4 @@ class LineC
         end
     end
 
-    def check_mnemonics()
-        line_q = [@input]
-
-        return line_q
-    end
 end
