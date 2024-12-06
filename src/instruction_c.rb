@@ -198,11 +198,15 @@ class InstructionC < LineC
                     else
                         @rs = "00000"
                     end
-                    @immediate = detect_format_and_convert(temp[0], 16)
+                    if (temp[0].nil? || temp[0] == "")
+                        @immediate = "0000000000000000"
+                    else
+                        @immediate = detect_format_and_convert(temp[0], 16)
+                    end
 
                 end
-                #puts "#{@input[1]}, #{@input[2]} : #{@rs}, #{@rt}"
-                #puts "#{@manual_args} : #{@input[-1]} : #{@immediate} : #{temp}"
+                puts "#{@input[1]}, #{@input[2]} : #{@rs}, #{@rt}"
+                puts "#{@manual_args} : #{@input[-1]} : #{@immediate} : #{temp}"
     
                 @bin_output = @opcode + 
                         @rs + 
