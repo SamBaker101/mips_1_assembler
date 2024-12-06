@@ -151,13 +151,28 @@ class ParseC
                 case(line[0].upcase)    
                     when "LA"
                         puts "LA"
+                        #la $2, 4($3) →     addiu $2, $3, 4
+                        #la $2, addr →      lui $at, %hi_addr
+                        #                   addiu $2, $at, %lo_addr
+                        #la $2, addr($3) →  lui $at, %hi_addr
+                        #                   addiu $2, $at, %lo_addr
+                        #                   addu $2, $2, $3 
+
                     when "LI"    
                         puts "LI"
+                        temp_line = LineC.new(line)
+                        value = temp_line.detect_format_and_convert(line[2], 32).to_i(2) #This feels more complicated than necessary
+                        if (value < 32000 && value > -32000)
+                            return ["addiu #{line[1]} $0 #{value}"]
+                        #li $4, 0x8000 →    ori $4, $0, 0x8000
+                        #li $5, 0x120000→   lui $5, 0x12
+                        #li $6, 0x12345→    lui $6, 0x1
+                        #                   ori $6, $6, 0x2345 
+                        end
                 end
             end
         end
-        
-
+    
         return line_q
     end
 
