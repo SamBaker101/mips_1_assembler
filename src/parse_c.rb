@@ -106,7 +106,7 @@ class ParseC
     
             label_check = @line.check_for_labels()
             if (label_check != 0)
-                @label_q.store(label_check , ((@instr_num * 4) + $INST_OFFSET.to_i(16)).to_s(16))
+                @label_q[label_check] = ((@instr_num * 4) + $INST_OFFSET.to_i(16)).to_s(16)
                 next
             end 
             @instr_num += 1
@@ -134,7 +134,6 @@ class ParseC
                 line_q = $MNEMONIC_MAP[index][1..-1]
                 line_q.each_with_index do |n, i|
                     #TODO: There are alot more cases to be dealt with here
-                    
                     if (line.length == 4)
                         line_q[i].sub! '#{rd}', line[1]
                         line_q[i].sub! '#{rs}', line[2]
@@ -149,28 +148,40 @@ class ParseC
                 end
             else
                 #TODO: These could be simplified alot if I move the format conversion functions out of LineC and generalize them
+                temp_line = LineC.new(line)
                 case(line[0].upcase)    
                     when "LA"
-                        puts "LA"
-                        #la $2, 4($3) →     addiu $2, $3, 4
+                        address = line[2].split("("||")")
+                        puts address[0]
+                        value   = check_label_q(address[0])
+                        value   = temp_line.detect_format_and_convert(address[0], 32).to_i(2)
+                        hi      = temp_line.detect_format_and_convert(value, 32)[16..31]
+                        low     = temp_line.detect_format_and_convert(value, 32)[0..15]
+                        puts value
+                        if (address.length == 1)
                         #la $2, addr →      lui $at, %hi_addr
                         #                   addiu $2, $at, %lo_addr
+                        else
+                            #la $2, 4($3) →     addiu $2, $3, 4
+                        
                         #la $2, addr($3) →  lui $at, %hi_addr
                         #                   addiu $2, $at, %lo_addr
                         #                   addu $2, $2, $3 
-
+                        end
                     when "LI"    
-                        temp_line = LineC.new(line)
-                        value = temp_line.detect_format_and_convert(line[2], 32).to_i(2) #This feels more complicated than necessary
+                        
+                        value   = temp_line.detect_format_and_convert(line[2], 32).to_i(2)
+                        hi      = temp_line.detect_format_and_convert(value, 32)[16..31]
+                        low     = temp_line.detect_format_and_convert(value, 32)[0..15]
                         if (value < 32000 && value > -32000)
                             return ["addiu #{line[1]} $r0 #{value}"]
-                        elsif (temp_line.detect_value_and_convert(value, 32)[16..31] == 0)
+                        elsif (hi == 0)
                             return ["ori #{line[1]} $r0 #{value}"]
-                        elsif (temp_line.detect_value_and_convert(value, 32)[0..15] == 0)
+                        elsif (low == 0)
                             return "lui #{line[1]} #{value}"
                         else
-                            return  [ "lui #{line[1]} #{temp_line.detect_value_and_convert(value, 32)[0..15].to_i(2)}",
-                                      "ori #{line[1]} #{line[1]} #{temp_line.detect_value_and_convert(value, 32)[16..31].to_i(2)}" ] 
+                            return  [ "lui #{line[1]} #{low.to_i(2)}",
+                                      "ori #{line[1]} #{line[1]} #{hi.to_i(2)}" ] 
                         end
                 end
             end
@@ -215,6 +226,20 @@ class ParseC
                 next 
             end
             puts "Label: #{i}:#{l}"
+        end
+    end
+
+    def check_label_q(value)
+        if (value.class == 1.class)
+            return value
+        else
+            address = @label_q[value]
+            if (address.nil?)
+                return value
+            else
+            
+                return address
+            end                
         end
     end
 
