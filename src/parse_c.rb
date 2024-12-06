@@ -94,11 +94,19 @@ class ParseC
         while (line = in_file.gets)
             @total_lines += 1
             lines = line.split(";")
-            lines.each do |l|    
-                l = check_mnemonics(l)
-                l.each do |m|
-                    @read_q.push(m)
-                end
+            lines.each do |l|
+                @read_q.push(l)
+            end
+        end
+
+        fill_label_q()
+        temp_q = @read_q
+        @read_q = []
+
+        temp_q.each do |l|
+            l = check_mnemonics(l)
+            l.each do |m|
+                @read_q.push(m)
             end
         end
     end
@@ -111,10 +119,10 @@ class ParseC
             
             next if (@line.is_empty() == 1)
 
-            if (@line.get_array[0] == '.data')
+            if (@line.get_array[0].strip == '.data')
                 address = $MEM_DATA_OFFSET
                 data    = 1
-            elsif (@line.get_array[0] == '.text')
+            elsif (@line.get_array[0].strip == '.text')
                 address = $MEM_INST_OFFSET
                 data    = 0
             end
@@ -123,7 +131,7 @@ class ParseC
 
             label_check = @line.check_for_labels()
             if (label_check != 0)
-                @label_q[label_check] = "0x" + (address).to_s(16)
+                @label_q[label_check.strip] = "0x" + (address).to_s(16)
             end 
 
             if (data == 0)
@@ -205,7 +213,7 @@ class ParseC
 
                 case(line[0].upcase)    
                     when "LA"
-                        #puts "#{address[0]} : #{value} : #{binary_value} : #{hi.class} : #{low.class}" 
+                        puts "#{address[0]} : #{value} : #{binary_value} : #{hi} : #{low}" 
                         if (address.length == 1)
                             return [ "lui $at #{hi}",
                                      "addiu #{line[1]} $at #{low}" ]
@@ -267,11 +275,11 @@ class ParseC
     end
 
     def print_labels()
-        @label_q.each_with_index do |l, i|
+        @label_q.each do |l, i|
             if (l == nil) 
                 next 
             end
-            puts "Label: #{i}:#{l}"
+            puts "Label: #{l}:#{i}::#{l.class}"
         end
     end
 
@@ -279,7 +287,8 @@ class ParseC
         if (value.class == 1.class)
             return value
         else
-            address = @label_q[value]
+            address = @label_q[value.strip]
+            #puts "Label: #{value}:#{@label_q[value.strip]}::#{value.class}"
             if (address.nil?)
                 return value
             else
@@ -295,7 +304,6 @@ class ParseC
 
     def parse_file()
         fill_queues(@in_file)
-        fill_label_q()
         print_labels()
         parse_input()        
         @mem.print_out_files()        
