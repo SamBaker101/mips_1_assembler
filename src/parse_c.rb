@@ -152,15 +152,16 @@ class ParseC
                 case(line[0].upcase)    
                     when "LA"
                         address = line[2].split("("||")")
-                        puts address[0]
                         value   = check_label_q(address[0])
-                        value   = temp_line.detect_format_and_convert(address[0], 32).to_i(2)
+                        if (value.class != 1.class)                        
+                            value   = temp_line.detect_format_and_convert(value, 32).to_i(2)
+                        end
                         hi      = temp_line.detect_format_and_convert(value, 32)[16..31]
                         low     = temp_line.detect_format_and_convert(value, 32)[0..15]
-                        puts value
+                        
                         if (address.length == 1)
-                        #la $2, addr →      lui $at, %hi_addr
-                        #                   addiu $2, $at, %lo_addr
+                            return [ "lui $at #{hi}",
+                                     "addiu #{line[1]} $at #{low}" ]
                         else
                             #la $2, 4($3) →     addiu $2, $3, 4
                         
@@ -237,7 +238,6 @@ class ParseC
             if (address.nil?)
                 return value
             else
-            
                 return address
             end                
         end
