@@ -141,13 +141,12 @@ class InstructionC < LineC
                     return binary_encode(string[2..-1].to_i + 24, 5) 
                 end    
             when "s"
+                puts "Decode #{string} :: #{binary_encode(string[2..-1].to_i + 16, 5)}"
                 return binary_encode(string[2..-1].to_i + 16, 5)
             when "k"
                 return binary_encode(string[2..-1].to_i + 26, 5)
             when ("g")
                 return "11100"
-            when ("s")
-                return "11101"
             when ("f")
                 return "11110"
             when ("r")
@@ -189,14 +188,13 @@ class InstructionC < LineC
             when "I"
                 if (@manual_args == 0)
                     @rt = decode_reg(@input[1])
+                    @rs = "00000"
                     if (@input.size == 4) 
                         @rs = decode_reg(@input[2])
                     end
                     temp = @input[-1].split("\(")
                     if (temp.length > 1)
                         @rs = decode_reg(temp[1].chomp("\)"))
-                    else
-                        @rs = "00000"
                     end
                     if (temp[0] == "")
                        @immediate = "0000000000000000"
