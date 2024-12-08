@@ -34,3 +34,4 @@ SLE     , slt #{rd} #{rt} #{rs}   , xori #{rd} #{rd} 1
 SLEU    , sltu #{rd} #{rt} #{rs}  , xori #{rd} #{rd} 1 
 SLTU    , sltu #{rd} #{rs} #{rt}  , xor  #{rd} #{rs} #{rt} 
 SNE     , sltu #{rd} r0 #{rd}
+SUBI    , addi $at $r0 #{Imm}       , sub #{rd} #{rs} $at

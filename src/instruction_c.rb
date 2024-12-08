@@ -141,7 +141,6 @@ class InstructionC < LineC
                     return binary_encode(string[2..-1].to_i + 24, 5) 
                 end    
             when "s"
-                puts "Decode #{string} :: #{binary_encode(string[2..-1].to_i + 16, 5)}"
                 return binary_encode(string[2..-1].to_i + 16, 5)
             when "k"
                 return binary_encode(string[2..-1].to_i + 26, 5)
