@@ -1,5 +1,5 @@
 mnemonic, command1, comand2, ...
-MOVE    , addu #{rd} #{rs} $r0
+MOVE    , addu #{rd} $r0 #{rs}
 B       , beq $r0 $r0 #{label}
 BGE     , slt $at #{rs} #{rt}       , beq $at $r0 #{label}
 BGEU    , sltu $at #{rs} #{rt}      , beq $at $r0 #{label}
