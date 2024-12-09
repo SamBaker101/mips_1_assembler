@@ -204,19 +204,21 @@ class ParseC
                 temp_line = LineC.new(line)
                 address = line[-1].split("("||")")
                 value   = check_label_q(address[0])
-                if (value.class != 1.class)                        
-                    value   = temp_line.detect_format_and_convert(value, 32).to_i(2)
-                end
-                binary_value =  value.to_s(2)
-                hi      = binary_value[16..31].to_s.to_i(2)
-                low     = binary_value[0..15].to_s.to_i(2)
+
 
                 case(line[0].upcase)    
                     when "LA"
+                        if (value.class != 1.class)                        
+                            value   = temp_line.detect_format_and_convert(value, 32).to_i(2)
+                        end
+                        binary_value =  value.to_s(2)
+                        hi      = binary_value[16..31].to_s.to_i(2)
+                        low     = binary_value[0..15].to_s.to_i(2)
+
                         puts "#{address[0]} : #{value} : #{binary_value} : #{hi} : #{low}" 
                         if (address.length == 1)
                             if (hi == 0)
-                                return ["addi #{line[1]} $at #{low}" ]
+                                return ["addi #{line[1]} $r0 #{low}" ]
                             else
                                 return [ "lui $at #{hi}",
                                      "addi #{line[1]} $at #{low}" ]
@@ -230,9 +232,16 @@ class ParseC
                                             "add #{line[1]} #{line[1]} #{address[1]}"]
                             end
                         end
-                    when "LI"    
+                    when "LI"   
+                        if (value.class != 1.class)                        
+                            value   = temp_line.detect_format_and_convert(value, 32).to_i
+                        end
+                        binary_value =  value.to_s(2)
+                        hi      = binary_value[16..31].to_s.to_i(2)
+                        low     = binary_value[0..15].to_s.to_i(2)
+
                         if (value < 32000 && value > -32000)
-                            return ["addi #{line[1]} $r0 #{value}"]
+                            return ["addiu #{line[1]} $r0 #{value}"]
                         elsif (hi == 0)
                             return ["ori #{line[1]} $r0 #{value}"]
                         elsif (low == 0)
