@@ -215,7 +215,7 @@ class ParseC
                         hi      = binary_value[16..31].to_s.to_i(2)
                         low     = binary_value[0..15].to_s.to_i(2)
 
-                        puts "#{address[0]} : #{value} : #{binary_value} : #{hi} : #{low}" 
+                        #puts "#{address[0]} : #{value} : #{binary_value} : #{hi} : #{low}" 
                         if (address.length == 1)
                             if (hi == 0)
                                 return ["addi #{line[1]} $r0 #{low}" ]
@@ -277,10 +277,15 @@ class ParseC
             
             next if (@label_q[@line_num] != nil)
             next if (@line.is_empty() == 1)
-            next if (@line.check_for_labels != 0)
-    
+            if (@line.check_for_labels != 0)
+                next if @line.get_array().length == 1
+                @line = LineC.new(@line.get_array()[1..-1])
+            end
+
             @line.chop_comments()
             next if (check_for_mode_update(@line) == 1)
+
+            puts @line.get_array()
 
             @line = update_line_class(@line.get_array(), @mode)
             @line.read(@label_q, @line_num)
@@ -292,7 +297,7 @@ class ParseC
             if (l == nil) 
                 next 
             end
-            puts "Label: #{l}:#{i}::#{l.class}"
+            #puts "Label: #{l}:#{i}::#{l.class}"
         end
     end
 
