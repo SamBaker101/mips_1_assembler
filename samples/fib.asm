@@ -15,7 +15,7 @@ main:
 	sw $t1 4($s1)
 	
 loop:
-	bge $s0 10 break_loop
+	bge $s0 10 breakloop
 	sll $t2 $s0 2
 	addu  $t2 $t2 $s1
 	lw $t3 -4($t2)
@@ -25,4 +25,4 @@ loop:
 	addiu $s0 $s0 1
 	j loop
 	
-break_loop:
+breakloop:

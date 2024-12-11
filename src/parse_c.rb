@@ -186,9 +186,11 @@ class ParseC
                 line_q = $MNEMONIC_MAP[index][1..-1]
                 line_q.each_with_index do |n, i|
                     #TODO: There are alot more cases to be dealt with here
+                    line_q[i].sub! '#{label}', line[-1]
                     if (line.length == 4)
                         line_q[i].sub! '#{rd}', line[1]
                         line_q[i].sub! '#{Imm}', line[3]
+                    
                         if (["BGE", "BGEU", "BGT", "BGTU", "BLE", "BLEU", "BLT", "BLTU"].include?(line[0].upcase) && (line[2][0] != '$'))
                             line_q[i].sub! 'slt', 'slti'
                             line_q[i].sub! 'sltu', 'sltiu'
@@ -305,7 +307,7 @@ class ParseC
             if (l == nil) 
                 next 
             end
-            #puts "Label: #{l}:#{i}::#{l.class}"
+            puts "Label: #{l}:#{i}::#{l.class}"
         end
     end
 

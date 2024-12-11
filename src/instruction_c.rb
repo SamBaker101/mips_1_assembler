@@ -165,9 +165,15 @@ class InstructionC < LineC
         @input.each_with_index do |value, i|
             next if (i == 0)
             if (label_q[@input[i]] != nil)
-                @input[i] = label_q[@input[i]]
+                if ["BEQ", "BNE"].include?(@input[0].upcase)
+                    @input[i] = binary_encode((label_q[@input[i]].to_i(16) - @mem.get_pointer - 8)/4, 16)
+                else    
+                    @input[i] = label_q[@input[i]]
+                end
+                puts "#LABEL_DECODE #{@input[i]} :: #{label_q[@input[i]]} :: #{@mem.get_pointer} :: #{@input[i]}"
+
             end
-        end
+        end 
         #puts "#{@input[0]} :: #{@input[1]}, #{@input[2]}, #{@input[3]} : #{@rs}, #{@rt}, #{@rd}"
         case(@type)
             when "R"
