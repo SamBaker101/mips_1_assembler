@@ -182,12 +182,16 @@ class InstructionC < LineC
                     
                     @rd = decode_reg(@input[1])
                     if ['SLL', 'SLLV', 'SRA', 'SRAV'].include?(@input[0].upcase)
+                        @rs = "00000"
                         @rt = decode_reg(@input[-2])
-                        @shamt = detect_format_and_convert(@input[-1])
+                        @shamt = detect_format_and_convert(@input[-1], 5)
                     else
                         @rt = decode_reg(@input[-1])
                     end
                 end
+
+                puts "#{@input[0]}:#{@input[1]}:#{@input[2]}:#{@input[3]}"
+                puts "#{@opcode}:#{@rs}:#{@rt}:#{@rd}:#{@shamt}:#{@funct} :: #{detect_format_and_convert(@input[-1], 5)}"
 
                 @bin_output = @opcode + 
                         @rs + 
@@ -222,8 +226,8 @@ class InstructionC < LineC
                     end
 
                 end
-                puts "#{@input[1]}, #{@input[2]} : #{@rs}, #{@rt}"
-                puts "#{@manual_args} : #{@input[-1]} : #{@immediate} : #{temp}"
+                #puts "#{@input[1]}, #{@input[2]} : #{@rs}, #{@rt}"
+                #puts "#{@manual_args} : #{@input[-1]} : #{@immediate} : #{temp}"
     
                 @bin_output = @opcode + 
                         @rs + 

@@ -39,7 +39,7 @@ class LineC
 
     def detect_format_and_convert(input, bits = 16)
         if (input.class == 123.class)
-            binary = self.binary_encode(input, 16)  
+            binary = self.binary_encode(input, bits)  
             return binary
         elsif (input[0..1] == "0x" || input[0..1] == "0X")
             input = input[2..-1]
@@ -75,7 +75,8 @@ class LineC
             end
             return binary
         else
-            return input
+            binary = binary_encode(input.to_i(), bits)
+            return binary
         end
     end
 
