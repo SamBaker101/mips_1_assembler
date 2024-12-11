@@ -194,7 +194,6 @@ class ParseC
                             line_q[i].sub! 'sltu', 'sltiu'
                             line_q[i].sub! '#{rs}', line[1]
                             line_q[i].sub! '#{rt}', line[2]
-                            puts line_q[i]
                         else
                             line_q[i].sub! '#{rs}', line[2]
                             line_q[i].sub! '#{rt}', line[3]

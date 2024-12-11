@@ -110,7 +110,7 @@ class InstructionC < LineC
                     @manual_args = 1;
                 
                 else
-                    puts "No op found for #{@input[0]}"
+                    abort "No op found for #{@input[0]}"
             end
         end
     end
@@ -168,13 +168,18 @@ class InstructionC < LineC
                 @input[i] = label_q[@input[i]]
             end
         end
+        #puts "#{@input[0]} :: #{@input[1]}, #{@input[2]}, #{@input[3]} : #{@rs}, #{@rt}, #{@rd}"
         case(@type)
             when "R"
                 if (@manual_args == 0)
                     @rs = decode_reg(@input[-2])
-                    @rt = decode_reg(@input[-1])
+                    
                     @rd = decode_reg(@input[1])
-                    #puts "#{@input[1]}, #{@input[2]}, #{@input[3]} : #{@rs}, #{@rt}, #{@rd}"
+                    if ['SLL', 'SLLV'].include?(@input[0].upcase)
+                        @rs = detect_format_and_convert(@input[-1])
+                    else
+                        @rt = decode_reg(@input[-1])
+                    end
                 end
     
                 @bin_output = @opcode + 
