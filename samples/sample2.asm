@@ -1,6 +1,6 @@
 #Sample code
 #Based off lab questions in:
-#https://www.udemy.com/course/the-complete-mips-programming-course/learn/lecture/37060212#content
+#https://www.udemy.com/course/the-complete-mips-programming-course
 
 .data
 A: 		.word 3 5 7
