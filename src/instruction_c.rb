@@ -175,8 +175,9 @@ class InstructionC < LineC
                     @rs = decode_reg(@input[-2])
                     
                     @rd = decode_reg(@input[1])
-                    if ['SLL', 'SLLV'].include?(@input[0].upcase)
-                        @rs = detect_format_and_convert(@input[-1])
+                    if ['SLL', 'SLLV', 'SRA', 'SRAV'].include?(@input[0].upcase)
+                        @rt = decode_reg(@input[-2])
+                        @shamt = detect_format_and_convert(@input[-1])
                     else
                         @rt = decode_reg(@input[-1])
                     end
