@@ -36,7 +36,7 @@ class InstructionC < LineC
         print_line(@input)
 
         decode_operation()
-        @bin_output = encode(label_q, line_num)
+        encode(label_q, line_num)
         @hex_output = binary_to_hex(@bin_output);
     
         pack_mem()
@@ -161,6 +161,7 @@ class InstructionC < LineC
             end
     end
 
+    #TODO: This is starting to get messy, proabaly needs some cleanup/abstraction
     def encode(label_q, line_num)
         @input.each_with_index do |value, i|
             next if (i == 0)
@@ -170,11 +171,10 @@ class InstructionC < LineC
                 else    
                     @input[i] = label_q[@input[i]]
                 end
-                puts "#LABEL_DECODE #{@input[i]} :: #{label_q[@input[i]]} :: #{@mem.get_pointer} :: #{@input[i]}"
 
             end
         end 
-        #puts "#{@input[0]} :: #{@input[1]}, #{@input[2]}, #{@input[3]} : #{@rs}, #{@rt}, #{@rd}"
+
         case(@type)
             when "R"
                 if (@manual_args == 0)
@@ -188,20 +188,25 @@ class InstructionC < LineC
                         @rt = decode_reg(@input[-1])
                     end
                 end
-    
+
                 @bin_output = @opcode + 
                         @rs + 
                         @rt + 
                         @rd + 
                         @shamt + 
                         @funct
-    
+                
             when "I"
                 if (@manual_args == 0)
-                    @rt = decode_reg(@input[1])
-                    @rs = "00000"
-                    if (@input.size == 4) 
-                        @rs = decode_reg(@input[2])
+                    if ["BNE", "BEQ"].include?(@input[0].upcase)
+                        @rs = decode_reg(@input[1])
+                        @rt = decode_reg(@input[2])
+                    else
+                        @rt = decode_reg(@input[1])
+                        @rs = "00000"
+                        if (@input.size == 4) 
+                            @rs = decode_reg(@input[2])
+                        end
                     end
                     temp = @input[-1].split("\(")
                     if (temp.length > 1)
@@ -217,8 +222,8 @@ class InstructionC < LineC
                     end
 
                 end
-                #puts "#{@input[1]}, #{@input[2]} : #{@rs}, #{@rt}"
-                #puts "#{@manual_args} : #{@input[-1]} : #{@immediate} : #{temp}"
+                puts "#{@input[1]}, #{@input[2]} : #{@rs}, #{@rt}"
+                puts "#{@manual_args} : #{@input[-1]} : #{@immediate} : #{temp}"
     
                 @bin_output = @opcode + 
                         @rs + 
@@ -242,6 +247,7 @@ class InstructionC < LineC
                 puts "Instruction Type not found : #{@type}"
                 bin_output = @opcode + @address 
         end
+        #puts "#{@input[0]} :: #{@input[1]}, #{@input[2]}, #{@input[3]} : #{@rs}, #{@rt}, #{@rd}"
     end
 
     def pack_mem()
