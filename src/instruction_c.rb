@@ -190,8 +190,8 @@ class InstructionC < LineC
                     end
                 end
 
-                puts "#{@input[0]}:#{@input[1]}:#{@input[2]}:#{@input[3]}"
-                puts "#{@opcode}:#{@rs}:#{@rt}:#{@rd}:#{@shamt}:#{@funct} :: #{detect_format_and_convert(@input[-1], 5)}"
+                #puts "#{@input[0]}:#{@input[1]}:#{@input[2]}:#{@input[3]}"
+                #puts "#{@opcode}:#{@rs}:#{@rt}:#{@rd}:#{@shamt}:#{@funct} :: #{detect_format_and_convert(@input[-1], 5)}"
 
                 @bin_output = @opcode + 
                         @rs + 
@@ -216,18 +216,20 @@ class InstructionC < LineC
                     if (temp.length > 1)
                         @rs = decode_reg(temp[1].chomp("\)"))
                     end
+                    
                     if (temp[0] == "")
                        @immediate = "0000000000000000"
                     else
                         if (temp[0][0] != '0')
                             temp[0] = temp[0].to_i
                         end
+                        puts temp[0]
                         @immediate = detect_format_and_convert(temp[0], 16)
                     end
 
                 end
-                #puts "#{@input[1]}, #{@input[2]} : #{@rs}, #{@rt}"
-                #puts "#{@manual_args} : #{@input[-1]} : #{@immediate} : #{temp}"
+                puts "#{@input[0]}:#{@input[1]}:#{@input[2]}:#{@input[3]}"
+                puts "#{@opcode}:#{@rs}:#{@rt}:#{@immediate}"
     
                 @bin_output = @opcode + 
                         @rs + 

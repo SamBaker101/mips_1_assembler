@@ -81,6 +81,8 @@ class LineC
     end
 
     def binary_encode(dec, bits = 32)
+        sign = dec < 0
+        dec = dec.abs - (sign ? 1 : 0)
         binary = "0"
         (0..(bits-2)).each do
             binary += "0"
@@ -99,7 +101,12 @@ class LineC
                 binary = (binary == "1") ? "0" : "1"
             end 
         end
-        binary
+        if sign
+            (0..bits-1).each do |i|
+                binary[i] = (binary[i] == '0') ? '1' : '0'
+            end
+        end
+        return binary
     end
     
     def binary_to_hex(binary, bits = 32)
