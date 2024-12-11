@@ -3,7 +3,7 @@
 #https://www.udemy.com/course/the-complete-mips-programming-course
 
 .data
-fib:	.word 0 0 0 0 0 0 0 0 0 0 
+fib:	.space 320 
 
 .text
 main:

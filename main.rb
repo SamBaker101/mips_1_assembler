@@ -10,7 +10,7 @@ require "./src/instruction_c.rb"
 require "./src/data_c.rb"
 require "./src/mem_c.rb"
 
-$FILE_NAME       = "sample2"
+$FILE_NAME       = "fib"
 $INST_MAP_FILE  = "maps/instruction_map.csv"
 $DIR_MAP_FILE   = "maps/directive_map.csv"
 $MNE_MAP_FILE   = "maps/mnemonic_map.csv"   

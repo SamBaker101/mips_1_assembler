@@ -188,16 +188,25 @@ class ParseC
                     #TODO: There are alot more cases to be dealt with here
                     if (line.length == 4)
                         line_q[i].sub! '#{rd}', line[1]
-                        line_q[i].sub! '#{rs}', line[2]
-                        line_q[i].sub! '#{rt}', line[3]
                         line_q[i].sub! '#{Imm}', line[3]
+                        if (["BGE", "BGEU", "BGT", "BGTU", "BLE", "BLEU", "BLT", "BLTU"].include?(line[0].upcase) && (line[2][0] != '$'))
+                            line_q[i].sub! 'slt', 'slti'
+                            line_q[i].sub! 'sltu', 'sltiu'
+                            line_q[i].sub! '#{rs}', line[1]
+                            line_q[i].sub! '#{rt}', line[2]
+                            puts line_q[i]
+                        else
+                            line_q[i].sub! '#{rs}', line[2]
+                            line_q[i].sub! '#{rt}', line[3]
+                        end
                     else (line.length == 3)
                         line_q[i].sub! '#{rd}', line[1]
                         line_q[i].sub! '#{rs}', line[2]
                         line_q[i].sub! '#{rt}', line[2]
+
                     end
-                    
-                    puts "#{i} :: #{line_q[i]}"
+            
+                    #puts "#{i} :: #{line_q[i]}"
                 end
             else
                 #TODO: These could be simplified alot if I move the format conversion functions out of LineC and generalize them
@@ -285,7 +294,7 @@ class ParseC
             @line.chop_comments()
             next if (check_for_mode_update(@line) == 1)
 
-            puts @line.get_array()
+            #puts @line.get_array()
 
             @line = update_line_class(@line.get_array(), @mode)
             @line.read(@label_q, @line_num)
