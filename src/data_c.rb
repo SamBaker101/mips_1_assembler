@@ -52,7 +52,7 @@ class DataC < LineC
         if (@input[0] == ".align")
             @mem.align(@input[1].to_i)
         elsif (@input[0] == ".space")
-            (0..@input[1].to_i).each do    
+            (0..@input[1].to_i - 1).each do    
                 @output_array.push("00000000")
             end
         else
