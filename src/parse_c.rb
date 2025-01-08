@@ -98,7 +98,7 @@ class ParseC
             end
         end
 
-        fill_label_q()
+        
         temp_q = @read_q
         @read_q = []
 
@@ -108,6 +108,8 @@ class ParseC
                 @read_q.push(m)
             end
         end
+        fill_label_q()
+
     end
 
     def fill_label_q()
@@ -119,10 +121,10 @@ class ParseC
             next if (@line.is_empty() == 1)
 
             if (@line.get_array[0].strip == '.data')
-                address = $MEM_DATA_OFFSET
+                address = $MEM_DATA_OFFSET - 4 
                 data    = 1
             elsif (@line.get_array[0].strip == '.text')
-                address = $MEM_INST_OFFSET
+                address = $MEM_INST_OFFSET - 4
                 data    = 0
             end
             

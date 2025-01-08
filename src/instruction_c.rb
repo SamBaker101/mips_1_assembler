@@ -239,7 +239,7 @@ class InstructionC < LineC
             when "J"
                 if (@manual_args == 0)
                     if (@input[-1].match(/^[0-9]+/))
-                        @address = detect_format_and_convert(@input[-1].to_i, 26)
+                        @address = detect_format_and_convert(@input[-1], 28)[0..-3]
                     else
                         @input[-1].chomp!
                         raw_address = @input[-1]
@@ -249,7 +249,7 @@ class InstructionC < LineC
                 
                 @bin_output = @opcode + 
                         @address
-                puts "#{@opcode}:#{@address}:#{raw_address}:#{@input[-1]}" 
+                puts "#{@opcode}:#{@address}:#{raw_address}:#{@input[-1]}:#{@input[-1].class}" 
 
             else
                 puts "Instruction Type not found : #{@type}"
