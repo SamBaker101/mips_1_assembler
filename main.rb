@@ -32,6 +32,10 @@ $MNEMONIC_INDEX     = []
 def main()
     parser = ParseC.new()
     parser.parse_file()
+
+    diff_file  = File.new("output/#{$FILE_NAME}_diff.txt", "w")
+    diff_file.print(`diff #{"output/#{$FILE_NAME}_inst.txt"} #{"samples/MARS_outputs/#{$FILE_NAME}_mars_inst.txt"}`)
+    diff_file.close()
 end
 
 main()
