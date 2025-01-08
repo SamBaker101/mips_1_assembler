@@ -16,7 +16,7 @@
 
 .data
 chain:	.byte -1, -1, -1, -1, -1, -1
-vec;	.word  5, 6, 8, 9, 1
+vec:	.word  5, 6, 8, 9, 1
 
 .text
 .globl main
@@ -24,9 +24,9 @@ main:
 	li $s0 0		# i = 0
 while:
 	li $t0 5
-	bge $s0 $t0 end 	#while(i<5)
+	bge $s0 $t0 fi 	#while(i<5)
 	
-	li $ti 4
+	li $t1 4
 	sub $t1 $t1 $s0		#4 - i
 	la $s1 vec
 	sll $t1 $t1 2		#4(4 - i)
