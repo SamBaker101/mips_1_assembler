@@ -34,12 +34,16 @@ class InstructionC < LineC
 
     def read(label_q, line_num)
         print_line(@input)
-
-        decode_operation()
-        encode(label_q, line_num)
-        @hex_output = binary_to_hex(@bin_output);
-    
-        pack_mem()
+        #FIXME: Need to handle other directives as req
+        if (is_directive == 1)
+            puts "SKIPPING DIRECTIVE #{@input[0]}"
+        else
+            decode_operation()
+            encode(label_q, line_num)
+            @hex_output = binary_to_hex(@bin_output);
+            
+            pack_mem()
+        end
         return nil
     end
 
