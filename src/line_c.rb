@@ -38,6 +38,8 @@ class LineC
     end
 
     def detect_format_and_convert(input, bits = 16)
+        #puts "DETECT: #{input}"
+
         if (input.class == 123.class)
             binary = self.binary_encode(input, bits)  
             return binary

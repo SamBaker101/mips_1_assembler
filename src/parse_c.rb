@@ -244,7 +244,7 @@ class ParseC
                         end
                     when "LI"   
                         if (value.class != 1.class)                        
-                            value   = temp_line.detect_format_and_convert(value, 32).to_i
+                            value   = value.to_i
                         end
                         binary_value =  value.to_s(2)
                         hi      = binary_value[16..31].to_s.to_i(2)
