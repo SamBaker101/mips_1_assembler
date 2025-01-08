@@ -99,6 +99,7 @@ class ParseC
         end
 
         
+        
         temp_q = @read_q
         @read_q = []
 
@@ -108,6 +109,7 @@ class ParseC
                 @read_q.push(m)
             end
         end
+
         fill_label_q()
 
     end
@@ -179,9 +181,11 @@ class ParseC
     end
 
     def check_mnemonics(line)
+        
         line_q = [line]
         line.strip!
         line = line.split(" "||",")
+        #puts "Check mnemonic for #{line}::#{line.length}"
         if (!line[0].nil?)
             index = $MNEMONIC_INDEX.find_index(line[0].upcase)
             if (index != nil)
@@ -198,11 +202,10 @@ class ParseC
                             line_q[i].sub! 'sltu', 'sltiu'
                             line_q[i].sub! '#{rs}', line[1]
                             line_q[i].sub! '#{rt}', line[2]
-                        else
                             line_q[i].sub! '#{rs}', line[2]
                             line_q[i].sub! '#{rt}', line[3]
                         end
-                    else (line.length == 3)
+                    elsif (line.length == 3)
                         line_q[i].sub! '#{rd}', line[1]
                         line_q[i].sub! '#{rs}', line[2]
                         line_q[i].sub! '#{rt}', line[2]
