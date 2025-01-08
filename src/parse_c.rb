@@ -185,11 +185,19 @@ class ParseC
         line_q = [line]
         line.strip!
         line = line.split(" "||",")
-        #puts "Check mnemonic for #{line}::#{line.length}"
+
+        line.each_with_index do |value, index|
+            if (value.chars.first == $COMMENT_CHARACTER)
+                line = line[0, index]
+            end
+        end
+
+        puts "Check mnemonic for #{line}::#{line.length}"
         if (!line[0].nil?)
             index = $MNEMONIC_INDEX.find_index(line[0].upcase)
             if (index != nil)
                 line_q = $MNEMONIC_MAP[index][1..-1]
+                puts line_q
                 line_q.each_with_index do |n, i|
                     #TODO: There are alot more cases to be dealt with here
                     line_q[i].sub! '#{label}', line[-1]
@@ -204,6 +212,12 @@ class ParseC
                             line_q[i].sub! '#{rt}', line[2]
                             line_q[i].sub! '#{rs}', line[2]
                             line_q[i].sub! '#{rt}', line[3]
+                        else
+                            
+                            line_q[i].sub! '#{rs}', line[1]
+                            line_q[i].sub! '#{rt}', line[2]                        
+                            puts "Subbed #{line_q[i]}"
+                        
                         end
                     elsif (line.length == 3)
                         line_q[i].sub! '#{rd}', line[1]
