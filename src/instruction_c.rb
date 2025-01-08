@@ -223,13 +223,13 @@ class InstructionC < LineC
                         if (temp[0][0] != '0')
                             temp[0] = temp[0]
                         end
-                        puts "pre detect #{temp[0]}, #{detect_format_and_convert(temp[0], 16)}, #{temp[0].class}"
+                        #puts "pre detect #{temp[0]}, #{detect_format_and_convert(temp[0], 16)}, #{temp[0].class}"
                         @immediate = detect_format_and_convert(temp[0], 16)
                     end
 
                 end
                 #puts "#{@input[0]}:#{@input[1]}:#{@input[2]}:#{@input[3]}"
-                puts "#{@opcode}:#{@rs}:#{@rt}:#{@immediate}"
+                #puts "#{@opcode}:#{@rs}:#{@rt}:#{@immediate}"
     
                 @bin_output = @opcode + 
                         @rs + 
@@ -249,10 +249,10 @@ class InstructionC < LineC
                 
                 @bin_output = @opcode + 
                         @address
-                puts "#{@opcode}:#{@address}:#{raw_address}:#{@input[-1]}:#{@input[-1].class}" 
+                #puts "#{@opcode}:#{@address}:#{raw_address}:#{@input[-1]}:#{@input[-1].class}" 
 
             else
-                puts "Instruction Type not found : #{@type}"
+                #puts "Instruction Type not found : #{@type}"
                 bin_output = @opcode + @address 
         end
         #puts "#{@input[0]} :: #{@input[1]}, #{@input[2]}, #{@input[3]} : #{@rs}, #{@rt}, #{@rd}"

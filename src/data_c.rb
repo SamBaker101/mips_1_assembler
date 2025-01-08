@@ -51,7 +51,11 @@ class DataC < LineC
     def parse_mem_lines()
         if (@input[0] == ".align")
             @mem.align(@input[1].to_i)
-        elsif
+        elsif (@input[0] == ".space")
+            (0..@input[1].to_i).each do    
+                @output_array.push("00000000")
+            end
+        else
             @input.each do |i|
                 if i[0] == "."
                     @size = get_size(i)
@@ -66,7 +70,7 @@ class DataC < LineC
 
     def pack_mem()
         pointer = @mem.get_pointer()
-        puts @output_array
+        #puts @output_array
         pointer = @mem.align(@size/8)
         @output_array.each do |item|
             (item.size()/2).times do |j|
