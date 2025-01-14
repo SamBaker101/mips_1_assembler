@@ -232,20 +232,32 @@ class ParseC
                 #TODO: These could be simplified alot if I move the format conversion functions out of LineC and generalize them
                 temp_line = LineC.new(line)
                 address = line[-1].split("("||")")
-                value   = check_label_q(address[0])
-
+                value   = address[0]
+                #puts "CHECK MNEMONIC #{line}, #{address}, #{value}"
 
                 case(line[0].upcase)    
                     when "LA"
-                        if (value.class != 1.class)                        
-                            value   = temp_line.detect_format_and_convert(value, 32).to_i(2)
+                        is_a_label = 0
+                        if (!value.match?(/[0-9a-fA-F]+/) && !value.match?(/[0-9]+/))
+                            
+                            if (value.class != 1.class)                        
+                                value   = temp_line.detect_format_and_convert(value, 32).to_i(2)
+                            end
+
+                            binary_value =  value.to_s(2)
+
+                            hi      = binary_value[16..31].to_s.to_i(2)
+                            low     = binary_value[0..15].to_s.to_i(2)
+                        
+                        else
+                            puts "itsalabel #{value}"
+                            is_a_label = 1
                         end
-                        binary_value =  value.to_s(2)
-                        hi      = binary_value[16..31].to_s.to_i(2)
-                        low     = binary_value[0..15].to_s.to_i(2)
 
                         #puts "#{address[0]} : #{value} : #{binary_value} : #{hi} : #{low}" 
-                        if (address.length == 1)
+                        if (is_a_label == 1)
+                            return ["addi #{line[1]} $r0 #{value}" ]
+                        elsif (address.length == 1)
                             if (hi == 0)
                                 return ["addi #{line[1]} $r0 #{low}" ]
                             else
