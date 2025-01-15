@@ -123,47 +123,64 @@ class ParseC
             next if (@line.is_empty() == 1)
 
             if (@line.get_array[0].strip == '.data')
-                address = $MEM_DATA_OFFSET - 4 
+                address = $MEM_DATA_OFFSET
                 data    = 1
             elsif (@line.get_array[0].strip == '.text')
-                address = $MEM_INST_OFFSET - 4
+                address = $MEM_INST_OFFSET
                 data    = 0
             end
             
             next if (@line.is_directive() == 1)
+
+            case (@line.get_array[1])
+            when ".half"
+                while (address % 2 != 0)
+                   address += 1
+                end
+            when ".word"
+                while (address % 4 != 0)
+                    address += 1
+                 end
+            when ".float"
+                while (address % 4 != 0)
+                    address += 1
+                 end
+            when ".double"
+                while (address % 8 != 0)
+                    address += 1
+                 end
+            end
 
             label_check = @line.check_for_labels()
             if (label_check != 0)
                 @label_q[label_check.strip] = "0x" + (address).to_s(16)
             end 
 
-            if (data == 0)
-                address += 4
-            else 
-                case (@line.get_array[1])
-                    when ".byte"
-                        @line.get_array[2..-1].each do 
-                            address += 1
-                        end
-                    when ".half"
-                        @line.get_array[2..-1].each do 
-                            address += 2
-                        end
-                    when ".word"
-                        @line.get_array[2..-1].each do 
-                            address += 4
-                        end
-                    when ".float"
-                        @line.get_array[2..-1].each do 
-                            address += 4
-                        end
-                    when ".double"
-                        @line.get_array[2..-1].each do 
-                            address += 8
-                        end
-                    else
+            #FIXME: alignment is a thing
+
+            case (@line.get_array[1])
+                when ".byte"
+                    @line.get_array[2..-1].each do 
+                        address += 1
+                    end
+                when ".half"
+                    @line.get_array[2..-1].each do 
+                        address += 2
+                    end
+                when ".word"
+                    @line.get_array[2..-1].each do 
                         address += 4
                     end
+                when ".float"
+                    @line.get_array[2..-1].each do 
+                        address += 4
+                    end
+                when ".double"
+                    @line.get_array[2..-1].each do 
+                        address += 8
+                    end
+                else
+                    address += 4
                 end
             @instr_num += 1
         end
