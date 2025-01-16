@@ -5,7 +5,7 @@
 ####################
 
 $MEM_SIZE               = 0x006000
-$MEM_INST_OFFSET        = 0
+$MEM_INST_OFFSET        = 0x000000
 $MEM_DATA_OFFSET        = 0x002000
 
 module Mode
@@ -149,7 +149,7 @@ class ParseC
                 while (address % 8 != 0)
                     address += 1
                  end
-            end
+                end
 
             label_check = @line.check_for_labels()
             if (label_check != 0)
