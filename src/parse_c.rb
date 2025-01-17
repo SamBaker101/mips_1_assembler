@@ -222,7 +222,7 @@ class ParseC
                         line_q[i].sub! '#{rd}', line[1]
                         line_q[i].sub! '#{Imm}', line[3]
                     
-                        if (["BGE", "BGEU", "BGT", "BGTU", "BLE", "BLEU", "BLT", "BLTU"].include?(line[0].upcase) && (line[2][0] != '$'))
+                        if (["BGE", "BGEZ", "BGEU", "BGT", "BGTU", "BLE", "BLEU", "BLT", "BLTU"].include?(line[0].upcase) && (line[2][0] != '$'))
                             line_q[i].sub! 'slt', 'slti'
                             line_q[i].sub! 'sltu', 'sltiu'
                             line_q[i].sub! '#{rs}', line[1]

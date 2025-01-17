@@ -170,7 +170,8 @@ class InstructionC < LineC
         @input.each_with_index do |value, i|
             next if (i == 0)
             if (label_q[@input[i]] != nil)
-                if ["BEQ", "BNE"].include?(@input[0].upcase)
+                if ["BEQ", "BNE", "BGEZ"].include?(@input[0].upcase)
+                    puts ""
                     @input[i] = binary_encode((label_q[@input[i]].to_i(16) - @mem.get_pointer - 8)/4, 16)
                 else    
                     @input[i] = label_q[@input[i]]
@@ -209,6 +210,9 @@ class InstructionC < LineC
                     if ["BNE", "BEQ"].include?(@input[0].upcase)
                         @rs = decode_reg(@input[1])
                         @rt = decode_reg(@input[2])
+                    elsif ["BGEZ"].include?(@input[0].upcase)
+                        @rt = "00001" 
+                        @rs = decode_reg(@input[1])
                     else
                         @rt = decode_reg(@input[1])
                         @rs = "00000"
