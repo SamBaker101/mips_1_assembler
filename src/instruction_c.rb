@@ -41,7 +41,7 @@ class InstructionC < LineC
             decode_operation()
             encode(label_q, line_num)
             @hex_output = binary_to_hex(@bin_output);
-            
+    
             pack_mem()
         end
         return nil
@@ -171,7 +171,6 @@ class InstructionC < LineC
             next if (i == 0)
             if (label_q[@input[i]] != nil)
                 if ["BEQ", "BNE", "BGEZ"].include?(@input[0].upcase)
-                    puts ""
                     @input[i] = binary_encode((label_q[@input[i]].to_i(16) - @mem.get_pointer - 8)/4, 16)
                 else    
                     @input[i] = label_q[@input[i]]
@@ -260,7 +259,7 @@ class InstructionC < LineC
                 #puts "#{@opcode}:#{@address}:#{raw_address}:#{@input[-1]}:#{@input[-1].class}" 
 
             else
-                #puts "Instruction Type not found : #{@type}"
+                puts "Instruction Type not found : #{@type}"
                 bin_output = @opcode + @address 
         end
         #puts "#{@input[0]} :: #{@input[1]}, #{@input[2]}, #{@input[3]} : #{@rs}, #{@rt}, #{@rd}"

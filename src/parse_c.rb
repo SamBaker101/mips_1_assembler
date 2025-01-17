@@ -91,22 +91,28 @@ class ParseC
 
     def fill_queues(in_file)
         while (line = in_file.gets)
-            @total_lines += 1
+            
             lines = line.split(";")
             lines.each do |l|
+                @total_lines += 1
                 @read_q.push(l)
             end
         end
-
-        
         
         temp_q = @read_q
         @read_q = []
 
         temp_q.each do |l|
+            #print "Check mnemonic for #{l}"
             l = check_mnemonics(l)
+            #puts "<--> #{l}"
+            
+            @total_lines += l.length - 1
+
             l.each do |m|
                 @read_q.push(m)
+                
+                puts m
             end
         end
 
@@ -209,7 +215,6 @@ class ParseC
             end
         end
 
-        puts "Check mnemonic for #{line}::#{line.length}"
         if (!line[0].nil?)
             index = $MNEMONIC_INDEX.find_index(line[0].upcase)
             if (index != nil)
@@ -242,9 +247,8 @@ class ParseC
                         line_q[i].sub! '#{rt}', line[2]
 
                     end
-            
-                    #puts "#{i} :: #{line_q[i]}"
                 end
+               
             else
                 #TODO: These could be simplified alot if I move the format conversion functions out of LineC and generalize them
                 temp_line = LineC.new(line)
@@ -267,7 +271,7 @@ class ParseC
                             low     = binary_value[0..15].to_s.to_i(2)
                         
                         else
-                            puts "itsalabel #{value}"
+                            #puts "itsalabel #{value}"
                             is_a_label = 1
                         end
 
@@ -311,7 +315,7 @@ class ParseC
                 end
             end
         end
-    
+        
         return line_q
     end
 
@@ -340,6 +344,7 @@ class ParseC
                 @line = LineC.new(@line.get_array()[1..-1])
             end
 
+            
             @line.chop_comments()
             next if (check_for_mode_update(@line) == 1)
 
