@@ -191,15 +191,14 @@ class InstructionC < LineC
                         @rt = "00000"
                         @rd = "00000"
                         @rs = decode_reg(@input[-1])
-                        @shamt = "000000"
+                        @shamt = "00000"
                     else
                         @rs = decode_reg(@input[-2])
                         @rt = decode_reg(@input[-1])
                     end
                 end
 
-                #puts "#{@input[0]}:#{@input[1]}:#{@input[2]}:#{@input[3]}"
-                #puts "#{@opcode}:#{@rs}:#{@rt}:#{@rd}:#{@shamt}:#{@funct} :: #{detect_format_and_convert(@input[-1], 5)}"
+                puts "#{@opcode}:#{@rs}:#{@rt}:#{@rd}:#{@shamt}:#{@funct} :: #{detect_format_and_convert(@input[-1], 5)}"
 
                 @bin_output = @opcode + 
                         @rs + 
@@ -207,6 +206,8 @@ class InstructionC < LineC
                         @rd + 
                         @shamt + 
                         @funct
+
+                puts @bin_output
                 
             when "I"
                 if (@manual_args == 0)
