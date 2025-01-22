@@ -171,7 +171,11 @@ class InstructionC < LineC
             next if (i == 0)
             if (label_q[@input[i]] != nil)
                 if ["BEQ", "BNE", "BGEZ"].include?(@input[0].upcase)
-                    @input[i] = binary_encode((label_q[@input[i]].to_i(16) - @mem.get_pointer - 8)/4, 16)
+                    if (label_q[@input[i]].to_i(16) < @mem.get_pointer) #IDKY this works...
+                        @input[i] = binary_encode((label_q[@input[i]].to_i(16) - @mem.get_pointer - 8)/4, 16)
+                    else
+                        @input[i] = binary_encode((label_q[@input[i]].to_i(16) - @mem.get_pointer - 12)/4, 16)
+                    end
                 else    
                     @input[i] = label_q[@input[i]]
                 end
@@ -198,7 +202,7 @@ class InstructionC < LineC
                     end
                 end
 
-                puts "#{@opcode}:#{@rs}:#{@rt}:#{@rd}:#{@shamt}:#{@funct} :: #{detect_format_and_convert(@input[-1], 5)}"
+                #puts "#{@opcode}:#{@rs}:#{@rt}:#{@rd}:#{@shamt}:#{@funct} :: #{detect_format_and_convert(@input[-1], 5)}"
 
                 @bin_output = @opcode + 
                         @rs + 
@@ -207,7 +211,7 @@ class InstructionC < LineC
                         @shamt + 
                         @funct
 
-                puts @bin_output
+                #puts @bin_output
                 
             when "I"
                 if (@manual_args == 0)
