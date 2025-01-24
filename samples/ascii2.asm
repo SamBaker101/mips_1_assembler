@@ -17,7 +17,7 @@
 
 .data
 result: .word 0
-num: byte '7'
+num: .byte '7'
 
 .text
 .globl main
@@ -30,6 +30,7 @@ main:
 	blt $t0 $t1 is_not_letter_lower
 	addiu $t1 $zero 'z'
 	bgt $t0 $t1 is_not_letter_lower
+	j set_result_letter
 is_not_letter_lower:
 	addiu $t1 $zero 'A'
 	blt $t0 $t1 is_not_letter
@@ -37,10 +38,26 @@ is_not_letter_lower:
 	bgt $t0 $t1 is_not_letter
 	
 	#Set result
+set_result_letter:
 	addu $t2 $zero $t0
 	sw $t2 ($s0)
 	j exit
 	
+is_not_letter:
+	addiu $t1 $zero '0'
+	blt $t0 $t1 is_not_num
+	addiu $t1 $zero '9'
+	bgt $t0 $t1 is_not_num
 	
+	addiu $t2 $t0 -48
+	sw $t2 ($s0)
+	j exit
 	
+is_not_num:
+	addiu $t2 $t0 -1
+	sw $t2 ($s0)
+	j exit
 	
+exit:
+	li $v0 10
+	syscall
