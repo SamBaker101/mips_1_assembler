@@ -17,7 +17,7 @@
 
 .data
 result: .word 0
-num: .byte '7'
+num: 	.byte 7
 
 .text
 .globl main
@@ -37,7 +37,6 @@ is_not_letter_lower:
 	addiu $t1 $zero 'Z'
 	bgt $t0 $t1 is_not_letter
 	
-	#Set result
 set_result_letter:
 	addu $t2 $zero $t0
 	sw $t2 ($s0)

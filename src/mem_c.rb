@@ -86,6 +86,10 @@ class MemC
     end
 
     def print_out_files(line_length = 4)
+        if (@mem_data_pointer % 8 != 0)
+            @mem_data_pointer += (8 - @mem_data_pointer % 32) 
+        end
+
         print_to_file(line_length, @inst_out_file, @mem_inst_offset, @mem_inst_pointer)
         print_to_file(line_length, @data_out_file, @mem_data_offset, @mem_data_pointer)
         print_to_file(line_length, @out_file, 0, @mem_size)

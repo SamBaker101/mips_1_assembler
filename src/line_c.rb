@@ -44,7 +44,7 @@ class LineC
             binary = self.binary_encode(input, bits)  
             return binary
         elsif (input[0] == '\'')
-            puts "CHAR #{input} -> #{input[1..-2]}"
+            #puts "CHAR #{input} -> #{input[1..-2]}"
             binary = binary_encode(input[1..-2].to_i, bits)
         elsif (input[0..1] == "0x" || input[0..1] == "0X")
             input = input[2..-1]
