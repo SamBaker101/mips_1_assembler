@@ -37,6 +37,15 @@ class LineC
         end
     end
 
+    def ascii_convert(input, bits = 16)
+        output = input[1..-2].to_i
+        if ((output >= 0) && (output <= 9))
+            output = output + 48
+        end
+        puts "{input} :: #{output}"  
+        return binary_encode(output, bits)
+    end
+
     def detect_format_and_convert(input, bits = 16)
         #puts "DETECT: #{input}"
 
@@ -44,8 +53,7 @@ class LineC
             binary = self.binary_encode(input, bits)  
             return binary
         elsif (input[0] == '\'')
-            #puts "CHAR #{input} -> #{input[1..-2]}"
-            binary = binary_encode(input[1..-2].to_i, bits)
+            binary = ascii_convert(input, bits)
         elsif (input[0..1] == "0x" || input[0..1] == "0X")
             input = input[2..-1]
             input.chars.each do |a|

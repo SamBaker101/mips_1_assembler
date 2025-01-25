@@ -17,7 +17,7 @@
 
 .data
 result: .word 0
-num: 	.byte 7
+num: 	.byte '7'
 
 .text
 .globl main

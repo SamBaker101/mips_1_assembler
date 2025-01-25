@@ -57,12 +57,15 @@ class DataC < LineC
                 @output_array.push("00000000")
             end
         else
-            #FIXME: deal with chars
             @input.each do |i|
                 if i[0] == "."
                     @size = get_size(i)
                 else
-                    @bin_output = binary_encode(i.to_i(), @size)
+                    if i[0] == "\'"
+                        @bin_output = ascii_convert(i, @size)
+                    else
+                        @bin_output = binary_encode(i.to_i(), @size)
+                    end
                     @hex_output = binary_to_hex(@bin_output, @size)
                     @output_array.push(get_output())
                 end
@@ -73,7 +76,6 @@ class DataC < LineC
     def pack_mem()
         pointer = @mem.get_pointer()
         pointer = @mem.align(@size/8)
-                puts "#{@output_array} :: #{pointer}"
         @output_array.each do |item|
             (item.size()/2).times do |j|
                 index = item.size() - j*2 - 1
