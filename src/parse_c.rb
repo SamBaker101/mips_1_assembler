@@ -204,7 +204,7 @@ class ParseC
     end
 
     def check_mnemonics(line)
-        puts "CHECKING MNEMONIC FOR #{line}"
+        #puts "CHECKING MNEMONIC FOR #{line}"
         
         line_q = [line]
         line.strip!
@@ -225,7 +225,7 @@ class ParseC
                 end
                 line_q.each_with_index do |n, i|
                     #TODO: There are alot more cases to be dealt with here
-                    puts "#{line[0].upcase} :: #{$MNEMONIC_MAP[index][1..-1]} :: #{line_q[i]} :: #{line[-1]}"
+                    #puts "#{line[0].upcase} :: #{$MNEMONIC_MAP[index][1..-1]} :: #{line_q[i]} :: #{line[-1]}"
                     line_q[i].sub! '#{label}', line[-1]
                     if (line.length == 4)
                         line_q[i].sub! '#{rd}', line[1]

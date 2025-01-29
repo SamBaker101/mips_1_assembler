@@ -255,6 +255,7 @@ class InstructionC < LineC
                         @immediate
     
             when "J"
+                #puts "#{@input} :: #{ detect_format_and_convert(@input[-1], 28)} :: #{ detect_format_and_convert(@input[-1], 28)[0..-3]}"
                 if (@manual_args == 0)
                     if (@input[-1].match(/^[0-9]+/))
                         @address = detect_format_and_convert(@input[-1], 28)[0..-3]
@@ -263,11 +264,14 @@ class InstructionC < LineC
                         raw_address = @input[-1]
                         @address = binary_encode(@input[-1], 28)[0..-3]
                     end
+                    if (@address.to_i(2) < @mem.get_pointer)
+                        @address =  binary_encode(@address.to_i(2) - 2, 26)
+                    end
                 end
                 
                 @bin_output = @opcode + 
                         @address
-                #puts "#{@opcode}:#{@address}:#{raw_address}:#{@input[-1]}:#{@input[-1].class}" 
+                puts "#{@opcode}:#{@address}:#{raw_address}:#{@input[-1]}:#{@input[-1].class}" 
 
             else
                 puts "Instruction Type not found : #{@type}"
