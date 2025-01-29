@@ -38,11 +38,8 @@ class LineC
     end
 
     def ascii_convert(input, bits = 16)
-        output = input[1..-2].to_i
-        if ((output >= 0) && (output <= 9))
-            output = output + 48
-        end
-        puts "{input} :: #{output}"  
+        output = input[1..-2].ord
+        #puts "#{input} :: #{output}"  
         return binary_encode(output, bits)
     end
 
