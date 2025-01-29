@@ -112,7 +112,7 @@ class ParseC
             l.each do |m|
                 @read_q.push(m)
                 
-                puts m
+                #puts m
             end
         end
 
@@ -204,6 +204,7 @@ class ParseC
     end
 
     def check_mnemonics(line)
+        puts "CHECKING MNEMONIC FOR #{line}"
         
         line_q = [line]
         line.strip!
@@ -218,10 +219,13 @@ class ParseC
         if (!line[0].nil?)
             index = $MNEMONIC_INDEX.find_index(line[0].upcase)
             if (index != nil)
-                line_q = $MNEMONIC_MAP[index][1..-1]
-                puts line_q
+                line_q = []
+                $MNEMONIC_MAP[index][1..-1].each do |mnem|
+                    line_q = line_q + [mnem.dup]
+                end
                 line_q.each_with_index do |n, i|
                     #TODO: There are alot more cases to be dealt with here
+                    puts "#{line[0].upcase} :: #{$MNEMONIC_MAP[index][1..-1]} :: #{line_q[i]} :: #{line[-1]}"
                     line_q[i].sub! '#{label}', line[-1]
                     if (line.length == 4)
                         line_q[i].sub! '#{rd}', line[1]
@@ -238,7 +242,6 @@ class ParseC
                             
                             line_q[i].sub! '#{rs}', line[1]
                             line_q[i].sub! '#{rt}', line[2]                        
-                            puts "Subbed #{line_q[i]}"
                         
                         end
                     elsif (line.length == 3)

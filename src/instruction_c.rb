@@ -171,10 +171,12 @@ class InstructionC < LineC
             next if (i == 0)
             if (label_q[@input[i]] != nil)
                 if ["BEQ", "BNE", "BGEZ"].include?(@input[0].upcase)
-                    if (label_q[@input[i]].to_i(16) < @mem.get_pointer) #IDKY this works...
-                        @input[i] = binary_encode((label_q[@input[i]].to_i(16) - @mem.get_pointer - 8)/4, 16)
+                    puts "#{@input} :: #{label_q[@input[i]].to_i(16)/4} :: #{@mem.get_pointer/4}"
+                    #IDKY this works... #Spoiler it doesn't, this logic needs more testing
+                    if (label_q[@input[i]].to_i(16) < @mem.get_pointer) 
+                        @input[i] = binary_encode((label_q[@input[i]].to_i(16) - @mem.get_pointer)/4, 16)
                     else
-                        @input[i] = binary_encode((label_q[@input[i]].to_i(16) - @mem.get_pointer - 12)/4, 16)
+                        @input[i] = binary_encode((label_q[@input[i]].to_i(16) - @mem.get_pointer)/4 - 2, 16)
                     end
                 else    
                     @input[i] = label_q[@input[i]]
