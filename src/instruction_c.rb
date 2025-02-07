@@ -174,7 +174,7 @@ class InstructionC < LineC
                     puts "#{@input} :: #{label_q[@input[i]].to_i(16)/4} :: #{@mem.get_pointer/4}"
                     #IDKY this works... #Spoiler it doesn't, this logic needs more testing
                     if (label_q[@input[i]].to_i(16) < @mem.get_pointer) 
-                        @input[i] = binary_encode((label_q[@input[i]].to_i(16) - @mem.get_pointer)/4, 16)
+                        @input[i] = binary_encode((label_q[@input[i]].to_i(16) - @mem.get_pointer)/4 - 2, 16)
                     else
                         @input[i] = binary_encode((label_q[@input[i]].to_i(16) - @mem.get_pointer)/4 - 2, 16)
                     end
@@ -264,14 +264,12 @@ class InstructionC < LineC
                         raw_address = @input[-1]
                         @address = binary_encode(@input[-1], 28)[0..-3]
                     end
-                    if (@address.to_i(2) < @mem.get_pointer)
-                        @address =  binary_encode(@address.to_i(2) - 2, 26)
-                    end
+                    @address =  binary_encode(@address.to_i(2) - 2, 26)
                 end
                 
                 @bin_output = @opcode + 
                         @address
-                puts "#{@opcode}:#{@address}:#{raw_address}:#{@input[-1]}:#{@input[-1].class}" 
+                #puts "#{@opcode}:#{@address}:#{raw_address}:#{@input[-1]}:#{@input[-1].class}" 
 
             else
                 puts "Instruction Type not found : #{@type}"

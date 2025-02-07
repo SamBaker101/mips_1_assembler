@@ -90,29 +90,23 @@ class ParseC
     end
 
     def fill_queues(in_file)
+        temp_q = []
+        
         while (line = in_file.gets)
             
             lines = line.split(";")
             lines.each do |l|
-                @total_lines += 1
-                @read_q.push(l)
+                temp_q.push(l)
             end
         end
-        
-        temp_q = @read_q
-        @read_q = []
 
         temp_q.each do |l|
-            #print "Check mnemonic for #{l}"
             l = check_mnemonics(l)
-            #puts "<--> #{l}"
-            
-            @total_lines += l.length - 1
-
+           
             l.each do |m|
+                next if m[0] == $COMMENT_CHARACTER
                 @read_q.push(m)
-                
-                #puts m
+                @total_lines += 1    
             end
         end
 
