@@ -33,7 +33,8 @@ class InstructionC < LineC
     end
 
     def read(label_q, line_num)
-        print_line(@input)
+        #print_line(@input)
+        
         #FIXME: Need to handle other directives as req
         if (is_directive == 1)
             puts "SKIPPING DIRECTIVE #{@input[0]}"

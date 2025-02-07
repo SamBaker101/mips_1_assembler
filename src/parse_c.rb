@@ -104,12 +104,17 @@ class ParseC
             l = check_mnemonics(l)
            
             l.each do |m|
+                m.strip!
                 next if m[0] == $COMMENT_CHARACTER
+                next if m.nil?
+                next if m.length == 0
+
                 @read_q.push(m)
                 @total_lines += 1    
             end
         end
 
+        print_read_q()
         fill_label_q()
 
     end
@@ -352,15 +357,6 @@ class ParseC
         end
     end
 
-    def print_labels()
-        @label_q.each do |l, i|
-            if (l == nil) 
-                next 
-            end
-            puts "Label: #{l}:#{i}::#{l.class}"
-        end
-    end
-
     def check_label_q(value)
         if (value.class == 1.class)
             return value
@@ -387,4 +383,21 @@ class ParseC
         @mem.print_out_files()        
         close_files()
     end
+
+    def print_labels()
+        @label_q.each do |l, i|
+            if (l == nil) 
+                next 
+            end
+            puts "Label: #{l}:#{i}::#{l.class}"
+        end
+    end
+
+    def print_read_q()
+        puts "READ_Q CONTENTS:"
+        @read_q.each_with_index do |m, i|
+            puts "#{i} : #{m}"
+        end
+    end
+
 end
