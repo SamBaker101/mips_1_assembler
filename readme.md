@@ -1,3 +1,5 @@
+# Background
+
 I have been tossing around the idea of implementing a MIPS1 chip similar to the R3000 (I have a lot of nostalgia for a certian grey box from the 90s). Additionally, it seems like the right complexity level to challenge me without becoming unmanagable. 
 
 Unfortunately I haven't worked much with the MIPS_1 architecture directly so I wanted to try to create an assembler to familiarize myself with the ISA before diving into a larger project using it.
@@ -5,19 +7,19 @@ Unfortunately I haven't worked much with the MIPS_1 architecture directly so I w
 NOTE: 
 	This project is still in progress. I am still working on some aspects and have more work to do to validate the outputs. I would recommend verifying any outputs against a proven simulator like MARS or SPIM.  
 
-#TODO:
-##Testing
+# TODO:
+## Testing
 	- Create remaining unit tests
 	- Expand unit tests to randomize inputs and/or explore all potential cases
 	- Create additional sample code and validate its outputs 
 	- Add logger to control verbosity, replace debugger print statements with log calls
 
-##Features
+## Features
 	- Add command line arguments for target, output type, verbosity
 	- Add support for missing directives
 	- Add support for coprocessors
 
-#Some notes about MIPS_1:
+# Some notes about MIPS_1:
 ## Registers
 		- 32 32-bit General Purpose Registers
 		- $0 - hardwired to zero
@@ -48,7 +50,7 @@ NOTE:
 		-System Call, Breakpoint
 			- call exceptions
 
-#Instruction List:
+# Instruction List:
 	ADD    rd, rs, rt          : Addition (with overflow)
 	ADDI   rd, rs, Imm         : Addition immediate (with overflow)
 	ADDU   rd, rs, rt          : Addition (without overflow)
@@ -112,7 +114,7 @@ NOTE:
 	BCZT   label               : Branch Coprocessor z True
 	BCZF   label               : Branch Coprocessor z False		
 
-#Resources Used:
+# Resources Used:
 		https://user.eng.umd.edu/~manoj/759M/MIPSALM.html
 		https://shawnzhong.github.io/JsSpim/
 		https://uweb.engr.arizona.edu/~ece369/Resources/spim/MIPSReference.pdf
