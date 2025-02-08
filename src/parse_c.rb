@@ -108,7 +108,7 @@ class ParseC
                 next if m[0] == $COMMENT_CHARACTER
                 next if m.nil?
                 next if m.length == 0
-
+                
                 @read_q.push(m)
                 @total_lines += 1    
             end
@@ -161,7 +161,10 @@ class ParseC
             label_check = @line.check_for_labels()
             if (label_check != 0)
                 @label_q[label_check.strip] = "0x" + (address).to_s(16)
-            else
+                @line = LineC.new(line[1..-1])
+            end
+            
+            if (@line.is_empty == 0)
 
                 #FIXME: alignment is a thing
 
