@@ -39,39 +39,29 @@ class LineC
 
     def ascii_convert(input, bits = 16)
         output = input[1..-2].ord
-        #puts "#{input} :: #{output}"  
         return binary_encode(output, bits)
     end
 
     def detect_format_and_convert(input, bits = 16)
-        #puts "DETECT: #{input}"
-
         if (input.class == 123.class)
-            binary = self.binary_encode(input, bits)  
-            return binary
+            integer = input
         elsif (input[0] == '\'')
-            binary = ascii_convert(input, bits)
+            return ascii_convert(input, bits)
         elsif (input[0..1] == "0x" || input[0..1] == "0X")
             input = input[2..-1]
             input.chars.each do |a|
                 if (!a.match(/\d|[a-fA-F]/))
-                    abort("Invalid octal digit: #{input}")
+                    abort("Invalid hex digit: #{input}")
                 end
             end
             integer = input.to_i(16)
-            binary  = integer.to_s(2)
-            
-            while (binary.length < bits) do
-                binary = "0" + binary
-            end
-            return binary
         elsif (input.length == bits)
             input.chars.each do |a|
                 if (!a.match(/[01]/))
                     abort("Invalid binary digit: #{input}")
                 end
             end
-            return input
+            integer = input.to_i(2)
         elsif (input[0] == "0")
             input.chars.each do |a|
                 if (a.to_i() > 7)
@@ -79,15 +69,10 @@ class LineC
                 end
             end
             integer = input.to_i(8)
-            binary  = integer.to_s(2)
-            while (binary.length < bits) do
-                binary = "0" + binary
-            end
-            return binary
         else
-            binary = binary_encode(input.to_i(), bits)
-            return binary
+            integer = input.to_i()
         end
+        return binary_encode(integer, bits)
     end
 
     def binary_encode(dec, bits = 32)
