@@ -166,13 +166,11 @@ class InstructionC < LineC
             end
     end
 
-    #TODO: This is starting to get messy, proabaly needs some cleanup/abstraction
     def encode(label_q, line_num)
         @input.each_with_index do |value, i|
             next if (i == 0)
             if (label_q[@input[i]] != nil)
                 if ["BEQ", "BNE", "BGEZ"].include?(@input[0].upcase)
-                    #puts "#{@input} :: #{label_q[@input[i]].to_i(16)/4} :: #{@mem.get_pointer/4}"
                     @input[i] = binary_encode((label_q[@input[i]].to_i(16) - @mem.get_pointer)/4 -1, 16)
                 else    
                     @input[i] = label_q[@input[i]]

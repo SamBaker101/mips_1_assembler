@@ -83,7 +83,6 @@ class ParseC
                 item.chomp!
                 item.strip!
             end
-            #puts "#{line[0]}:#{line[1]}:#{line[2]}:#{line[3]}:#{line[4]}"
             map.push(line)
             index.push(line[0])
         end
@@ -124,8 +123,6 @@ class ParseC
         data = 0
         @read_q.each do |line|
             @line = LineC.new(line)
-            
-            next if (@line.is_empty() == 1)
 
             if (@line.get_array[0].strip == '.data')
                 address = $MEM_DATA_OFFSET
@@ -226,8 +223,6 @@ class ParseC
                     line_q = line_q + [mnem.dup]
                 end
                 line_q.each_with_index do |n, i|
-                    #TODO: There are alot more cases to be dealt with here
-                    #puts "#{line[0].upcase} :: #{$MNEMONIC_MAP[index][1..-1]} :: #{line_q[i]} :: #{line[-1]}"
                     line_q[i].sub! '#{label}', line[-1]
                     if (line.length == 4)
                         line_q[i].sub! '#{rd}', line[1]
@@ -238,8 +233,6 @@ class ParseC
                             line_q[i].sub! 'sltu', 'sltiu'
                             line_q[i].sub! '#{rs}', line[1]
                             line_q[i].sub! '#{rt}', line[2]
-                            line_q[i].sub! '#{rs}', line[2]
-                            line_q[i].sub! '#{rt}', line[3]
                         else
                             
                             line_q[i].sub! '#{rs}', line[1]
@@ -255,32 +248,24 @@ class ParseC
                 end
                
             else
-                #TODO: These could be simplified alot if I move the format conversion functions out of LineC and generalize them
                 temp_line = LineC.new(line)
                 address = line[-1].split("("||")")
                 value   = address[0]
-                #puts "CHECK MNEMONIC #{line}, #{address}, #{value}"
 
                 case(line[0].upcase)    
                     when "LA"
                         is_a_label = 0
                         if (!value.match?(/[0-9a-fA-F]+/) && !value.match?(/[0-9]+/))
-                            
-                            if (value.class != 1.class)                        
-                                value   = temp_line.detect_format_and_convert(value, 32).to_i(2)
-                            end
-
-                            binary_value =  value.to_s(2)
+                                                 
+                            value   = temp_line.detect_format_and_convert(value, 32).to_i(2)
 
                             hi      = binary_value[16..31].to_s.to_i(2)
                             low     = binary_value[0..15].to_s.to_i(2)
                         
                         else
-                            #puts "itsalabel #{value}"
                             is_a_label = 1
                         end
 
-                        #puts "#{address[0]} : #{value} : #{binary_value} : #{hi} : #{low}" 
                         if (is_a_label == 1)
                             return ["addi #{line[1]} $r0 #{value}" ]
                         elsif (address.length == 1)
@@ -300,9 +285,8 @@ class ParseC
                             end
                         end
                     when "LI"   
-                        if (value.class != 1.class)                        
-                            value   = value.to_i
-                        end
+                  
+                        value   = value.to_i
                         binary_value =  value.to_s(2)
                         hi      = binary_value[16..31].to_s.to_i(2)
                         low     = binary_value[0..15].to_s.to_i(2)
@@ -342,18 +326,14 @@ class ParseC
             @line = LineC.new(@read_q[@line_num])
             @line_num += 1
             
-            next if (@label_q[@line_num] != nil)
             next if (@line.is_empty() == 1)
+
             if (@line.check_for_labels != 0)
                 next if @line.get_array().length == 1
                 @line = LineC.new(@line.get_array()[1..-1])
             end
 
-            
-            @line.chop_comments()
             next if (check_for_mode_update(@line) == 1)
-
-            #puts @line.get_array()
 
             @line = update_line_class(@line.get_array(), @mode)
             @line.read(@label_q, @line_num)
@@ -376,6 +356,7 @@ class ParseC
 
     def close_files()
         @in_file.close
+        #out files are closed by mem
         @mem.close_files()
     end
 
