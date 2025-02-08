@@ -5,19 +5,31 @@ Unfortunately I haven't worked much with the MIPS_1 architecture directly so I w
 NOTE: 
 	This project is still in progress. I am still working on some aspects and have more work to do to validate the outputs. I would recommend verifying any outputs against a proven simulator like MARS or SPIM.  
 
-Some notes about MIPS_1:
-	- Registers
+#TODO:
+##Testing
+	- Create remaining unit tests
+	- Expand unit tests to randomize inputs and/or explore all potential cases
+	- Create additional sample code and validate its outputs 
+	- Add logger to control verbosity, replace debugger print statements with log calls
+
+##Features
+	- Add command line arguments for target, output type, verbosity
+	- Add support for missing directives
+	- Add support for coprocessors
+
+#Some notes about MIPS_1:
+## Registers
 		- 32 32-bit General Purpose Registers
 		- $0 - hardwired to zero
 		- HI/LO - 32-bit registers used for asynchronous int mul/div
 		- PC
 
-	- Instruction Formats:
+## Instruction Formats:
 		- R type : Opcode[0:5], rs[6:10], rt[11:15], rd[16:20], shamt[21:25], funct[26:31] 
 		- I type : Opcode[0:5], rs[6:10], rt[11:15], immediate[16:31]
 		- J type : Opcode[0:5], Address[6:31]
 
-	- Instruction Details
+## Instruction Details
 		- Load/Store
 			- 8-bit, 16-bit and 32-bit
 			
@@ -36,7 +48,7 @@ Some notes about MIPS_1:
 		-System Call, Breakpoint
 			- call exceptions
 
-Instruction List:
+#Instruction List:
 	ADD    rd, rs, rt          : Addition (with overflow)
 	ADDI   rd, rs, Imm         : Addition immediate (with overflow)
 	ADDU   rd, rs, rt          : Addition (without overflow)
@@ -100,7 +112,7 @@ Instruction List:
 	BCZT   label               : Branch Coprocessor z True
 	BCZF   label               : Branch Coprocessor z False		
 
-Resources Used:
+#Resources Used:
 		https://user.eng.umd.edu/~manoj/759M/MIPSALM.html
 		https://shawnzhong.github.io/JsSpim/
 		https://uweb.engr.arizona.edu/~ece369/Resources/spim/MIPSReference.pdf
