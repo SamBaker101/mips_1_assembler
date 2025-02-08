@@ -165,9 +165,6 @@ class ParseC
             end
             
             if (@line.is_empty == 0)
-
-                #FIXME: alignment is a thing
-
                 case (@line.get_array[1])
                     when ".byte"
                         @line.get_array[2..-1].each do 
