@@ -161,7 +161,7 @@ class ParseC
             label_check = @line.check_for_labels()
             if (label_check != 0)
                 @label_q[label_check.strip] = "0x" + (address).to_s(16)
-                @line = LineC.new(line[1..-1])
+                @line = LineC.new(@line.get_array()[1..-1])
             end
             
             if (@line.is_empty == 0)
