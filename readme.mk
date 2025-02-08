@@ -5,8 +5,6 @@ Unfortunately I haven't worked much with the MIPS_1 architecture directly so I w
 NOTE: 
 	This project is still in progress. I am still working on some aspects and have more work to do to validate the outputs. I would recommend verifying any outputs against a proven simulator like MARS or SPIM.  
 
-	Also my target device in this project is the R3000 and I have implemented the instruction set based on that, It is my intention to implement the coprocessor instructions for the R3010 floating point unit as well but they are not included at this time.
-
 Some notes about MIPS_1:
 	- Registers
 		- 32 32-bit General Purpose Registers
