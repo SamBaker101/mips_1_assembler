@@ -90,12 +90,6 @@ class LineC
                 dec = dec/2
             end
         end
-        if (dec < 0)
-            dec = dec - 1
-            (0..(bits-1)).each do
-                binary = (binary == "1") ? "0" : "1"
-            end 
-        end
         if sign
             (0..bits-1).each do |i|
                 binary[i] = (binary[i] == '0') ? '1' : '0'
@@ -113,35 +107,20 @@ class LineC
         end
     
         hex.downcase!
-        #puts "#{binary} \t: #{integer} \t: #{hex}"
-        hex
+        return hex
     end
 
     def is_directive()
-        if (@input[0].chars.first == "\.")
-            return 1
-        else
-            return 0
-        end
+        return (@input[0].chars.first == "\.") ? 1 : 0
     end
 
     def is_empty()
-        if ((@input.nil? || @input[0].nil?) || (@input[0].chars.first == $COMMENT_CHARACTER))
-            return 1
-        else
-            return 0
-        end
+        return ((@input.nil? || @input[0].nil?) || (@input[0].chars.first == $COMMENT_CHARACTER)) ? 1 : 0
     end
 
     def decode_directive_mode()
         index = $DIRECTIVE_INDEX.find_index(@input[0].downcase)
-        
-        if (index == nil || $DIRECTIVE_MAP[index][1] != "S")
-            return -1
-        else
-            #puts "THING #{index} #{$DIRECTIVE_MAP[index][2]}"
-            return $DIRECTIVE_MAP[index][2].to_i()
-        end
+        return (index == nil || $DIRECTIVE_MAP[index][1] != "S") ? -1 : $DIRECTIVE_MAP[index][2].to_i()
     end
 
     def check_for_labels()
