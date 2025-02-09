@@ -43,6 +43,18 @@ class MemC
         @mem_array[address] = value
     end
 
+    def get_pointer()
+        case (@parser.get_mode()) 
+            when Mode::DATA 
+                pointer = @mem_data_pointer
+            when Mode::RDATA 
+                pointer = @mem_data_pointer #FIXME: This should have a seperate address range
+            when Mode::TEXT 
+                pointer = @mem_inst_pointer
+        end
+        return pointer
+    end
+
     def write_into_mem(line)
         pointer = get_pointer()
         (line.size()/2).times do |j|
@@ -55,23 +67,10 @@ class MemC
     def align(bytes)
         pointer = get_pointer()
         while (pointer % bytes != 0) do
-            #puts "#{pointer}::#{bytes}:#{pointer % bytes}"
             @mem_array[pointer] = "00"
             pointer += 1
         end
         set_pointer(pointer) 
-    end
-
-    def get_pointer()
-        case (@parser.get_mode()) 
-            when Mode::DATA 
-                pointer = @mem_data_pointer
-            when Mode::RDATA 
-                pointer = @mem_data_pointer #FIXME: This should have a seperate address range
-            when Mode::TEXT 
-                pointer = @mem_inst_pointer
-        end
-        return pointer
     end
 
     def set_pointer(pointer)

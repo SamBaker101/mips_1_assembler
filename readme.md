@@ -18,6 +18,7 @@ NOTE:
 	- Add command line arguments for target, output type, verbosity
 	- Add support for missing directives
 	- Add support for coprocessors
+	- Add support for additional sections (rdata, sdata, lit4/8 ect.)
 
 # Some notes about MIPS_1:
 ## Registers
