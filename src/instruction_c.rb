@@ -34,11 +34,7 @@ class InstructionC < LineC
     end
 
     def is_reg(operand)
-        if (operand[0].match(/[$rR]/))
-            return 1
-        else
-            return 0
-        end
+        return (operand.nil? || !(operand[0].match(/[$rR]/))) ? 0 : 1
     end
 
     def print_line(array)
@@ -165,10 +161,13 @@ class InstructionC < LineC
             when "R"
                 if (@manual_args == 0)
                     @rd = decode_reg(@input[1])
-                    if ['SLL', 'SLLV', 'SRA', 'SRAV'].include?(@input[0].upcase)
-                        @rs = "00000"
+                    if ['SLL', 'SRA'].include?(@input[0].upcase)
+                        @rs = "00000" 
                         @rt = decode_reg(@input[-2])
                         @shamt = detect_format_and_convert(@input[-1], 5)
+                    elsif ['SLLV', 'SRAV'].include?(@input[0].upcase)
+                        @rs = decode_reg(@input[3])
+                        @rt = decode_reg(@input[2])
                     elsif ['JR', 'JAL', 'JALR'].include?(@input[0].upcase)
                         @rt = "00000"
                         @rd = "00000"

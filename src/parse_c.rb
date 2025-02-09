@@ -107,7 +107,7 @@ class ParseC
                 next if m[0] == $COMMENT_CHARACTER
                 next if m.nil?
                 next if m.length == 0
-                
+
                 @read_q.push(m)
                 @total_lines += 1    
             end
@@ -162,25 +162,25 @@ class ParseC
             end
             
             if (@line.is_empty == 0)
-                case (@line.get_array[1])
+                case (@line.get_array[0])
                     when ".byte"
-                        @line.get_array[2..-1].each do 
+                        @line.get_array[1..-1].each do 
                             address += 1
                         end
                     when ".half"
-                        @line.get_array[2..-1].each do 
+                        @line.get_array[1..-1].each do 
                             address += 2
                         end
                     when ".word"
-                        @line.get_array[2..-1].each do 
+                        @line.get_array[1..-1].each do 
                             address += 4
                         end
                     when ".float"
-                        @line.get_array[2..-1].each do 
+                        @line.get_array[1..-1].each do 
                             address += 4
                         end
                     when ".double"
-                        @line.get_array[2..-1].each do 
+                        @line.get_array[1..-1].each do 
                             address += 8
                         end
                     else

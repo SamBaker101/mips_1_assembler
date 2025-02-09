@@ -18,6 +18,9 @@ class LineC
         else
             @input = line_in
         end
+        if !@input.nil?
+            chop_comments()
+        end
     end
 
     def get_array()
