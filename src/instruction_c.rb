@@ -175,6 +175,10 @@ class InstructionC < LineC
                     elsif ['MFHI', 'MFLO'].include?(@input[0].upcase)
                         @rs = "00000"
                         @rt = "00000"    
+                    elsif ['MULT', 'MULTU'].include?(@input[0].upcase)
+                        @rs = decode_reg(@input[-2])
+                        @rt = decode_reg(@input[-1]) 
+                        @rd = "00000"
                     elsif ['JR', 'JAL', 'JALR'].include?(@input[0].upcase)
                         @rt = "00000"
                         @rd = "00000"
