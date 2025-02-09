@@ -15,7 +15,7 @@ At this time the assembler can be called by calling ./main.rb followed by the fi
 
 Currently the assembler pulls the file from the samples folder. This is to simplify testing but will eventually change allowing you to give the full path of the file you would like to use. 
 
-Currently the assembler outputs a full memory dump called <filename>.txt, a dump of the instructions called <filename>_inst.txt and a dump of the data called <filename>_data.txt. Additionally if a sample output is available as I've created in the MARS_output folder a diff will be created for the instructions called <filename>_diff.txt. This is another testing feature and eventually will only be provided if requested by an arg.
+Currently the assembler outputs a full memory dump called \<filename\>.txt, a dump of the instructions called \<filename\>_inst.txt and a dump of the data called \<filename\>_data.txt. Additionally if a sample output is available as I've created in the MARS_output folder a diff will be created for the instructions called \<filename\>_diff.txt. This is another testing feature and eventually will only be provided if requested by an arg.
 
 # TODO:
 
