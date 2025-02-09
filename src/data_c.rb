@@ -7,7 +7,6 @@
 #TODO: Labels for data items (variables)
 
 class DataC < LineC
-    @size    
     @content 
     @output_array
     @mem
@@ -62,19 +61,6 @@ class DataC < LineC
                 end
             end
         end
-    end
-
-    def pack_mem()
-        pointer = @mem.get_pointer()
-        pointer = @mem.align(@size/8)
-        @output_array.each do |item|
-            (item.size()/2).times do |j|
-                index = item.size() - j*2 - 1
-                @mem.set_byte(pointer, item[(index - 1) .. index])
-                pointer += 1
-            end
-        end
-        @mem.set_pointer(pointer)
     end
 
     def read(label_q, line_num)

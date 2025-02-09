@@ -10,6 +10,7 @@ class LineC
     @input = []
     @hex_output = "00000000"
     @bin_output = "00000000000000000000000000000000"
+    @size = 32
 
     def initialize(line_in)
         if(line_in.class == "abc".class)
@@ -140,4 +141,19 @@ class LineC
         end
     end
 
+    def pack_mem()
+        pointer = @mem.get_pointer()
+        pointer = @mem.align(@size/8)
+        if @output_array.nil?
+            @output_array = [@hex_output]
+        end
+        @output_array.each do |item|
+            (item.size()/2).times do |j|
+                index = item.size() - j*2 - 1
+                @mem.set_byte(pointer, item[(index - 1) .. index])
+                pointer += 1
+            end
+        end
+        @mem.set_pointer(pointer)
+    end
 end
