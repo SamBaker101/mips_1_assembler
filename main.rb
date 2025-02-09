@@ -23,13 +23,18 @@ $DIRECTIVE_INDEX     = []
 $MNEMONIC_MAP       = [] 
 $MNEMONIC_INDEX     = []
 
-#TODO: Implement instruction mnemonics
-#TODO: Add missing directives
-#TODO: There is very little error/invalid arg checking
-#TODO: Complete the rest of the unit tests
-
-
 def main()
+    input_array = ARGV
+    if input_array[0]
+        $FILE_NAME = input_array[0]
+    end
+    if input_array[1] == "B"
+        $HEX_OUT = 0
+    elsif input_array[1] == "H" 
+        $HEX_OUT = 1
+    end
+    
+
     parser = ParseC.new()
     parser.parse_file()
 
