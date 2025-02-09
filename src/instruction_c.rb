@@ -125,7 +125,11 @@ class InstructionC < LineC
                     return binary_encode(string[2..-1].to_i + 24, 5) 
                 end    
             when "s"
-                return binary_encode(string[2..-1].to_i + 16, 5)
+                if (string[2].downcase == "p")
+                    return binary_encode(29, 5)
+                else
+                    return binary_encode(string[2..-1].to_i + 16, 5)
+                end
             when "k"
                 return binary_encode(string[2..-1].to_i + 26, 5)
             when ("g")
