@@ -28,13 +28,15 @@ def main()
     if input_array[0]
         $FILE_NAME = input_array[0]
     end
-    if input_array[1] == "B"
-        $HEX_OUT = 0
-    elsif input_array[1] == "H" 
-        $HEX_OUT = 1
+
+    input_array.each do |arg|
+        if arg == "B"
+            $HEX_OUT = 0
+        elsif arg == "H" 
+            $HEX_OUT = 1
+        end
     end
     
-
     parser = ParseC.new()
     parser.parse_file()
 
