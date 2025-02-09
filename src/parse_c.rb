@@ -163,6 +163,8 @@ class ParseC
             
             if (@line.is_empty == 0)
                 case (@line.get_array[0])
+                    when ".space"
+                        address += @line.get_array[1].to_i
                     when ".byte"
                         @line.get_array[1..-1].each do 
                             address += 1

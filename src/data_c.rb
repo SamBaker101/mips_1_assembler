@@ -48,13 +48,14 @@ class DataC < LineC
             @mem.align(@input[1].to_i)
         elsif (@input[0] == ".space")
             (0..@input[1].to_i - 1).each do    
-                @output_array.push("00000000")
+                @output_array.push("00")
             end
         else
             @input.each do |i|
                 if i[0] == "."
                     @size = get_size(i)
                 else
+                    i = i.gsub(",","")
                     @bin_output = detect_format_and_convert(i, @size)
                     @hex_output = binary_to_hex(@bin_output, @size)
                     @output_array.push(get_output())
@@ -67,6 +68,7 @@ class DataC < LineC
         check_for_mult()
         parse_mem_lines()
         pack_mem()
+
         return nil
     end
 end

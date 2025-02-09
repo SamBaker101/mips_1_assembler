@@ -74,6 +74,7 @@ class MemC
     end
 
     def set_pointer(pointer)
+        
         case (@parser.get_mode()) 
             when Mode::DATA 
                  @mem_data_pointer = pointer
@@ -89,8 +90,10 @@ class MemC
             @mem_data_pointer += (8 - @mem_data_pointer % 32) 
         end
 
+        puts @mem_data_pointer.to_s(16)
+
         print_to_file(line_length, @inst_out_file, @mem_inst_offset, @mem_inst_pointer)
-        print_to_file(line_length, @data_out_file, @mem_data_offset, @mem_data_pointer)
+        print_to_file(line_length, @data_out_file, @mem_data_offset, $MEM_SIZE)
         print_to_file(line_length, @out_file, 0, @mem_size)
     end
 

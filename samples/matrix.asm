@@ -21,7 +21,7 @@
 .data
 mat1: 	.space 120
 mat4: 	.word 2, 3, 1
-	.word 2, 4, 3
+		.word 2, 4, 3
 col: 	.word 2
 
 .text 
