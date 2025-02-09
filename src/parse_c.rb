@@ -132,7 +132,8 @@ class ParseC
                 data    = 0
             end
             
-            next if (@line.is_directive() == 1)
+            next if (@line.is_directive() == 1) && 
+                ![".half", ".word", ".float", ".double"].include?(@line.get_array[0])
 
             if data == 1
                 case (@line.get_array[1])
