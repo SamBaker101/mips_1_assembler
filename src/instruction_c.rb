@@ -168,6 +168,9 @@ class InstructionC < LineC
                     elsif ['SLLV', 'SRAV'].include?(@input[0].upcase)
                         @rs = decode_reg(@input[3])
                         @rt = decode_reg(@input[2])
+                    elsif ['MFHI', 'MFLO'].include?(@input[0].upcase)
+                        @rs = "00000"
+                        @rt = "00000"    
                     elsif ['JR', 'JAL', 'JALR'].include?(@input[0].upcase)
                         @rt = "00000"
                         @rd = "00000"
