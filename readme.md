@@ -28,7 +28,6 @@ Currently the assembler outputs a full memory dump called \<filename\>.txt, a du
 
 ## Features
 
-	- Add command line arguments for target, output type, verbosity
 	- Add support for missing directives
 	- Add support for coprocessors
 	- Add support for additional sections (rdata, sdata, lit4/8 ect.)
