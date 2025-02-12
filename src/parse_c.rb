@@ -102,7 +102,6 @@ class ParseC
                 end
             end
 
-
             lines.each do |l|
                 temp_q.push(l)
             end
@@ -273,6 +272,8 @@ class ParseC
                             hi      = binary_value[16..31].to_s.to_i(2)
                             low     = binary_value[0..15].to_s.to_i(2)
                         
+                        elsif (address.length > 1)
+                            return ["ori $at $r0 #{address[0]}]", "add #{line[1]} #{address[1]} $at"]
                         else
                             is_a_label = 1
                         end
