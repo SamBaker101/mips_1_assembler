@@ -273,6 +273,7 @@ class ParseC
                             low     = binary_value[0..15].to_s.to_i(2)
                         
                         elsif (address.length > 1)
+                            #Can't find documentation on this addressing mode but MARS interprets it as below
                             return ["ori $at $r0 #{address[0]}]", "add #{line[1]} #{address[1]} $at"]
                         else
                             is_a_label = 1
