@@ -92,6 +92,9 @@ class ParseC
         temp_q = []
         
         while (line = in_file.gets)
+
+            #TODO: Do this more gracefully so you don't have to repeat it
+            next if line[0] == $COMMENT_CHARACTER
             
             lines = line.split(";")
             lines.each do |l|
