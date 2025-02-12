@@ -94,9 +94,15 @@ class ParseC
         while (line = in_file.gets)
 
             #TODO: Do this more gracefully so you don't have to repeat it
-            next if line[0] == $COMMENT_CHARACTER
             
             lines = line.split(";")
+            lines.each_with_index do |value, index|
+                if (value.chars.first == $COMMENT_CHARACTER)
+                    lines = lines[0, index]
+                end
+            end
+
+
             lines.each do |l|
                 temp_q.push(l)
             end
@@ -107,7 +113,6 @@ class ParseC
            
             l.each do |m|
                 m.strip!
-                next if m[0] == $COMMENT_CHARACTER
                 next if m.nil?
                 next if m.length == 0
 
