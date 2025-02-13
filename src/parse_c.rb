@@ -262,7 +262,13 @@ class ParseC
                 address = line[-1].split("("||")")
                 value   = address[0]
 
-                case(line[0].upcase)    
+                case(line[0].upcase)  
+                    when "MUL"
+                        if (line[-1][0] == '$')
+                            return line
+                        else
+                            return ["addi $at $zero #{line[-1]}", "mul #{line[1]} #{line[2]} $at"]
+                        end
                     when "LA"
                         is_a_label = 0
                         if (!value.match?(/[0-9a-fA-F]+/) && !value.match?(/[0-9]+/))

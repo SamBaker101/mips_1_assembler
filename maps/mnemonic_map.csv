@@ -18,7 +18,6 @@ NEGU    , subu #{rd} $r0 #{rs}
 NOT     , nor #{rd} #{rs} $r0
 DIV     , div #{rs} #{rt}           , bne #{rt} $r0 1F      , nop                       , break 7   , 1:    , li $at -1     , bne #{rt} $at 2f, nop, lui $at 0x8000, bne #{rs} $at 2f , nop, break 6, 2:, mflo #{rd}
 DIVU    , divu #{rs} #{rt}          , bne #{rt} $r0 1F      , nop                       , break 7   , 1:    , mflo #{rd}
-MUL     , multu #{rs} #{rt}         , mflo #{rd}
 MULO    , mult #{rs} #{rt}          , mfhi #{rd}            , sra #{rd} #{rd} 31        , mflo $at          , beq #{rd} $at 1f , nop , break 6 , 1: , mflo #{rd}
 MULOU   , multu #{rs} #{rt}         , mfhi $at              , mflo #{rd}                , beq $at $r0 1f    , nop           , break 6  , 1:
 REM     , div #{rs} #{rt}           , bne #{rt} $r0 1f      , nop                       , break 7   , 1:    , li $at -1     , bne #{rt} $at 2f  , nop   , lui $at 0x8000   , bne #{rs} $at 2f , nop  , break 6   , 2: , mfhi #{rd}
