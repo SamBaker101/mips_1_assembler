@@ -47,15 +47,12 @@ def call_tests()
     test_fill_queues(parser)
     test_check_for_mode_update(parser)
     test_update_line_class(parser)
-    #test_parse_input()     these will be part of test_parse_file
-    #test_print_to_file()   these will be part of test_parse_file
-    #test_print_labels()    these will be part of test_parse_file
-    #test_close_files()     these will be part of test_parse_file
 
     ### LineC Tests ###
     line = LineC.new($test_array_random)
     test_get_array(line)
     test_set_get_output(line)
+    #test_ascii_convert()
     test_detect_format_and_convert(line)
     test_binary_encode(line)
     test_binary_to_hex(line)
@@ -63,12 +60,11 @@ def call_tests()
     test_decode_directive_mode()
     test_check_for_labels()
     test_chop_comments()
+    #test_pack_mem()
 
     ### InstructionC Tests ###
     inst = InstructionC.new($test_array_random, dummy_mem)
-    #test_read() - This is a parent function 
     test_is_reg(inst)
-    #test_print_line(inst) - Print doesnt really need test
     test_decode_operation(inst)
     test_decode_reg(inst)
     test_encode(inst)
@@ -77,11 +73,14 @@ def call_tests()
     test_get_size()
     test_check_for_mult()
     test_parse_mem_lanes()
-    test_pack_mem()
-    test_read()
 
-    ### RDataC Tests ###
-
+    ### MEM Tests ###
+    test_get_byte()
+    test_set_byte()
+    test_get_pointer()
+    test_write_into_mem()
+    test_align()
+    test_set_pointer()
 end
 
     ### ParseC Tests ###
@@ -167,6 +166,11 @@ def test_set_get_output(line)
     else
         puts "TEST: #{__method__.to_s}: Completed Successfully"
     end
+end
+
+#   def ascii_convert
+def test_ascii_convert()
+    puts "Test not implemented: #{__method__.to_s}"
 end
 
 #   def detect_format_and_convert(input)
@@ -295,6 +299,11 @@ def test_chop_comments()
     end
 end
 
+#   def pack_mem
+def test_pack_mem()
+    puts "Test not implemented: #{__method__.to_s}"
+end
+
 #### class InstructionC < LineC ####
 
 #read()
@@ -355,6 +364,33 @@ end
 def test_read()
     puts "Test not implemented: #{__method__.to_s}"
 end
+
+    ### MEM Tests ###
+def test_get_byte()
+    puts "Test not implemented: #{__method__.to_s}"
+end
+
+def test_set_byte()
+    puts "Test not implemented: #{__method__.to_s}"
+end
+
+def test_get_pointer()
+    puts "Test not implemented: #{__method__.to_s}"
+end
+
+def test_write_into_mem()
+    puts "Test not implemented: #{__method__.to_s}"
+end
+
+def test_align()
+    puts "Test not implemented: #{__method__.to_s}"
+end
+
+def test_set_pointer()
+    puts "Test not implemented: #{__method__.to_s}"
+end
+
+    
 
 #### MISC ####
 
