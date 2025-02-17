@@ -29,7 +29,7 @@ $DIRECTIVE_INDEX     = []
 $MNEMONIC_MAP       = [] 
 $MNEMONIC_INDEX     = []
 
-$test_array_random  = ["abcd", "33", 31, "Boop"]
+$test_array_random  = ["abcd", "33", "31", "Boop"]
 
 def call_tests()
     #This runs a full assembly of the selected test file ($IN)
@@ -108,7 +108,7 @@ end
     #fill_queues()
 def test_fill_queues(parser)
     parser.fill_queues(File.new("samples/#{$FILE_NAME}.asm", "r"))
-    if (parser.get_from_read_q(0).chomp != "#THIS IS A BASIC SANITY")
+    if (parser.get_from_read_q(0).chomp != ".data")
         abort("ERROR: #{__method__.to_s}, read_q[0] = #{parser.get_from_read_q(0)}")
     else
         puts "TEST: #{__method__.to_s}: Completed Successfully"
