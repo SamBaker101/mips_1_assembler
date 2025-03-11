@@ -90,7 +90,7 @@ class ParseC
 
     def fill_queues(in_file)
         temp_q = []
-        
+
         while (line = in_file.gets)
 
             #TODO: Do this more gracefully so you don't have to repeat it
@@ -129,7 +129,9 @@ class ParseC
         address = 0
         data = 0
         @read_q.each do |line|
+            puts line
             @line = LineC.new(line)
+            next if @line.get_array[0].nil?
 
             if (@line.get_array[0].strip == '.data')
                 address = $MEM_DATA_OFFSET

@@ -40,16 +40,12 @@ $test_array_random  = ["abcd", "33", "31", "Boop"]
 
 def call_tests()
     #This runs a full assembly of the selected test file ($IN)
-    parser = ParseC.new()
-    parser.parse_file()
-    #TODO: Replace parse_file with test_parse_file()
-    #This will be more involved, does full assemble, set up compare between sample output and MARS output
-    #test_parse_file() 
-
+    parser = test_parse_file()
+    
     dummy_mem = MemC.new($MEM_SIZE, $MEM_INST_OFFSET, $MEM_DATA_OFFSET, self)
 
-
     ### ParseC Tests ###
+    parser = ParseC.new()
     test_load_all_maps(parser)
     test_fill_queues(parser)
     test_check_for_mode_update(parser)
@@ -59,7 +55,7 @@ def call_tests()
     line = LineC.new($test_array_random)
     test_get_array(line)
     test_set_get_output(line)
-    #test_ascii_convert()
+    test_ascii_convert()
     test_detect_format_and_convert(line)
     test_binary_encode(line)
     test_binary_to_hex(line)
@@ -67,7 +63,7 @@ def call_tests()
     test_decode_directive_mode()
     test_check_for_labels()
     test_chop_comments()
-    #test_pack_mem()
+    test_pack_mem()
 
     ### InstructionC Tests ###
     inst = InstructionC.new($test_array_random, dummy_mem)
@@ -89,8 +85,19 @@ def call_tests()
     test_align()
     test_set_pointer()
 end
-    
-#### MISC ####
+
+def test_parse_file()
+    file_list = Dir["./samples/*"]
+    file_list.each do |file|
+        file = file.split("/")[-1]
+        next if (file.split(".")[-1] != "asm")
+        $FILE_NAME = file.split(".")[0]
+
+        puts "Starting test for sample: #{$FILE_NAME}"
+        parser = ParseC.new()
+        parser.parse_file()
+    end
+end
 
 call_tests()
 
