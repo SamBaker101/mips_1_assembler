@@ -40,7 +40,7 @@ $test_array_random  = ["abcd", "33", "31", "Boop"]
 
 def call_tests()
     #This runs a full assembly of the selected test file ($IN)
-    parser = test_parse_file()
+    test_parse_file()
     
     dummy_mem = MemC.new($MEM_SIZE, $MEM_INST_OFFSET, $MEM_DATA_OFFSET, self)
 
@@ -96,6 +96,17 @@ def test_parse_file()
         puts "Starting test for sample: #{$FILE_NAME}"
         parser = ParseC.new()
         parser.parse_file()
+
+        diff_file  = File.new("output/#{$FILE_NAME}_diff.txt", "w")
+        diff_file.print(`diff #{"output/#{$FILE_NAME}_inst.txt"} #{"samples/MARS_outputs/#{$FILE_NAME}_mars_inst.txt"}`)
+        diff_file.close()
+
+        diff_file  = File.new("output/#{$FILE_NAME}_diff.txt", "r")
+        if (diff_file.readlines.size > 1)
+            abort "ERROR: Diff not empty for #{$FILE_NAME}"
+        end
+        diff_file.close()
+
     end
 end
 
