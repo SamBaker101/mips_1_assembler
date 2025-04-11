@@ -215,7 +215,7 @@ class ParseC
     end
 
     def check_mnemonics(line)
-        #puts "CHECKING MNEMONIC FOR #{line}"
+        puts "CHECKING MNEMONIC FOR #{line}"
         
         line_q = [line]
         line.strip!
@@ -246,7 +246,6 @@ class ParseC
                             line_q[i].sub! '#{rs}', line[1]
                             line_q[i].sub! '#{rt}', line[2]
                         else
-                            
                             line_q[i].sub! '#{rs}', line[1]
                             line_q[i].sub! '#{rt}', line[2]                        
                         
